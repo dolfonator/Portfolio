@@ -1,0 +1,36 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  headingLevel?: 2 | 3 | 4;
+}
+
+const { project, headingLevel = 3 } = Astro.props;
+const Heading = `h${headingLevel}`;
+const href = project.data.hasCaseStudy ? `/work/${project.data.slug}/` : project.data.liveUrl;
+const isExternal = !project.data.hasCaseStudy && project.data.liveUrl;
+---
+<a class="card panel" href={href} target={isExternal ? '_blank' : undefined} rel={isExternal ? 'noopener' : undefined} data-reveal>
+  <div class="card-media">
+    <Image src={project.data.cover} alt={`${project.data.title} project preview`} widths={[420, 720, 1000]} sizes="(max-width: 860px) 100vw, 50vw" />
+  </div>
+  <div class="card-body panel-pad">
+    <div class="card-meta">
+      <span>{project.data.kind === 'commercial' ? 'Commercial' : 'Personal'}</span>
+      <span>{project.data.year}</span>
+    </div>
+    <Heading>{project.data.title}</Heading>
+    <p>{project.data.summary}</p>
+    {project.data.outcome && <p><strong>{project.data.outcome}</strong></p>}
+    <div class="stack" aria-label="Stack">
+      {project.data.stack.slice(0, 4).map((item: string) => <span class="pill">{item}</span>)}
+    </div>
+    <span class="button secondary">
+      {project.data.hasCaseStudy ? 'Read case study' : 'Open project'}
+      <Icon name={project.data.hasCaseStudy ? 'arrow' : 'external'} />
+    </span>
+  </div>
+</a>

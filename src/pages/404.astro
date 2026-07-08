@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/CTA.astro';
+---
+<Base title="Page not found | Tristan" description="This page could not be found." canonical="/404/">
+  <section class="section band-paper">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">404</p>
+        <h1>That page is not here.</h1>
+        <p class="section-lead">The portfolio moved, or the link is mistyped. Start from the work page or email me directly.</p>
+      </div>
+      <div class="panel panel-pad">
+        <div class="button-row">
+          <a class="button secondary" href="/work/">View work</a>
+          <CTA />
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

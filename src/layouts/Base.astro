@@ -1,0 +1,91 @@
+---
+import '../styles/global.css';
+import Icon from '../components/Icon.astro';
+
+const {
+  title = 'Tristan | Freelance Web Developer in Quezon City',
+  description = 'Fast, polished websites for Philippine local businesses, built by Tristan in Quezon City.',
+  canonical = Astro.url.pathname,
+  ogImage = '/og-image.svg',
+  jsonLd
+} = Astro.props;
+
+const siteUrl = Astro.site ?? new URL('https://tristan-portfolio.netlify.app');
+const canonicalUrl = new URL(canonical, siteUrl).toString();
+const ogUrl = new URL(ogImage, siteUrl).toString();
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#174336" />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Tristan Portfolio" />
+    <meta property="og:locale" content="en_PH" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="/" aria-label="Tristan portfolio home">
+          <span class="brand-mark">T</span>
+          <span>Tristan<small>Freelance web developer</small></span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" data-nav-toggle>
+          <Icon name="menu" />
+        </button>
+        <nav class="nav" id="nav" aria-label="Primary" data-nav>
+          <a href="/work/">Work</a>
+          <a href="/services/">Services</a>
+          <a href="/about/">About</a>
+          <a href="mailto:tristandolfo@gmail.com?subject=Portfolio%20inquiry">Email me</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>Tristan, freelance web developer in Quezon City.</p>
+        <p><a href="mailto:tristandolfo@gmail.com">tristandolfo@gmail.com</a> · <a href="tel:+639998827004">0999-882-7004</a></p>
+      </div>
+    </footer>
+    <script>
+      const nav = document.querySelector('[data-nav]');
+      const toggle = document.querySelector('[data-nav-toggle]');
+      toggle?.addEventListener('click', () => {
+        const isOpen = nav?.getAttribute('data-open') === 'true';
+        nav?.setAttribute('data-open', String(!isOpen));
+        toggle.setAttribute('aria-expanded', String(!isOpen));
+      });
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduceMotion && 'IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('[data-reveal]').forEach((item) => observer.observe(item));
+      } else {
+        document.querySelectorAll('[data-reveal]').forEach((item) => item.classList.add('is-visible'));
+      }
+    </script>
+  </body>
+</html>

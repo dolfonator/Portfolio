@@ -1,0 +1,133 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import CTA from '../components/CTA.astro';
+import SectionBand from '../components/SectionBand.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+
+type Project = CollectionEntry<'projects'>;
+
+const projects: Project[] = await getCollection('projects');
+const featured = projects
+  .filter((project: Project) => project.data.featured)
+  .sort((a: Project, b: Project) => a.data.title.localeCompare(b.data.title));
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Tristan',
+    email: 'mailto:tristandolfo@gmail.com',
+    telephone: '+639998827004',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Quezon City',
+      addressCountry: 'PH'
+    },
+    jobTitle: 'Freelance Web Developer'
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    name: 'Tristan Web Development',
+    areaServed: 'Philippines',
+    email: 'mailto:tristandolfo@gmail.com',
+    telephone: '+639998827004',
+    serviceType: ['Business websites', 'Restaurant websites', 'Static web development']
+  }
+];
+---
+<Base jsonLd={jsonLd}>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy" data-reveal>
+        <p class="eyebrow">Quezon City freelance web developer</p>
+        <h1>Fast websites for local businesses.</h1>
+        <!-- PLACEHOLDER: tagline -->
+        <p>I build focused, polished sites for restaurants, cafes, clinics, and small teams that need customers to understand the offer and take action quickly.</p>
+        <CTA showPhone />
+      </div>
+      <aside class="proof-panel panel" aria-label="Proof points" data-reveal>
+        <a class="proof-item" href="https://kozykook.vercel.app/" target="_blank" rel="noopener">
+          <strong>Kozykook concept</strong>
+          <span>Commercial restaurant one-pager</span>
+        </a>
+        <a class="proof-item" href="/work/bday-site/">
+          <strong>Vinny, at Thirty</strong>
+          <span>Shared-state birthday site</span>
+        </a>
+        <div class="proof-item">
+          <strong>Static-first builds</strong>
+          <span>Fast, portable, and easy to host on Netlify or Vercel</span>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <SectionBand number="01" eyebrow="Featured work" title="Two different reasons to trust the build." lead="Commercial clarity for local businesses, plus deeper technical proof for anyone checking the craft." tone="mist">
+    <div class="grid two">
+      {featured.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </SectionBand>
+
+  <SectionBand number="02" eyebrow="Services" title="Website packages by outcome." lead="No public pricing here. The right scope depends on content, urgency, and how much your site needs to do." tone="paper">
+    <div class="grid three">
+      <article class="panel panel-pad" data-reveal>
+        <p class="eyebrow">Starter</p>
+        <h3>One-page presence</h3>
+        <p>A polished homepage for a clear offer, essential trust signals, location/contact details, and one direct action.</p>
+      </article>
+      <article class="panel panel-pad" data-reveal>
+        <p class="eyebrow">Business</p>
+        <h3>Full business site</h3>
+        <p>Menu or services, gallery, reviews, FAQs, structured data, and stronger routes for inquiries, booking, or ordering.</p>
+      </article>
+      <article class="panel panel-pad" data-reveal>
+        <p class="eyebrow">Premier</p>
+        <h3>Custom build</h3>
+        <p>Special interfaces, content systems, shared state, automation-friendly workflows, and more technical polish.</p>
+      </article>
+    </div>
+    <div style="margin-top: 1.5rem">
+      <CTA label="Email me for a quote" subject="Website quote inquiry" />
+    </div>
+  </SectionBand>
+
+  <SectionBand number="03" eyebrow="Process" title="A build should move." lead="The v1 goal is a live, useful site in days, then improvement from real feedback." tone="sky">
+    <div class="split">
+      <div class="panel panel-pad" data-reveal>
+        <h3>Demo to live without the fog.</h3>
+        <p>I keep the path simple: one clear offer, one primary action, a fast static build, and enough structure that the site can grow after launch.</p>
+      </div>
+      <ProcessSteps />
+    </div>
+  </SectionBand>
+
+  <SectionBand number="04" eyebrow="About" title="Small sites, built with product judgment." tone="paper">
+    <div class="split">
+      <div class="placeholder-portrait" data-reveal>
+        <!-- PLACEHOLDER: portrait -->
+        Portrait placeholder
+      </div>
+      <div class="panel panel-pad" data-reveal>
+        <!-- PLACEHOLDER: bio -->
+        <p>I’m Tristan, a freelance web developer in Quezon City. I build quiet, fast, practical websites for local businesses, with enough care in the design and code that the first version can become a real sales asset.</p>
+        <div style="margin-top: 1.25rem">
+          <a class="button secondary" href="/about/">More about me</a>
+        </div>
+      </div>
+    </div>
+  </SectionBand>
+
+  <section class="section band-dark">
+    <div class="container cta-band">
+      <div>
+        <p class="eyebrow">Ready when you are</p>
+        <h2>Tell me what you need your site to do.</h2>
+      </div>
+      <CTA label="Email me" showPhone />
+    </div>
+  </section>
+</Base>

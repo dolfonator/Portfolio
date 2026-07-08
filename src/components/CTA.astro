@@ -1,0 +1,26 @@
+---
+import Icon from './Icon.astro';
+
+const {
+  label = 'Email me',
+  subject = 'Portfolio inquiry',
+  showPhone = false,
+  class: className = ''
+} = Astro.props;
+
+const email = 'tristandolfo@gmail.com';
+const phone = '0999-882-7004';
+const mailto = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
+---
+<div class:list={['button-row', className]}>
+  <a class="button" href={mailto}>
+    <Icon name="mail" />
+    {label}
+  </a>
+  {showPhone && (
+    <a class="button secondary" href="tel:+639998827004">
+      <Icon name="phone" />
+      {phone}
+    </a>
+  )}
+</div>

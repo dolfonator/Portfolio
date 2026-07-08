@@ -1,0 +1,45 @@
+@import '@fontsource-variable/fraunces';
+@import '@fontsource-variable/hanken-grotesk';
+
+:root {
+  --font-display: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'Hanken Grotesk Variable', system-ui, sans-serif;
+
+  --ink: #19211d;
+  --ink-soft: #5f6b64;
+  --paper: #fbfaf4;
+  --paper-2: #f1efe4;
+  --mist: #e4ede6;
+  --panel: #ffffff;
+  --line: #d9ded5;
+  --line-strong: #b9c5b8;
+  --forest: #174336;
+  --forest-2: #0f2d26;
+  --moss: #6f8a55;
+  --clay: #b76543;
+  --clay-dark: #8f472f;
+  --gold: #c5973d;
+  --sky: #dcebf0;
+  --rose: #f3d8cf;
+
+  --radius: 8px;
+  --radius-sm: 6px;
+  --maxw: 1120px;
+  --header-h: 72px;
+  --shadow: 0 16px 44px rgba(25, 33, 29, .09);
+
+  --step--1: .92rem;
+  --step-0: 1rem;
+  --step-1: clamp(1.18rem, 1.08rem + .45vw, 1.42rem);
+  --step-2: clamp(1.48rem, 1.24rem + 1vw, 2.02rem);
+  --step-3: clamp(2rem, 1.48rem + 2.15vw, 3.16rem);
+  --step-4: clamp(2.65rem, 1.72rem + 3.85vw, 4.75rem);
+
+  --space-1: .35rem;
+  --space-2: .65rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 3rem;
+  --space-7: clamp(4.5rem, 3.2rem + 5.5vw, 8rem);
+}

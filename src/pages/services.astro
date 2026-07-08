@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/CTA.astro';
+import SectionBand from '../components/SectionBand.astro';
+---
+<Base title="Services | Tristan" description="Website packages for Philippine local businesses, shown by outcome and scope without public pricing." canonical="/services/">
+  <SectionBand number="01" eyebrow="Services" title="Choose the shape of the site, then we scope the details." lead="Every site is built for a clear customer action and comes with a care plan option after launch." tone="paper">
+    <div class="grid three">
+      <article class="panel panel-pad" data-reveal>
+        <p class="eyebrow">Starter</p>
+        <h3>A polished one-page presence</h3>
+        <ul>
+          <li>Hero, offer, proof, location/contact, CTA</li>
+          <li>Mobile-first responsive design</li>
+          <li>SEO basics and social preview metadata</li>
+          <li>Fast static deployment</li>
+        </ul>
+        <div style="margin-top: 1.25rem"><CTA label="Email me for a quote" subject="Starter website quote" /></div>
+      </article>
+      <article class="panel panel-pad" data-reveal>
+        <p class="eyebrow">Business</p>
+        <h3>Your full menu or service story on-site</h3>
+        <ul>
+          <li>Multi-section or multi-page site</li>
+          <li>Menu/services, gallery, reviews, FAQs</li>
+          <li>Local business structured data</li>
+          <li>Clear ordering, booking, or inquiry routes</li>
+        </ul>
+        <div style="margin-top: 1.25rem"><CTA label="Email me for a quote" subject="Business website quote" /></div>
+      </article>
+      <article class="panel panel-pad" data-reveal>
+        <p class="eyebrow">Premier</p>
+        <h3>Custom builds for specific workflows</h3>
+        <ul>
+          <li>Interactive tools or richer content systems</li>
+          <li>Serverless functions when the site needs state</li>
+          <li>Custom performance and accessibility passes</li>
+          <li>Launch support and post-launch iteration</li>
+        </ul>
+        <div style="margin-top: 1.25rem"><CTA label="Email me for a quote" subject="Premier website quote" /></div>
+      </article>
+    </div>
+  </SectionBand>
+  <section class="section band-dark">
+    <div class="container cta-band">
+      <div>
+        <p class="eyebrow">Care plans</p>
+        <h2>Every site can stay maintained after launch.</h2>
+        <p class="section-lead">Updates, small fixes, SEO improvements, and growth work can be scoped after the first version is live.</p>
+      </div>
+      <CTA label="Email me" showPhone />
+    </div>
+  </section>
+</Base>

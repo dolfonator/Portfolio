@@ -1,0 +1,49 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Base from './Base.astro';
+import CTA from '../components/CTA.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const title = `${project.data.title} case study | Tristan`;
+const description = project.data.summary;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: project.data.title,
+  creator: {
+    '@type': 'Person',
+    name: 'Tristan'
+  },
+  dateCreated: String(project.data.year),
+  url: project.data.liveUrl,
+  description: project.data.summary
+};
+---
+<Base title={title} description={description} canonical={`/work/${project.data.slug}/`} jsonLd={jsonLd}>
+  <section class="case-hero">
+    <div class="container case-grid">
+      <div>
+        <p class="eyebrow">{project.data.clientType}</p>
+        <h1>{project.data.title}</h1>
+        <p class="section-lead">{project.data.summary}</p>
+        <div class="stack" style="margin-top: 1.25rem">
+          {project.data.stack.map((item: string) => <span class="pill">{item}</span>)}
+        </div>
+        <div style="margin-top: 1.5rem">
+          <CTA subject={`Question about ${project.data.title}`} />
+        </div>
+      </div>
+      <div class="case-cover panel" data-reveal>
+        <Image src={project.data.cover} alt={`${project.data.title} project cover`} widths={[720, 1000, 1400]} sizes="(max-width: 860px) 100vw, 50vw" />
+      </div>
+    </div>
+  </section>
+  <article class="container prose">
+    <slot />
+  </article>
+</Base>

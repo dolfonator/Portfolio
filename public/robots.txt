@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tristan-portfolio.netlify.app/sitemap-index.xml

@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import SectionBand from '../../components/SectionBand.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+type Project = CollectionEntry<'projects'>;
+
+const projects: Project[] = (await getCollection('projects')).sort((a: Project, b: Project) => {
+  if (Number(b.data.featured) !== Number(a.data.featured)) return Number(b.data.featured) - Number(a.data.featured);
+  return b.data.year - a.data.year;
+});
+---
+<Base title="Work | Tristan" description="Portfolio work by Tristan: commercial website demos, technical case studies, and personal static experiments." canonical="/work/">
+  <SectionBand number="01" eyebrow="Work" title="Selected sites and experiments." lead="Full case studies for the two flagship projects, with lighter personal projects included as proof of range." tone="mist">
+    <div class="grid two">
+      {projects.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </SectionBand>
+</Base>
