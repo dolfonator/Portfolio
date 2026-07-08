@@ -111,6 +111,8 @@ li + li { margin-top: .35rem; }
 .nav {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
   gap: .35rem;
 }
 .nav a {
@@ -258,6 +260,7 @@ li + li { margin-top: .35rem; }
   background: var(--line);
 }
 .proof-item {
+  min-width: 0;
   display: grid;
   gap: .2rem;
   padding: 1rem;
@@ -299,10 +302,12 @@ li + li { margin-top: .35rem; }
 }
 .card:hover .card-media img { transform: scale(1.035); }
 .card-body {
+  min-width: 0;
   display: grid;
   align-content: start;
   gap: .8rem;
 }
+.card-body .button { justify-self: start; }
 .card-meta {
   display: flex;
   flex-wrap: wrap;
