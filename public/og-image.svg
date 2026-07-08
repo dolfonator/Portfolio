@@ -1,16 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
   <title id="title">Tristan Portfolio</title>
   <desc id="desc">Freelance web developer in Quezon City</desc>
-  <rect width="1200" height="630" fill="#fbfaf4"/>
-  <rect x="48" y="48" width="1104" height="534" rx="18" fill="#e4ede6" stroke="#174336" stroke-width="3"/>
-  <path d="M48 422h1104v160H48z" fill="#174336"/>
-  <circle cx="982" cy="170" r="84" fill="#dcebf0" stroke="#174336" stroke-width="3"/>
-  <rect x="754" y="126" width="166" height="108" rx="8" fill="#fff" stroke="#174336" stroke-width="3"/>
-  <rect x="792" y="166" width="232" height="146" rx="8" fill="#fff" stroke="#174336" stroke-width="3"/>
-  <path d="M822 208h112M822 238h158M822 268h82" stroke="#b76543" stroke-width="12" stroke-linecap="round"/>
-  <text x="104" y="154" fill="#8f472f" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="5">QUEZON CITY WEB DEVELOPER</text>
-  <text x="104" y="276" fill="#19211d" font-family="Georgia, serif" font-size="96" font-weight="700">Tristan</text>
-  <text x="104" y="358" fill="#19211d" font-family="Georgia, serif" font-size="62" font-weight="700">Fast websites for local businesses.</text>
-  <text x="104" y="505" fill="#fbfaf4" font-family="Arial, sans-serif" font-size="34" font-weight="700">tristandolfo@gmail.com</text>
-  <text x="104" y="548" fill="#dcebf0" font-family="Arial, sans-serif" font-size="28">Restaurants · cafes · clinics · small teams</text>
+  <rect width="1200" height="630" fill="#F7F9FC"/>
+  <rect x="48" y="48" width="1104" height="534" rx="18" fill="#DCE6F1" stroke="#14304E" stroke-width="3"/>
+  <path d="M48 422h1104v160H48z" fill="#14304E"/>
+  <circle cx="982" cy="170" r="84" fill="#D8E8F4" stroke="#14304E" stroke-width="3"/>
+  <rect x="754" y="126" width="166" height="108" rx="8" fill="#FFFFFF" stroke="#14304E" stroke-width="3"/>
+  <rect x="792" y="166" width="232" height="146" rx="8" fill="#FFFFFF" stroke="#14304E" stroke-width="3"/>
+  <path d="M822 208h112M822 238h158M822 268h82" stroke="#D9822B" stroke-width="12" stroke-linecap="round"/>
+  <text x="104" y="154" fill="#935214" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="5">QUEZON CITY WEB DEVELOPER</text>
+  <text x="104" y="276" fill="#16202B" font-family="Georgia, serif" font-size="96" font-weight="700">Tristan</text>
+  <text x="104" y="358" fill="#16202B" font-family="Georgia, serif" font-size="62" font-weight="700">Fast websites for local businesses.</text>
+  <text x="104" y="505" fill="#F7F9FC" font-family="Arial, sans-serif" font-size="34" font-weight="700">tristandolfo@gmail.com</text>
+  <text x="104" y="548" fill="#D8E8F4" font-family="Arial, sans-serif" font-size="28">Restaurants · cafes · clinics · small teams</text>
 </svg>

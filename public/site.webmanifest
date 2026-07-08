@@ -3,6 +3,6 @@
   "short_name": "Tristan",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#fbfaf4",
-  "theme_color": "#174336"
+  "background_color": "#F7F9FC",
+  "theme_color": "#14304E"
 }

@@ -26,7 +26,7 @@ const ogUrl = new URL(ogImage, siteUrl).toString();
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#174336" />
+    <meta name="theme-color" content="#14304E" />
     <link rel="canonical" href={canonicalUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Tristan Portfolio" />
@@ -39,6 +39,11 @@ const ogUrl = new URL(ogImage, siteUrl).toString();
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    <script is:inline>
+      const savedTheme = localStorage.getItem('theme');
+      const preferredTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.dataset.theme = savedTheme || preferredTheme;
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -56,6 +61,10 @@ const ogUrl = new URL(ogImage, siteUrl).toString();
           <a href="/services/">Services</a>
           <a href="/about/">About</a>
           <a href="mailto:tristandolfo@gmail.com?subject=Portfolio%20inquiry">Email me</a>
+          <button class="theme-toggle" type="button" aria-label="Switch color theme" data-theme-toggle>
+            <span data-icon="moon"><Icon name="moon" /></span>
+            <span data-icon="sun"><Icon name="sun" /></span>
+          </button>
         </nav>
       </div>
     </header>
@@ -71,10 +80,17 @@ const ogUrl = new URL(ogImage, siteUrl).toString();
     <script>
       const nav = document.querySelector('[data-nav]');
       const toggle = document.querySelector('[data-nav-toggle]');
+      const themeToggle = document.querySelector('[data-theme-toggle]');
       toggle?.addEventListener('click', () => {
         const isOpen = nav?.getAttribute('data-open') === 'true';
         nav?.setAttribute('data-open', String(!isOpen));
         toggle.setAttribute('aria-expanded', String(!isOpen));
+      });
+
+      themeToggle?.addEventListener('click', () => {
+        const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = nextTheme;
+        localStorage.setItem('theme', nextTheme);
       });
 
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

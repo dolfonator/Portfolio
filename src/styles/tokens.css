@@ -5,28 +5,48 @@
   --font-display: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
   --font-body: 'Hanken Grotesk Variable', system-ui, sans-serif;
 
-  --ink: #19211d;
-  --ink-soft: #5f6b64;
-  --paper: #fbfaf4;
-  --paper-2: #f1efe4;
-  --mist: #e4ede6;
+  /* --- Brand hues (theme-independent) --- */
+  --navy: #14304E;        /* primary brand: buttons, dark bands, heading marks */
+  --navy-2: #0B1F35;      /* deepest band / footer */
+  --steel: #4A6FA5;       /* secondary accent, links on light */
+  --amber: #D9822B;       /* CTA / highlight — warm contrast against navy */
+  --amber-dark: #935214;  /* accent text on light + CTA/link hover (AA-tuned) */
+  --gold: #C9A227;        /* small accents on dark bands only */
+
+  /* --- Light-theme surfaces & text (AA-verified) --- */
+  --paper: #F7F9FC;       /* page background (cool off-white) */
+  --paper-2: #EBF0F6;     /* alternate light band */
+  --mist: #DCE6F1;        /* tinted band */
+  --sky: #D8E8F4;         /* tinted band (process) */
   --panel: #ffffff;
-  --line: #d9ded5;
-  --line-strong: #b9c5b8;
-  --forest: #174336;
-  --forest-2: #0f2d26;
-  --moss: #6f8a55;
-  --clay: #b76543;
-  --clay-dark: #8f472f;
-  --gold: #c5973d;
-  --sky: #dcebf0;
-  --rose: #f3d8cf;
+  --ink: #16202B;         /* body text */
+  --ink-soft: #536376;    /* secondary text (AA-tuned for tinted bands) */
+  --line: #D5DDE7;
+  --line-strong: #AFBDCE;
+
+  /* --- Semantic roles (flip per theme) --- */
+  --brand: var(--navy);
+  --brand-deep: var(--navy-2);
+  --link: var(--steel);
+  --link-hover: var(--amber-dark);
+  --accent: var(--amber);        /* bright highlight (used on dark or as bg) */
+  --accent-ink: var(--amber-dark); /* accent text on light — AA-safe */
+  --focus: var(--gold);
+  --button-bg: var(--navy);
+  --button-bg-hover: var(--navy-2);
+  --button-text: #FFFFFF;
+
+  /* text on the always-dark navy bands (light in both themes) */
+  --on-dark: #EAF1F8;
+  --on-dark-soft: #BCCADA;
+  --on-dark-gold: #E7C46A;
+  --line-on-dark: rgba(255, 255, 255, .12);
 
   --radius: 8px;
   --radius-sm: 6px;
   --maxw: 1120px;
   --header-h: 72px;
-  --shadow: 0 16px 44px rgba(25, 33, 29, .09);
+  --shadow: 0 16px 44px rgba(11, 31, 53, .12);
 
   --step--1: .92rem;
   --step-0: 1rem;
@@ -42,4 +62,26 @@
   --space-5: 2rem;
   --space-6: 3rem;
   --space-7: clamp(4.5rem, 3.2rem + 5.5vw, 8rem);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --paper: #0B1320;
+  --paper-2: #111C2B;
+  --mist: #16253A;
+  --sky: #182B42;
+  --panel: #111C2B;
+  --ink: #EAF1F8;
+  --ink-soft: #B8C5D4;
+  --line: #26384F;
+  --line-strong: #3B526F;
+  --link: #9DBBE6;
+  --link-hover: #E7C46A;
+  --accent-ink: #E7C46A;
+  --brand: #9DBBE6;
+  --brand-deep: #EAF1F8;
+  --button-bg: #D9822B;
+  --button-bg-hover: #C46E1F;
+  --button-text: #0B1320;
+  --shadow: 0 18px 48px rgba(0, 0, 0, .28);
 }
