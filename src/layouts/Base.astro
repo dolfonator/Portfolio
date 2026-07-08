@@ -10,7 +10,12 @@ const {
   jsonLd
 } = Astro.props;
 
-const siteUrl = Astro.site ?? new URL('https://tristan-portfolio.netlify.app');
+// astro.config.mjs guarantees `site` is set, so Astro.site is always defined
+// here. Guard anyway rather than fall back to a wrong hardcoded URL.
+const siteUrl = Astro.site;
+if (!siteUrl) {
+  throw new Error('Astro.site is undefined — set SITE_URL before building.');
+}
 const canonicalUrl = new URL(canonical, siteUrl).toString();
 const ogUrl = new URL(ogImage, siteUrl).toString();
 ---
