@@ -10,8 +10,8 @@ interface Props {
 
 const { project, headingLevel = 3 } = Astro.props;
 const Heading = `h${headingLevel}`;
-const href = project.data.hasCaseStudy ? `/work/${project.data.slug}/` : project.data.liveUrl;
-const isExternal = !project.data.hasCaseStudy && project.data.liveUrl;
+const href = project.data.liveUrl ?? '#';
+const isExternal = href.startsWith('http');
 ---
 <a class="card panel" href={href} target={isExternal ? '_blank' : undefined} rel={isExternal ? 'noopener' : undefined} data-reveal>
   <div class="card-media">
@@ -29,8 +29,8 @@ const isExternal = !project.data.hasCaseStudy && project.data.liveUrl;
       {project.data.stack.slice(0, 4).map((item: string) => <span class="pill">{item}</span>)}
     </div>
     <span class="button secondary">
-      {project.data.hasCaseStudy ? 'Read case study' : 'Open project'}
-      <Icon name={project.data.hasCaseStudy ? 'arrow' : 'external'} />
+      Open website
+      <Icon name={isExternal ? 'external' : 'arrow'} />
     </span>
   </div>
 </a>

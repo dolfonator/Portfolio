@@ -2,8 +2,7 @@
 title: Bubu Workout Website
 slug: bubu-workout
 kind: personal
-featured: false
-hasCaseStudy: false
+featured: true
 clientType: Personal training-plan site
 stack:
   - Single-file HTML

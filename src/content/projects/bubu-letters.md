@@ -3,7 +3,6 @@ title: Bubu Letters
 slug: bubu-letters
 kind: personal
 featured: false
-hasCaseStudy: false
 clientType: Personal letter site
 stack:
   - Single-file HTML
