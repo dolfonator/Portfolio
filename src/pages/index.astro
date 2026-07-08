@@ -6,6 +6,7 @@ import CTA from '../components/CTA.astro';
 import SectionBand from '../components/SectionBand.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ProcessSteps from '../components/ProcessSteps.astro';
+import Icon from '../components/Icon.astro';
 
 type Project = CollectionEntry<'projects'>;
 
@@ -42,91 +43,121 @@ const jsonLd = [
 <Base jsonLd={jsonLd}>
   <section class="hero">
     <div class="container hero-grid">
-      <div class="hero-copy" data-reveal>
-        <p class="eyebrow">Quezon City freelance web developer</p>
-        <h1>Fast websites for local businesses.</h1>
-        <!-- PLACEHOLDER: tagline -->
-        <p>I build focused, polished sites for restaurants, cafes, clinics, and small teams that need customers to understand the offer and take action quickly.</p>
+      <div class="hero-copy">
+        <p class="hero-kicker"><span class="hero-dot" aria-hidden="true"></span>Quezon City · freelance web developer</p>
+        <h1 class="hero-title">Fast websites for <span class="hero-mark">local businesses.</span></h1>
+        <p class="hero-sub">I build focused, polished sites for restaurants, cafés, clinics, and small teams — the kind where a customer understands the offer and acts in seconds.</p>
         <CTA showPhone />
       </div>
-      <aside class="proof-panel panel" aria-label="Proof points" data-reveal>
-        <a class="proof-item" href="https://kozykook.vercel.app/" target="_blank" rel="noopener">
-          <strong>Kozykook concept</strong>
-          <span>Commercial restaurant one-pager</span>
-        </a>
-        <a class="proof-item" href="/project-demos/bubu-workout/">
-          <strong>Bubu Workout Website</strong>
-          <span>Animated training-plan microsite</span>
-        </a>
-        <div class="proof-item">
-          <strong>Static-first builds</strong>
-          <span>Fast, portable, and easy to host on Netlify or Vercel</span>
-        </div>
+      <aside class="works panel" aria-label="Selected work">
+        <p class="works-label">Selected work</p>
+        <ol class="works-list">
+          <li>
+            <a class="work" href="https://kozykook.vercel.app/" target="_blank" rel="noopener">
+              <span class="work-num" aria-hidden="true">01</span>
+              <span class="work-text">
+                <strong>Kozykook Diner &amp; Bar</strong>
+                <span>Commercial restaurant one-pager</span>
+              </span>
+              <Icon name="external" />
+            </a>
+          </li>
+          <li>
+            <a class="work" href="/project-demos/bubu-workout/">
+              <span class="work-num" aria-hidden="true">02</span>
+              <span class="work-text">
+                <strong>Bubu Workout</strong>
+                <span>Animated training-plan microsite</span>
+              </span>
+              <Icon name="arrow" />
+            </a>
+          </li>
+        </ol>
+        <p class="works-foot">Static-first builds — instant loads, portable hosting.</p>
       </aside>
     </div>
   </section>
 
-  <SectionBand number="01" eyebrow="Featured work" title="Business clarity, with craft in the details." lead="A commercial restaurant demo beside a playful microsite that shows motion, pacing, and mobile polish." tone="mist">
+  <SectionBand tone="mist">
+    <header class="sec-head-bold">
+      <h2>Business clarity, with craft in the details.</h2>
+      <p class="sec-lead">A commercial restaurant demo beside a playful microsite — commercial proof on one side, motion and mobile polish on the other.</p>
+    </header>
     <div class="grid two">
       {featured.map((project) => <ProjectCard project={project} />)}
     </div>
   </SectionBand>
 
-  <SectionBand number="02" eyebrow="Services" title="Website packages by outcome." lead="No public pricing here. The right scope depends on content, urgency, and how much your site needs to do." tone="paper">
-    <div class="grid three">
-      <article class="panel panel-pad" data-reveal>
-        <p class="eyebrow">Starter</p>
-        <h3>One-page presence</h3>
-        <p>A polished homepage for a clear offer, essential trust signals, location/contact details, and one direct action.</p>
+  <SectionBand tone="paper">
+    <header class="sec-head-bold">
+      <h2>Website packages, by outcome.</h2>
+      <p class="sec-lead">No public pricing — the right scope depends on your content, your urgency, and how much the site needs to do.</p>
+    </header>
+    <div class="tier-list">
+      <article class="tier">
+        <div class="tier-head">
+          <p class="tier-tag">Starter</p>
+          <h3>One-page presence</h3>
+        </div>
+        <p>A polished homepage for a clear offer, essential trust signals, location and contact details, and one direct action.</p>
       </article>
-      <article class="panel panel-pad" data-reveal>
-        <p class="eyebrow">Business</p>
-        <h3>Full business site</h3>
+      <article class="tier">
+        <div class="tier-head">
+          <p class="tier-tag">Business</p>
+          <h3>Full business site</h3>
+        </div>
         <p>Menu or services, gallery, reviews, FAQs, structured data, and stronger routes for inquiries, booking, or ordering.</p>
       </article>
-      <article class="panel panel-pad" data-reveal>
-        <p class="eyebrow">Premier</p>
-        <h3>Custom build</h3>
+      <article class="tier">
+        <div class="tier-head">
+          <p class="tier-tag">Premier</p>
+          <h3>Custom build</h3>
+        </div>
         <p>Special interfaces, content systems, shared state, automation-friendly workflows, and more technical polish.</p>
       </article>
     </div>
-    <div style="margin-top: 1.5rem">
+    <div class="sec-cta">
       <CTA label="Email me for a quote" subject="Website quote inquiry" />
     </div>
   </SectionBand>
 
-  <SectionBand number="03" eyebrow="Process" title="A build should move." lead="The v1 goal is a live, useful site in days, then improvement from real feedback." tone="sky">
+  <SectionBand tone="sky">
+    <header class="sec-head-bold">
+      <h2>A build should move.</h2>
+      <p class="sec-lead">The v1 goal is a live, useful site in days — then improvement from real feedback.</p>
+    </header>
     <div class="split">
-      <div class="panel panel-pad" data-reveal>
-        <h3>Demo to live without the fog.</h3>
-        <p>I keep the path simple: one clear offer, one primary action, a fast static build, and enough structure that the site can grow after launch.</p>
+      <div class="panel panel-pad">
+        <h3>Demo to live, without the fog.</h3>
+        <p>One clear offer, one primary action, a fast static build, and enough structure that the site can grow after launch.</p>
       </div>
       <ProcessSteps />
     </div>
   </SectionBand>
 
-  <SectionBand number="04" eyebrow="About" title="Small sites, built with product judgment." tone="paper">
+  <SectionBand tone="paper">
+    <header class="sec-head-bold">
+      <h2>Small sites, built with product judgment.</h2>
+    </header>
     <div class="split">
-      <div class="placeholder-portrait" data-reveal>
+      <div class="placeholder-portrait">
         <!-- PLACEHOLDER: portrait -->
         Portrait placeholder
       </div>
-      <div class="panel panel-pad" data-reveal>
+      <div class="panel panel-pad">
         <!-- PLACEHOLDER: bio -->
         <p>I’m Tristan, a freelance web developer in Quezon City. I build quiet, fast, practical websites for local businesses, with enough care in the design and code that the first version can become a real sales asset.</p>
-        <div style="margin-top: 1.25rem">
+        <div class="about-actions">
           <a class="button secondary" href="/about/">More about me</a>
         </div>
       </div>
     </div>
   </SectionBand>
 
-  <section class="section band-dark">
-    <div class="container cta-band">
-      <div>
-        <p class="eyebrow">Ready when you are</p>
-        <h2>Tell me what you need your site to do.</h2>
-      </div>
+  <section class="section band-dark closer">
+    <div class="container closer-inner">
+      <p class="closer-kicker">Ready when you are</p>
+      <h2 class="closer-title">Tell me what you need your site to <span class="closer-mark">do.</span></h2>
       <CTA label="Email me" showPhone />
     </div>
   </section>
