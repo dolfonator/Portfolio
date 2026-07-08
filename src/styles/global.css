@@ -43,7 +43,7 @@ li + li { margin-top: .35rem; }
   left: .75rem;
   z-index: 100;
   transform: translateY(-160%);
-  background: var(--brand-deep);
+  background: var(--navy-2);
   color: var(--on-dark);
   padding: .7rem .9rem;
   border-radius: var(--radius-sm);
@@ -227,8 +227,9 @@ li + li { margin-top: .35rem; }
   align-items: center;
   padding: clamp(3.5rem, 2rem + 6vw, 7rem) 0 var(--space-6);
   background:
-    linear-gradient(90deg, color-mix(in srgb, var(--paper) 96%, transparent) 0%, color-mix(in srgb, var(--paper) 76%, transparent) 54%, color-mix(in srgb, var(--paper) 20%, transparent) 100%),
-    url('/og-image.svg') center right / cover no-repeat;
+    radial-gradient(115% 85% at 88% 12%, color-mix(in srgb, var(--steel) 20%, transparent) 0%, transparent 58%),
+    radial-gradient(100% 75% at 6% 108%, color-mix(in srgb, var(--amber) 12%, transparent) 0%, transparent 55%),
+    var(--paper);
 }
 .hero-grid {
   display: grid;
