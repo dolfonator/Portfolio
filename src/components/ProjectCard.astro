@@ -11,9 +11,8 @@ interface Props {
 const { project, headingLevel = 3 } = Astro.props;
 const Heading = `h${headingLevel}`;
 const href = project.data.liveUrl ?? '#';
-const isExternal = href.startsWith('http');
 ---
-<a class="card panel" href={href} target={isExternal ? '_blank' : undefined} rel={isExternal ? 'noopener' : undefined} data-reveal>
+<a class="card panel" href={href} target="_blank" rel="noopener" data-reveal>
   <div class="card-media">
     <Image src={project.data.cover} alt={`${project.data.title} project preview`} widths={[420, 720, 1000]} sizes="(max-width: 860px) 100vw, 50vw" />
   </div>
@@ -30,7 +29,7 @@ const isExternal = href.startsWith('http');
     </div>
     <span class="button secondary">
       Open website
-      <Icon name={isExternal ? 'external' : 'arrow'} />
+      <Icon name="external" />
     </span>
   </div>
 </a>

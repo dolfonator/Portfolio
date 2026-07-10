@@ -12,8 +12,8 @@ const projects: Project[] = (await getCollection('projects')).sort((a: Project, 
   return b.data.year - a.data.year;
 });
 ---
-<Base title="Work | Tristan" description="Portfolio work by Tristan: commercial website demos and personal static experiments." canonical="/work/">
-  <SectionBand number="01" eyebrow="Work" title="Selected sites and experiments." lead="Brief project notes with direct links to the live websites and archived demos." tone="mist">
+<Base title="Projects | Tristan" description="Projects by Tristan: commercial website demos and personal static builds." canonical="/projects/">
+  <SectionBand number="01" eyebrow="Projects" title="Selected sites and experiments." lead="Brief project notes with direct links to the live demos, each opening in a new tab." tone="mist">
     <div class="grid two">
       {projects.map((project) => <ProjectCard project={project} />)}
     </div>

@@ -10,9 +10,9 @@ stack:
   - Vanilla JS
   - JSON-LD
   - Vercel
-liveUrl: https://kozykook.vercel.app/
+liveUrl: /project-demos/kozykook/
 year: 2026
 summary: A restaurant one-pager that presents the menu, reviews, gallery, delivery routes, and booking action without making customers hunt.
-outcome: Instant-loading commercial demo for a local food business.
+outcome: Static-demo version for the Business Tier.
 cover: ../../assets/kozykook-storefront.jpg
 ---

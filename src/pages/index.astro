@@ -52,26 +52,18 @@ const jsonLd = [
       <aside class="works panel" aria-label="Selected work">
         <p class="works-label">Selected work</p>
         <ol class="works-list">
-          <li>
-            <a class="work" href="https://kozykook.vercel.app/" target="_blank" rel="noopener">
-              <span class="work-num" aria-hidden="true">01</span>
-              <span class="work-text">
-                <strong>Kozykook Diner &amp; Bar</strong>
-                <span>Commercial restaurant one-pager</span>
-              </span>
-              <Icon name="external" />
-            </a>
-          </li>
-          <li>
-            <a class="work" href="/project-demos/bubu-workout/">
-              <span class="work-num" aria-hidden="true">02</span>
-              <span class="work-text">
-                <strong>Bubu Workout</strong>
-                <span>Animated training-plan microsite</span>
-              </span>
-              <Icon name="arrow" />
-            </a>
-          </li>
+          {featured.map((project, i) => (
+            <li>
+              <a class="work" href={project.data.liveUrl} target="_blank" rel="noopener">
+                <span class="work-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <span class="work-text">
+                  <strong>{project.data.title}</strong>
+                  <span>{project.data.clientType}</span>
+                </span>
+                <Icon name="external" />
+              </a>
+            </li>
+          ))}
         </ol>
         <p class="works-foot">Static-first builds — instant loads, portable hosting.</p>
       </aside>
@@ -81,7 +73,7 @@ const jsonLd = [
   <SectionBand tone="mist">
     <header class="sec-head-bold">
       <h2>Business clarity, with craft in the details.</h2>
-      <p class="sec-lead">A commercial restaurant demo beside a playful microsite — commercial proof on one side, motion and mobile polish on the other.</p>
+      <p class="sec-lead">Two Business-tier concept sites — a creative studio and a diner — each art-directed to look like the business it's for, not a template.</p>
     </header>
     <div class="grid two">
       {featured.map((project) => <ProjectCard project={project} />)}
