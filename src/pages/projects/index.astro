@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import SectionBand from '../../components/SectionBand.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 
 type Project = CollectionEntry<'projects'>;
@@ -11,11 +10,25 @@ const projects: Project[] = (await getCollection('projects')).sort((a: Project, 
   if (Number(b.data.featured) !== Number(a.data.featured)) return Number(b.data.featured) - Number(a.data.featured);
   return b.data.year - a.data.year;
 });
+
+const [lead, ...rest] = projects;
 ---
 <Base title="Projects | Tristan" description="Projects by Tristan: commercial website demos and personal static builds." canonical="/projects/">
-  <SectionBand number="01" eyebrow="Projects" title="Selected sites and experiments." lead="Brief project notes with direct links to the live demos, each opening in a new tab." tone="mist">
-    <div class="grid two">
-      {projects.map((project) => <ProjectCard project={project} />)}
+  <section class="section band-mist">
+    <div class="container">
+      <header class="page-head" data-reveal>
+        <p class="page-kicker"><span class="hero-dot" aria-hidden="true"></span>Three builds — live and clickable</p>
+        <h1 class="page-title">Sites that look like the <span class="hero-mark">business</span>, not the template.</h1>
+        <p class="page-lead">Two Business-tier concept demos and a personal microsite — each art-directed for the brand it serves. Every card opens the real, working site in a new tab.</p>
+      </header>
+      <div class="projects-stack">
+        {lead && <ProjectCard project={lead} featured headingLevel={2} />}
+        {rest.length > 0 && (
+          <div class="grid two">
+            {rest.map((project) => <ProjectCard project={project} headingLevel={2} />)}
+          </div>
+        )}
+      </div>
     </div>
-  </SectionBand>
+  </section>
 </Base>

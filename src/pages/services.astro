@@ -1,53 +1,81 @@
 ---
 import Base from '../layouts/Base.astro';
 import CTA from '../components/CTA.astro';
-import SectionBand from '../components/SectionBand.astro';
+import Icon from '../components/Icon.astro';
+
+const tiers = [
+  {
+    tag: 'Starter',
+    title: 'A polished one-page presence',
+    subject: 'Starter website quote',
+    points: [
+      'Hero, offer, proof, location and contact, one clear CTA',
+      'Mobile-first responsive design',
+      'SEO basics and social preview metadata',
+      'Fast static deployment',
+    ],
+  },
+  {
+    tag: 'Business',
+    title: 'Your full menu or service story, on-site',
+    subject: 'Business website quote',
+    points: [
+      'Multi-section or multi-page site',
+      'Menu or services, gallery, reviews, FAQs',
+      'Local-business structured data',
+      'Clear ordering, booking, or inquiry routes',
+    ],
+  },
+  {
+    tag: 'Premier',
+    title: 'Custom builds for specific workflows',
+    subject: 'Premier website quote',
+    points: [
+      'Interactive tools or richer content systems',
+      'Serverless functions when the site needs state',
+      'Custom performance and accessibility passes',
+      'Launch support and post-launch iteration',
+    ],
+  },
+];
+
+const mailto = (subject: string) => `mailto:tristandolfo@gmail.com?subject=${encodeURIComponent(subject)}`;
 ---
 <Base title="Services | Tristan" description="Website packages for Philippine local businesses, shown by outcome and scope without public pricing." canonical="/services/">
-  <SectionBand number="01" eyebrow="Services" title="Choose the shape of the site, then we scope the details." lead="Every site is built for a clear customer action and comes with a care plan option after launch." tone="paper">
-    <div class="grid three">
-      <article class="panel panel-pad" data-reveal>
-        <p class="eyebrow">Starter</p>
-        <h3>A polished one-page presence</h3>
-        <ul>
-          <li>Hero, offer, proof, location/contact, CTA</li>
-          <li>Mobile-first responsive design</li>
-          <li>SEO basics and social preview metadata</li>
-          <li>Fast static deployment</li>
-        </ul>
-        <div style="margin-top: 1.25rem"><CTA label="Email me for a quote" subject="Starter website quote" /></div>
-      </article>
-      <article class="panel panel-pad" data-reveal>
-        <p class="eyebrow">Business</p>
-        <h3>Your full menu or service story on-site</h3>
-        <ul>
-          <li>Multi-section or multi-page site</li>
-          <li>Menu/services, gallery, reviews, FAQs</li>
-          <li>Local business structured data</li>
-          <li>Clear ordering, booking, or inquiry routes</li>
-        </ul>
-        <div style="margin-top: 1.25rem"><CTA label="Email me for a quote" subject="Business website quote" /></div>
-      </article>
-      <article class="panel panel-pad" data-reveal>
-        <p class="eyebrow">Premier</p>
-        <h3>Custom builds for specific workflows</h3>
-        <ul>
-          <li>Interactive tools or richer content systems</li>
-          <li>Serverless functions when the site needs state</li>
-          <li>Custom performance and accessibility passes</li>
-          <li>Launch support and post-launch iteration</li>
-        </ul>
-        <div style="margin-top: 1.25rem"><CTA label="Email me for a quote" subject="Premier website quote" /></div>
-      </article>
-    </div>
-  </SectionBand>
-  <section class="section band-dark">
-    <div class="container cta-band">
-      <div>
-        <p class="eyebrow">Care plans</p>
-        <h2>Every site can stay maintained after launch.</h2>
-        <p class="section-lead">Updates, small fixes, SEO improvements, and growth work can be scoped after the first version is live.</p>
+  <section class="section band-paper">
+    <div class="container">
+      <header class="page-head" data-reveal>
+        <p class="page-kicker"><span class="hero-dot" aria-hidden="true"></span>Website packages</p>
+        <h1 class="page-title">Choose the <span class="hero-mark">shape</span> of the site.</h1>
+        <p class="page-lead">Every build targets one clear customer action, ships fast and static, and comes with an optional care plan after launch. No public pricing — the right scope depends on your content and how much the site needs to do.</p>
+      </header>
+      <div class="svc-tiers">
+        {tiers.map((tier) => (
+          <article class="svc-tier" data-reveal>
+            <div class="svc-head">
+              <span class="svc-tag">{tier.tag}</span>
+              <h2>{tier.title}</h2>
+            </div>
+            <div class="svc-detail">
+              <ul class="svc-list">
+                {tier.points.map((point) => <li>{point}</li>)}
+              </ul>
+              <a class="svc-link" href={mailto(tier.subject)}>
+                Email me for a quote
+                <Icon name="arrow" />
+              </a>
+            </div>
+          </article>
+        ))}
       </div>
+    </div>
+  </section>
+
+  <section class="section band-dark closer">
+    <div class="container closer-inner">
+      <p class="closer-kicker">After launch</p>
+      <h2 class="closer-title">Every site can stay <span class="closer-mark">maintained.</span></h2>
+      <p class="section-lead">Updates, small fixes, SEO improvements, and growth work — scoped once the first version is live.</p>
       <CTA label="Email me" showPhone />
     </div>
   </section>
