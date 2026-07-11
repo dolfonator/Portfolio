@@ -651,6 +651,37 @@ li + li { margin-top: .35rem; }
 .svc-link:hover { color: var(--accent-ink); }
 .svc-link:hover svg { transform: translateX(3px); }
 
+/* Capability rows reuse the ledger with a lighter h3 heading (About page) */
+.svc-head h3 {
+  font-size: clamp(1.35rem, 1.05rem + 1.1vw, 1.85rem);
+  letter-spacing: -.01em;
+  text-wrap: balance;
+  max-width: 15ch;
+}
+.svc-detail > p {
+  color: var(--ink-soft);
+  font-size: var(--step-1);
+  max-width: 54ch;
+}
+
+/* About: bio as a confident lede, not a boxed panel */
+.about-bio {
+  align-self: center;
+  display: grid;
+  gap: var(--space-3);
+}
+.about-lede {
+  font-size: clamp(1.15rem, 1rem + .55vw, 1.4rem);
+  line-height: 1.5;
+  color: var(--ink);
+  max-width: 46ch;
+}
+.about-bio p:not(.about-lede) {
+  color: var(--ink-soft);
+  max-width: 52ch;
+}
+.about-cta { margin-top: var(--space-3); }
+
 /* Services as an editorial menu, not an identical-card grid */
 .tier-list {
   display: flex;

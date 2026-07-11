@@ -1,39 +1,60 @@
 ---
 import Base from '../layouts/Base.astro';
 import CTA from '../components/CTA.astro';
-import SectionBand from '../components/SectionBand.astro';
+
+const capabilities = [
+  {
+    title: 'Local business websites',
+    body: 'Clear offers, menus or services, trust proof, local SEO metadata, and mobile-first layouts.',
+  },
+  {
+    title: 'Static performance',
+    body: 'Astro, HTML, CSS, JavaScript, optimized assets, and hosting that stays portable between Netlify and Vercel.',
+  },
+  {
+    title: 'Small custom systems',
+    body: 'Forms, shared state, serverless APIs, upload flows, and careful interaction design when the site needs more.',
+  },
+];
 ---
 <Base title="About | Tristan" description="About Tristan, a freelance web developer in Quezon City building fast sites for local businesses." canonical="/about/">
-  <SectionBand number="01" eyebrow="About" title="A practical web partner for small business sites." tone="mist">
-    <div class="split">
-      <div class="placeholder-portrait" data-reveal>
-        <!-- PLACEHOLDER: portrait -->
-        Portrait placeholder
-      </div>
-      <div class="panel panel-pad" data-reveal>
-        <!-- PLACEHOLDER: bio -->
-        <p>I’m Tristan, a freelance web developer in Quezon City. I focus on fast, polished, static-first websites for restaurants, cafes, clinics, and local service businesses.</p>
-        <p style="margin-top: 1rem">My working style is simple: make the offer clear, make the site fast, and make the next action obvious. For clients who need more than a brochure, I can also build small interactive systems with serverless APIs and careful frontend behavior.</p>
-        <div style="margin-top: 1.25rem">
-          <CTA showPhone subject="Portfolio inquiry" />
+  <section class="section band-mist">
+    <div class="container">
+      <header class="page-head" data-reveal>
+        <p class="page-kicker"><span class="hero-dot" aria-hidden="true"></span>Quezon City</p>
+        <h1 class="page-title">A practical web partner for <span class="hero-mark">small-business</span> sites.</h1>
+      </header>
+      <div class="split" data-reveal>
+        <div class="placeholder-portrait">
+          <!-- PLACEHOLDER: portrait -->
+          Portrait placeholder
+        </div>
+        <div class="about-bio">
+          <p class="about-lede">I’m Tristan, a freelance web developer in Quezon City. I build fast, polished, static-first websites for restaurants, cafés, clinics, and local service businesses.</p>
+          <p>My working style is simple: make the offer clear, make the site fast, and make the next action obvious. For clients who need more than a brochure, I build small interactive systems with serverless APIs and careful frontend behavior.</p>
+          <CTA showPhone subject="Portfolio inquiry" class="about-cta" />
         </div>
       </div>
     </div>
-  </SectionBand>
-  <SectionBand number="02" eyebrow="Capabilities" title="What I can help with." tone="paper">
-    <div class="grid three">
-      <article class="panel panel-pad" data-reveal>
-        <h3>Local business websites</h3>
-        <p>Clear offers, menus or services, trust proof, local SEO metadata, and mobile-first layouts.</p>
-      </article>
-      <article class="panel panel-pad" data-reveal>
-        <h3>Static performance</h3>
-        <p>Astro, HTML, CSS, JavaScript, optimized assets, and hosting that stays portable between Netlify and Vercel.</p>
-      </article>
-      <article class="panel panel-pad" data-reveal>
-        <h3>Small custom systems</h3>
-        <p>Forms, shared state, serverless APIs, upload flows, and careful interaction design when the site needs more.</p>
-      </article>
+  </section>
+
+  <section class="section band-paper">
+    <div class="container">
+      <header class="sec-head-bold" data-reveal>
+        <h2>What I can help with.</h2>
+      </header>
+      <div class="svc-tiers">
+        {capabilities.map((cap) => (
+          <article class="svc-tier" data-reveal>
+            <div class="svc-head">
+              <h3>{cap.title}</h3>
+            </div>
+            <div class="svc-detail">
+              <p>{cap.body}</p>
+            </div>
+          </article>
+        ))}
+      </div>
     </div>
-  </SectionBand>
+  </section>
 </Base>
