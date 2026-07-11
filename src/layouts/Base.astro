@@ -40,6 +40,9 @@ const ogUrl = new URL(ogImage, siteUrl).toString();
     <meta name="twitter:card" content="summary_large_image" />
     {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
     <script is:inline>
+      // Mark JS as available before first paint. Scroll-reveal hides content
+      // only under `html.js`, so no-JS visitors get everything visible.
+      document.documentElement.classList.add('js');
       const savedTheme = localStorage.getItem('theme');
       const preferredTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       document.documentElement.dataset.theme = savedTheme || preferredTheme;

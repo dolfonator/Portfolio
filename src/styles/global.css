@@ -789,12 +789,14 @@ li + li { margin-top: .35rem; }
   from { transform: translateY(12px); }
 }
 
-[data-reveal] {
+/* Scroll reveal is gated on `html.js`: without JavaScript, content stays
+   visible by default rather than shipping blank below the fold. */
+html.js [data-reveal] {
   opacity: 0;
   transform: translateY(16px);
   transition: opacity .55s ease, transform .55s ease;
 }
-[data-reveal].is-visible {
+html.js [data-reveal].is-visible {
   opacity: 1;
   transform: none;
 }
@@ -805,7 +807,7 @@ li + li { margin-top: .35rem; }
     transition-duration: .01ms !important;
     animation-duration: .01ms !important;
   }
-  [data-reveal] {
+  html.js [data-reveal] {
     opacity: 1;
     transform: none;
   }
