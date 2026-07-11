@@ -18,6 +18,15 @@ if (!siteUrl) {
 }
 const canonicalUrl = new URL(canonical, siteUrl).toString();
 const ogUrl = new URL(ogImage, siteUrl).toString();
+
+// Active-nav "you are here": a nav item is current when the path matches it.
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href || path.startsWith(href);
+const navLinks = [
+  { href: '/projects/', label: 'Projects' },
+  { href: '/services/', label: 'Services' },
+  { href: '/about/', label: 'About' }
+];
 ---
 <!doctype html>
 <html lang="en">
@@ -60,9 +69,13 @@ const ogUrl = new URL(ogImage, siteUrl).toString();
           <Icon name="menu" />
         </button>
         <nav class="nav" id="nav" aria-label="Primary" data-nav>
-          <a href="/projects/">Projects</a>
-          <a href="/services/">Services</a>
-          <a href="/about/">About</a>
+          {navLinks.map((link) => (
+            <a
+              href={link.href}
+              class:list={{ 'is-current': isCurrent(link.href) }}
+              aria-current={isCurrent(link.href) ? 'page' : undefined}
+            >{link.label}</a>
+          ))}
           <a href="mailto:tristandolfo@gmail.com?subject=Portfolio%20inquiry">Email me</a>
           <button class="theme-toggle" type="button" aria-label="Switch color theme" data-theme-toggle>
             <span data-icon="moon"><Icon name="moon" /></span>
@@ -81,6 +94,13 @@ const ogUrl = new URL(ogImage, siteUrl).toString();
       </div>
     </footer>
     <script>
+      // A quiet hello for the curious — recruiters and devs who open the console.
+      console.log(
+        '%cTristan · freelance web developer%c\nLiked the build? Let’s make yours. → tristandolfo@gmail.com',
+        'font: 650 15px/1.5 Georgia, serif; color: #D9822B',
+        'font: 400 13px/1.6 system-ui, sans-serif; color: #4A6FA5'
+      );
+
       const nav = document.querySelector('[data-nav]');
       const toggle = document.querySelector('[data-nav-toggle]');
       const themeToggle = document.querySelector('[data-theme-toggle]');
