@@ -39,7 +39,7 @@ const tiers = [
   },
 ];
 
-const mailto = (subject: string) => `mailto:tristandolfo@gmail.com?subject=${encodeURIComponent(subject)}`;
+const compose = (subject: string) => `https://mail.google.com/mail/?view=cm&fs=1&to=tristandolfo@gmail.com&su=${encodeURIComponent(subject)}`;
 ---
 <Base title="Services | Tristan" description="Website packages for Philippine local businesses, shown by outcome and scope without public pricing." canonical="/services/">
   <section class="section band-paper">
@@ -60,7 +60,7 @@ const mailto = (subject: string) => `mailto:tristandolfo@gmail.com?subject=${enc
               <ul class="svc-list">
                 {tier.points.map((point) => <li>{point}</li>)}
               </ul>
-              <a class="svc-link" href={mailto(tier.subject)}>
+              <a class="svc-link" href={compose(tier.subject)} target="_blank" rel="noopener">
                 Email me for a quote
                 <Icon name="arrow" />
               </a>

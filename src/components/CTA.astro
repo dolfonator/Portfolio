@@ -10,10 +10,12 @@ const {
 
 const email = 'tristandolfo@gmail.com';
 const phone = '0999-882-7004';
-const mailto = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
+// Gmail compose URL opens a pre-filled draft in the browser — reliable even
+// when the device has no default mail app registered for mailto:.
+const compose = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(subject)}`;
 ---
 <div class:list={['button-row', className]}>
-  <a class="button" href={mailto}>
+  <a class="button" href={compose} target="_blank" rel="noopener">
     <Icon name="mail" />
     {label}
   </a>
