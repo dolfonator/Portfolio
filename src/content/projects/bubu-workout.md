@@ -9,7 +9,7 @@ stack:
   - Single-file HTML
   - CSS
   - JavaScript
-liveUrl: /project-demos/bubu-workout/
+liveUrl: https://beautiful-bubu-workout.vercel.app/
 year: 2026
 summary: A warm editorial workout plan with animated character assets, week structure, and a strong mobile reading experience.
 outcome: A fast static microsite with personality.

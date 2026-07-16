@@ -10,7 +10,7 @@ stack:
   - CSS
   - JavaScript
   - JSON-LD
-liveUrl: /project-demos/herminias/
+liveUrl: https://herminias-catering.vercel.app/
 year: 2026
 summary: A warm, conversion-focused catering site with event packages, sample menus, a gallery, service details, and a direct inquiry route.
 outcome: Privacy-conscious Business-tier concept demo.

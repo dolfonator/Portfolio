@@ -8,14 +8,14 @@ type Project = CollectionEntry<'projects'>;
 
 const projects: Project[] = (await getCollection('projects'))
   .sort((a: Project, b: Project) => a.data.displayOrder - b.data.displayOrder);
-const featured = projects.filter((project) => project.data.featured);
-const experiments = projects.filter((project) => !project.data.featured);
-const [lead, ...supporting] = featured;
-const commercialCount = projects.filter((project) => project.data.kind === 'commercial').length;
-const personalCount = projects.length - commercialCount;
-const projectMix = `${commercialCount} commercial ${commercialCount === 1 ? 'site' : 'sites'} and ${personalCount} personal ${personalCount === 1 ? 'build' : 'builds'}`;
+const commercialProjects = projects.filter((project) => project.data.kind === 'commercial');
+const personalProjects = projects.filter((project) => project.data.kind === 'personal');
+const [lead, ...supporting] = commercialProjects;
+const commercialCount = commercialProjects.length;
+const personalCount = personalProjects.length;
+const projectMix = `${commercialCount} commercial ${commercialCount === 1 ? 'site' : 'sites'} and ${personalCount} personal ${personalCount === 1 ? 'commission' : 'commissions'}`;
 ---
-<Base title="Projects | Tristan" description="Projects by Tristan: commercial website demos and personal static builds." canonical="/projects/">
+<Base title="Projects | Tristan" description="Projects by Tristan: commercial websites and personal commissions, all live and clickable." canonical="/projects/">
   <section class="section band-mist">
     <div class="container">
       <header class="page-head" data-reveal>
@@ -26,19 +26,19 @@ const projectMix = `${commercialCount} commercial ${commercialCount === 1 ? 'sit
       <div class="projects-stack">
         {lead && <ProjectCard project={lead} featured headingLevel={2} />}
         {supporting.length > 0 && (
-          <div class="grid two">
-            {supporting.map((project) => <ProjectCard project={project} headingLevel={2} />)}
+          <div class="commercial-supporting">
+            {supporting.map((project) => <ProjectCard project={project} compact headingLevel={2} />)}
           </div>
         )}
       </div>
-      {experiments.length > 0 && (
-        <section class="experiments" aria-labelledby="experiments-title">
-          <header class="experiments-head" data-reveal>
-            <p>Personal experiment</p>
-            <h2 id="experiments-title">Small builds with a specific job.</h2>
+      {personalProjects.length > 0 && (
+        <section class="commissions" aria-labelledby="commissions-title">
+          <header class="commissions-head" data-reveal>
+            <p>Personal Commissions</p>
+            <h2 id="commissions-title">Specific builds for specific needs.</h2>
           </header>
-          <div class="experiment-list">
-            {experiments.map((project) => <ProjectCard project={project} compact headingLevel={3} />)}
+          <div class="commission-list">
+            {personalProjects.map((project) => <ProjectCard project={project} compact headingLevel={3} />)}
           </div>
         </section>
       )}

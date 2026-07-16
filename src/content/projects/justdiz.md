@@ -10,7 +10,7 @@ stack:
   - CSS
   - JavaScript
   - JSON-LD
-liveUrl: /project-demos/justdiz/
+liveUrl: https://justdiz-preproductions.vercel.app/
 year: 2026
 summary: A cinematic Business-tier demo for a Quezon City photo & video studio — a story-first portfolio that leads, a services grid, an illustrative rates ledger, and a real inquiry surface.
 outcome: Static-demo version for the Business Tier.

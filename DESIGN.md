@@ -256,9 +256,10 @@ CTAs, and a purposeful hover lift. Nothing tentative, nothing overwrought.
 The core proof unit. A 16:10 cover image (real project photography, screenshots, or
 character GIFs), a Commercial/Personal + year meta row, a Fraunces title, a concise
 summary, a bold outcome line, up to four stack pills, and an "Open website ↗"
-affordance. The whole card is one link straight to the live site. Featured work uses
-one wide lead card followed by two supporting cards; personal experiments use a
-compact horizontal row.
+affordance. The whole card is one link straight to the canonical live site. Homepage
+featured work uses one wide lead card followed by two supporting cards. The Projects
+page separates commercial work from a two-card Personal Commissions row that stacks
+cleanly on mobile.
 
 ### Hero (signature)
 Two-column on desktop: left is eyebrow → serif H1 (≤11ch) → subhead → contact CTAs;

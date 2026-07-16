@@ -564,6 +564,10 @@ li + li { margin-top: .35rem; }
   display: grid;
   gap: var(--space-4);
 }
+.commercial-supporting {
+  display: grid;
+  gap: var(--space-4);
+}
 
 /* Lead card: the focal project, laid out wide (media beside body). */
 .card-lead {
@@ -615,27 +619,31 @@ li + li { margin-top: .35rem; }
   text-wrap: pretty;
 }
 
-.experiments {
+.commissions {
   margin-top: var(--space-7);
   padding-top: var(--space-6);
   border-top: 1px solid var(--line-strong);
 }
-.experiments-head {
+.commissions-head {
   display: grid;
   grid-template-columns: minmax(8rem, .45fr) minmax(0, 1fr);
   gap: var(--space-5);
   align-items: baseline;
   margin-bottom: var(--space-5);
 }
-.experiments-head p {
+.commissions-head p {
   color: var(--accent-ink);
   font-weight: 800;
 }
-.experiments-head h2 {
+.commissions-head h2 {
   max-width: 18ch;
   font-size: clamp(1.55rem, 1.2rem + 1.35vw, 2.15rem);
 }
-.experiment-list { display: grid; gap: var(--space-4); }
+.commission-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
 .card-compact {
   grid-template-columns: minmax(12rem, .45fr) minmax(0, 1fr);
   grid-template-rows: auto;
@@ -655,6 +663,15 @@ li + li { margin-top: .35rem; }
   min-height: 0;
   aspect-ratio: auto;
   background: #f6b7b4;
+}
+.commission-list .card-compact,
+.commission-list .card-compact.card-bubu {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+}
+.commission-list .card-compact .card-media {
+  min-height: 0;
+  aspect-ratio: 16 / 10;
 }
 .card-bubu .card-media img {
   object-fit: contain;
@@ -921,7 +938,7 @@ html.js [data-reveal] { opacity: 1; transform: none; }
     grid-template-columns: 1fr;
   }
   .about-masthead,
-  .experiments-head {
+  .commissions-head {
     grid-template-columns: 1fr;
   }
   .section-head {
@@ -937,6 +954,17 @@ html.js [data-reveal] { opacity: 1; transform: none; }
   }
   .card-compact {
     grid-template-columns: minmax(9rem, .42fr) minmax(0, 1fr);
+  }
+  .commission-list {
+    grid-template-columns: 1fr;
+  }
+  .commission-list .card-compact,
+  .commission-list .card-compact.card-bubu {
+    grid-template-columns: minmax(9rem, .42fr) minmax(0, 1fr);
+    grid-template-rows: auto;
+  }
+  .commission-list .card-compact .card-media {
+    aspect-ratio: 4 / 3;
   }
   .svc-tier {
     grid-template-columns: 1fr;
@@ -955,6 +983,13 @@ html.js [data-reveal] { opacity: 1; transform: none; }
   .card-compact.card-bubu { grid-template-columns: 1fr; }
   .card-compact.card-bubu .card-media {
     min-height: 0;
+    aspect-ratio: 16 / 10;
+  }
+  .commission-list .card-compact,
+  .commission-list .card-compact.card-bubu {
+    grid-template-columns: 1fr;
+  }
+  .commission-list .card-compact .card-media {
     aspect-ratio: 16 / 10;
   }
 }
