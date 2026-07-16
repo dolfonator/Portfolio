@@ -650,7 +650,10 @@ li + li { margin-top: .35rem; }
 .card-compact.card-bubu {
   grid-template-columns: clamp(10.5rem, 14vw, 14rem) minmax(0, 1fr);
 }
-.card-bubu .card-media {
+.card-compact.card-bubu .card-media {
+  min-width: 0;
+  min-height: 0;
+  aspect-ratio: auto;
   background: #f6b7b4;
 }
 .card-bubu .card-media img {
@@ -950,4 +953,8 @@ html.js [data-reveal] { opacity: 1; transform: none; }
   .card-compact { grid-template-columns: 1fr; }
   .card-compact .card-media { aspect-ratio: 16 / 10; }
   .card-compact.card-bubu { grid-template-columns: 1fr; }
+  .card-compact.card-bubu .card-media {
+    min-height: 0;
+    aspect-ratio: 16 / 10;
+  }
 }
