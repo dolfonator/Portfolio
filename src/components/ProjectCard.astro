@@ -14,7 +14,14 @@ const { project, headingLevel = 3, featured = false, compact = false } = Astro.p
 const Heading = `h${headingLevel}`;
 const href = project.data.liveUrl ?? '#';
 ---
-<a class:list={['card panel', { 'card-lead': featured, 'card-compact': compact }]} href={href} target="_blank" rel="noopener" data-reveal>
+<a class:list={[
+  'card panel',
+  {
+    'card-lead': featured,
+    'card-compact': compact,
+    'card-bubu': project.data.slug === 'bubu-workout',
+  },
+]} href={href} target="_blank" rel="noopener" data-reveal>
   <div class="card-media">
     <Image src={project.data.cover} alt={`${project.data.title} project preview`} widths={[420, 720, 1000]} sizes="(max-width: 860px) 100vw, 50vw" />
   </div>

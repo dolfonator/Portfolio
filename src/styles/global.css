@@ -647,6 +647,18 @@ li + li { margin-top: .35rem; }
 .card-compact .card-body {
   padding: clamp(1.25rem, 1rem + 1.2vw, 2rem);
 }
+.card-compact.card-bubu {
+  grid-template-columns: clamp(10.5rem, 14vw, 14rem) minmax(0, 1fr);
+}
+.card-bubu .card-media {
+  background: #f6b7b4;
+}
+.card-bubu .card-media img {
+  object-fit: contain;
+  object-position: center;
+  padding: .5rem;
+}
+.card-bubu:hover .card-media img { transform: scale(1.02); }
 
 .about-masthead {
   display: grid;
@@ -937,4 +949,5 @@ html.js [data-reveal] { opacity: 1; transform: none; }
   .hero-copy p, .section-lead { font-size: 1rem; }
   .card-compact { grid-template-columns: 1fr; }
   .card-compact .card-media { aspect-ratio: 16 / 10; }
+  .card-compact.card-bubu { grid-template-columns: 1fr; }
 }
