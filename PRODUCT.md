@@ -49,10 +49,11 @@ above. Every confident move must stay instantly legible to a café owner on a ph
 1. **Practice what you preach.** He sells fast, polished, accessible sites, so the
    portfolio must be the best one in his portfolio — performance, a11y, and polish
    are the pitch, not afterthoughts.
-2. **Proof over claims.** Working project demos (Justdiz and Kozykook — two
-   art-directed Business-tier concept sites — plus the Bubu Workout microsite) and
-   visible craft do the arguing; cut adjectives that the work already demonstrates.
-   Each demo is designed to look like the business it's for, not a template.
+2. **Proof over claims.** Working project demos (Herminia's and Justdiz as
+   art-directed business sites, At Thirty as an interactive privacy-safe build, and
+   the Bubu Workout microsite) and visible craft do the arguing; cut adjectives that
+   the work already demonstrates. Each demo is designed around its own audience,
+   not a shared template.
 3. **One obvious next action.** The whole site funnels to a single verb — email or
    call. No forms, no funnels, no dead ends; the contact path is never more than a
    glance away.

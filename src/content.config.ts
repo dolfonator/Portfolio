@@ -10,6 +10,7 @@ const projects = defineCollection({
       slug: z.string(),
       kind: z.enum(['commercial', 'personal']),
       featured: z.boolean(),
+      displayOrder: z.number().int().positive(),
       clientType: z.string(),
       stack: z.array(z.string()),
       liveUrl: z.string().optional(),

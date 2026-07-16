@@ -2,33 +2,29 @@
 import Base from '../layouts/Base.astro';
 import CTA from '../components/CTA.astro';
 
-const capabilities = [
+const principles = [
   {
-    title: 'Local business websites',
-    body: 'Clear offers, menus or services, trust proof, local SEO metadata, and mobile-first layouts.',
+    title: 'Clear offer',
+    body: 'The page should explain what the business does, who it helps, and what the visitor should do next without making them hunt.',
   },
   {
-    title: 'Static performance',
-    body: 'Astro, HTML, CSS, JavaScript, optimized assets, and hosting that stays portable between Netlify and Vercel.',
+    title: 'Fast, portable build',
+    body: 'Lean HTML, CSS, JavaScript, and Astro keep the site quick on mobile and easy to move between practical hosting options.',
   },
   {
-    title: 'Small custom systems',
-    body: 'Forms, shared state, serverless APIs, upload flows, and careful interaction design when the site needs more.',
+    title: 'Room to grow',
+    body: 'The first version stays focused, with enough structure to add richer content or a small custom system when the business needs it.',
   },
 ];
 ---
 <Base title="About | Tristan" description="About Tristan, a freelance web developer in Quezon City building fast sites for local businesses." canonical="/about/">
   <section class="section band-mist">
-    <div class="container">
+    <div class="container about-masthead">
       <header class="page-head" data-reveal>
-        <p class="page-kicker"><span class="hero-dot" aria-hidden="true"></span>Quezon City</p>
+        <p class="page-kicker"><span class="hero-dot" aria-hidden="true"></span>Quezon City · independent web developer</p>
         <h1 class="page-title">A practical web partner for <span class="hero-mark">small-business</span> sites.</h1>
       </header>
-      <div class="split" data-reveal>
-        <div class="placeholder-portrait">
-          <!-- PLACEHOLDER: portrait -->
-          Portrait placeholder
-        </div>
+      <div class="about-intro" data-reveal>
         <div class="about-bio">
           <p class="about-lede">I’m Tristan, a freelance web developer in Quezon City. I build fast, polished, static-first websites for restaurants, cafés, clinics, and local service businesses.</p>
           <p>My working style is simple: make the offer clear, make the site fast, and make the next action obvious. For clients who need more than a brochure, I build small interactive systems with serverless APIs and careful frontend behavior.</p>
@@ -41,16 +37,16 @@ const capabilities = [
   <section class="section band-paper">
     <div class="container">
       <header class="sec-head-bold" data-reveal>
-        <h2>What I can help with.</h2>
+        <h2>How I approach the work.</h2>
       </header>
       <div class="svc-tiers">
-        {capabilities.map((cap) => (
+        {principles.map((principle) => (
           <article class="svc-tier" data-reveal>
             <div class="svc-head">
-              <h3>{cap.title}</h3>
+              <h3>{principle.title}</h3>
             </div>
             <div class="svc-detail">
-              <p>{cap.body}</p>
+              <p>{principle.body}</p>
             </div>
           </article>
         ))}

@@ -197,7 +197,7 @@ li + li { margin-top: .35rem; }
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  box-shadow: none;
 }
 .panel-pad { padding: clamp(1.25rem, 1rem + 1.2vw, 2rem); }
 
@@ -231,7 +231,7 @@ li + li { margin-top: .35rem; }
 .button svg { width: 1rem; height: 1rem; }
 
 .hero {
-  min-height: calc(100svh - var(--header-h));
+  min-height: calc(100dvh - var(--header-h));
   display: grid;
   align-items: center;
   padding: clamp(3.5rem, 2rem + 6vw, 7rem) 0 var(--space-6);
@@ -379,6 +379,7 @@ li + li { margin-top: .35rem; }
   text-decoration: none;
   transform: translateY(-4px);
   border-color: var(--line-strong);
+  box-shadow: var(--shadow-hover);
 }
 .card-media {
   aspect-ratio: 16 / 10;
@@ -396,8 +397,9 @@ li + li { margin-top: .35rem; }
 .card:hover .button svg { transform: translateX(3px); }
 .card-body {
   min-width: 0;
-  display: grid;
-  align-content: start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   gap: .8rem;
 }
 /* Card title reads the same size regardless of heading level (h2 on the
@@ -406,7 +408,7 @@ li + li { margin-top: .35rem; }
   font-size: var(--step-2);
   text-wrap: balance;
 }
-.card-body .button { justify-self: start; }
+.card-body .button { margin-top: auto; }
 .card-meta {
   display: flex;
   flex-wrap: wrap;
@@ -510,19 +512,6 @@ li + li { margin-top: .35rem; }
   border-radius: 4px;
   background: var(--paper-2);
 }
-.placeholder-portrait {
-  aspect-ratio: 4 / 5;
-  display: grid;
-  place-items: center;
-  padding: var(--space-4);
-  background:
-    linear-gradient(135deg, var(--mist), var(--sky));
-  border: 1px dashed var(--line-strong);
-  color: var(--brand-deep);
-  text-align: center;
-  font-weight: 820;
-}
-
 /* --- Homepage bold section rhythm (no numbered-eyebrow scaffold) --- */
 .sec-head-bold {
   margin-bottom: var(--space-6);
@@ -541,7 +530,6 @@ li + li { margin-top: .35rem; }
   text-wrap: pretty;
 }
 .sec-cta { margin-top: var(--space-5); }
-.about-actions { margin-top: var(--space-4); }
 
 /* --- Projects index: bold masthead + lead-card hierarchy --- */
 .page-head {
@@ -591,7 +579,7 @@ li + li { margin-top: .35rem; }
   gap: 1rem;
   padding: clamp(1.5rem, 1rem + 2.2vw, 2.75rem);
 }
-.card-lead h2 {
+.card-lead :is(h2, h3) {
   font-size: clamp(1.6rem, 1.2rem + 1.5vw, 2.3rem);
   letter-spacing: -.015em;
   text-wrap: balance;
@@ -600,6 +588,76 @@ li + li { margin-top: .35rem; }
   font-size: var(--step-1);
   max-width: 48ch;
   text-wrap: pretty;
+}
+
+.home-projects { gap: var(--space-5); }
+
+.scope-process { align-items: stretch; }
+.scope-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: clamp(1.5rem, 1rem + 2vw, 2.5rem) 0;
+  border-top: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line-strong);
+}
+.scope-copy h3 {
+  max-width: 17ch;
+  font-size: clamp(1.55rem, 1.15rem + 1.5vw, 2.2rem);
+  letter-spacing: -.015em;
+  text-wrap: balance;
+}
+.scope-copy p {
+  max-width: 47ch;
+  color: var(--ink-soft);
+  font-size: var(--step-1);
+  text-wrap: pretty;
+}
+
+.experiments {
+  margin-top: var(--space-7);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--line-strong);
+}
+.experiments-head {
+  display: grid;
+  grid-template-columns: minmax(8rem, .45fr) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: baseline;
+  margin-bottom: var(--space-5);
+}
+.experiments-head p {
+  color: var(--accent-ink);
+  font-weight: 800;
+}
+.experiments-head h2 {
+  max-width: 18ch;
+  font-size: clamp(1.55rem, 1.2rem + 1.35vw, 2.15rem);
+}
+.experiment-list { display: grid; gap: var(--space-4); }
+.card-compact {
+  grid-template-columns: minmax(12rem, .45fr) minmax(0, 1fr);
+  grid-template-rows: auto;
+}
+.card-compact .card-media {
+  min-height: 100%;
+  aspect-ratio: 4 / 3;
+}
+.card-compact .card-body {
+  padding: clamp(1.25rem, 1rem + 1.2vw, 2rem);
+}
+
+.about-masthead {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(20rem, .72fr);
+  gap: clamp(3rem, 2rem + 5vw, 7rem);
+  align-items: end;
+}
+.about-masthead .page-head { margin-bottom: 0; }
+.about-intro {
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line-strong);
 }
 
 /* Services: an editorial tier ledger, not three identical cards */
@@ -801,14 +859,13 @@ li + li { margin-top: .35rem; }
 
 /* Scroll reveal is gated on `html.js`: without JavaScript, content stays
    visible by default rather than shipping blank below the fold. */
-html.js [data-reveal] {
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity .55s ease, transform .55s ease;
+html.js [data-reveal] { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal].is-visible { animation: revealIn .55s cubic-bezier(.2, .7, .3, 1) both; }
 }
-html.js [data-reveal].is-visible {
-  opacity: 1;
-  transform: none;
+@keyframes revealIn {
+  from { transform: translateY(16px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -833,7 +890,7 @@ html.js [data-reveal].is-visible {
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: var(--panel);
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-float);
   }
   .nav[data-open='true'] { display: grid; }
   .nav a { padding: .85rem .9rem; }
@@ -848,6 +905,10 @@ html.js [data-reveal].is-visible {
   .cta-band {
     grid-template-columns: 1fr;
   }
+  .about-masthead,
+  .experiments-head {
+    grid-template-columns: 1fr;
+  }
   .section-head {
     grid-template-columns: 1fr;
     gap: var(--space-2);
@@ -858,6 +919,9 @@ html.js [data-reveal].is-visible {
   .card-lead .card-media {
     aspect-ratio: 16 / 10;
     min-height: 0;
+  }
+  .card-compact {
+    grid-template-columns: minmax(9rem, .42fr) minmax(0, 1fr);
   }
   .svc-tier {
     grid-template-columns: 1fr;
@@ -871,4 +935,6 @@ html.js [data-reveal].is-visible {
   .brand small { display: none; }
   .button, .hero-actions .button { width: 100%; }
   .hero-copy p, .section-lead { font-size: 1rem; }
+  .card-compact { grid-template-columns: 1fr; }
+  .card-compact .card-media { aspect-ratio: 16 / 10; }
 }

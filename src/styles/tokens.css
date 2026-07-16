@@ -46,7 +46,9 @@
   --radius-sm: 6px;
   --maxw: 1120px;
   --header-h: 72px;
-  --shadow: 0 16px 44px rgba(11, 31, 53, .12);
+  --shadow: none;
+  --shadow-hover: 0 6px 10px rgba(11, 31, 53, .14);
+  --shadow-float: 0 8px 14px rgba(11, 31, 53, .16);
 
   --step--1: .92rem;
   --step-0: 1rem;
@@ -83,5 +85,7 @@
   --button-bg: #D9822B;
   --button-bg-hover: #C46E1F;
   --button-text: #0B1320;
-  --shadow: 0 18px 48px rgba(0, 0, 0, .28);
+  --shadow: none;
+  --shadow-hover: 0 6px 10px rgba(0, 0, 0, .26);
+  --shadow-float: 0 8px 14px rgba(0, 0, 0, .32);
 }

@@ -112,7 +112,7 @@ dark in both, so the "studio wall" reads the same day or night.
 - Navy-drenched dark bands against cool off-white light bands; never a warm cream.
 - Editorial serif display (Fraunces) over a clean grotesque body (Hanken Grotesk).
 - Amber is the single warm accent — rare, warm, and always AA-legible.
-- Flat by default; soft navy-tinted shadow on panels, a decisive lift on hover.
+- Flat by default; crisp borders at rest and a restrained navy-tinted lift on hover.
 - Motion is purposeful and quiet: scroll reveals, card lifts, theme crossfade —
   all gated behind `prefers-reduced-motion`.
 
@@ -199,18 +199,21 @@ with weight and scale.
 
 ## 4. Elevation
 
-Flat by default, lifted on interaction. Surfaces rest with at most one soft,
-navy-tinted ambient shadow; depth is a *response* to state (hover), not a permanent
-costume. Dark theme deepens the same shadow rather than adding new ones.
+Flat by default, lifted on interaction. Bordered surfaces carry no shadow at rest;
+depth is a *response* to state (hover), not a permanent costume. Dark theme deepens
+the same compact hover shadow rather than adding new layers.
 
 ### Shadow Vocabulary
-- **Panel ambient** (`box-shadow: 0 16px 44px rgba(11,31,53,.12)`): the default soft
-  lift under cards, panels, and the sticky menu. Dark theme: `0 18px 48px rgba(0,0,0,.28)`.
+- **Interactive lift** (`box-shadow: 0 6px 10px rgba(11,31,53,.14)`): used only when
+  a project card rises on hover. Dark theme uses the same compact geometry with a
+  deeper neutral shadow.
+- **Floating menu** (`box-shadow: 0 8px 14px rgba(11,31,53,.16)`): reserved for the
+  open mobile navigation, where elevation communicates that it sits above the page.
 
 ### Named Rules
-**The Flat-By-Default Rule.** No stacked shadows, no glow at rest. A card sits flat
-until hover, when it rises 4px and its border firms to Line-Strong. Motion + the
-existing ambient shadow do the lifting; don't reach for a second, darker shadow.
+**The Flat-By-Default Rule.** No stacked shadows and no glow at rest. A card sits flat
+until hover, when it rises 4px, its border firms to Line-Strong, and one compact
+navy-tinted shadow appears.
 
 ## 5. Components
 
@@ -234,7 +237,7 @@ CTAs, and a purposeful hover lift. Nothing tentative, nothing overwrought.
 
 ### Cards / Containers
 - **Corner Style:** 8px (md).
-- **Background:** Panel White on light, #111C2B on dark; over the ambient panel shadow.
+- **Background:** Panel White on light, #111C2B on dark; no shadow at rest.
 - **Border:** 1px Line, firming to Line-Strong on hover.
 - **Hover:** lifts translateY(-4px); the cover image scales to 1.035 inside its clip.
 - **Internal Padding:** clamp(1.25rem → 2rem).
@@ -250,15 +253,16 @@ CTAs, and a purposeful hover lift. Nothing tentative, nothing overwrought.
   `<head>` and `prefers-color-scheme` as the default.
 
 ### Project Card (signature)
-The core proof unit. A 16:10 cover image (real project screenshots / character GIFs),
-a Commercial/Personal + year meta row, a Fraunces title, a two-line summary, a bold
-outcome line, up to four stack pills, and an "Open website ↗" affordance. The whole
-card is one link straight to the live site — no case-study detour. This card *is* the
-argument; keep it honest and uncluttered.
+The core proof unit. A 16:10 cover image (real project photography, screenshots, or
+character GIFs), a Commercial/Personal + year meta row, a Fraunces title, a concise
+summary, a bold outcome line, up to four stack pills, and an "Open website ↗"
+affordance. The whole card is one link straight to the live site. Featured work uses
+one wide lead card followed by two supporting cards; personal experiments use a
+compact horizontal row.
 
 ### Hero (signature)
 Two-column on desktop: left is eyebrow → serif H1 (≤11ch) → subhead → contact CTAs;
-right is the **Proof Panel**, a hairline-divided stack of three live-work links. The
+right is the **Proof Panel**, a hairline-divided stack of three featured-work links. The
 background is a theme-aware token gradient (a soft Steel glow top-right, a faint Amber
 glow bottom-left over Paper) — no raster image, so it stays clean in both themes.
 
@@ -288,9 +292,7 @@ glow bottom-left over Paper) — no raster image, so it stays clean in both them
 - **Don't** paint the body background cream/sand/beige/warm-tinted. The light surface is
   cool off-white (#F7F9FC); warmth comes from amber and type, per the Warm-the-Navy Rule.
 - **Don't** lean on the **tracked uppercase eyebrow + numbered marker on every section**
-  as scaffolding. The current pages carry `01/02/03` kickers on all four home sections —
-  this is the site's single biggest slop-tell. Reserve numbers for a genuine sequence
-  (the 3-step Process) and vary the section cadence elsewhere; a `bolder` pass should
-  design this out.
+  as scaffolding. Reserve numbers for a genuine sequence, such as the three-step
+  Scope/Build/Launch process, and vary the section cadence elsewhere.
 - **Don't** use gradient text (`background-clip: text`) or a >1px colored side-stripe
   border as an accent. Emphasis comes from weight, scale, and full borders.

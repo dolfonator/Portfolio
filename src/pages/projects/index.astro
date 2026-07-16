@@ -6,29 +6,42 @@ import ProjectCard from '../../components/ProjectCard.astro';
 
 type Project = CollectionEntry<'projects'>;
 
-const projects: Project[] = (await getCollection('projects')).sort((a: Project, b: Project) => {
-  if (Number(b.data.featured) !== Number(a.data.featured)) return Number(b.data.featured) - Number(a.data.featured);
-  return b.data.year - a.data.year;
-});
-
-const [lead, ...rest] = projects;
+const projects: Project[] = (await getCollection('projects'))
+  .sort((a: Project, b: Project) => a.data.displayOrder - b.data.displayOrder);
+const featured = projects.filter((project) => project.data.featured);
+const experiments = projects.filter((project) => !project.data.featured);
+const [lead, ...supporting] = featured;
+const commercialCount = projects.filter((project) => project.data.kind === 'commercial').length;
+const personalCount = projects.length - commercialCount;
+const projectMix = `${commercialCount} commercial ${commercialCount === 1 ? 'site' : 'sites'} and ${personalCount} personal ${personalCount === 1 ? 'build' : 'builds'}`;
 ---
 <Base title="Projects | Tristan" description="Projects by Tristan: commercial website demos and personal static builds." canonical="/projects/">
   <section class="section band-mist">
     <div class="container">
       <header class="page-head" data-reveal>
-        <p class="page-kicker"><span class="hero-dot" aria-hidden="true"></span>Three builds — live and clickable</p>
+        <p class="page-kicker"><span class="hero-dot" aria-hidden="true"></span>{projects.length} builds — live and clickable</p>
         <h1 class="page-title">Sites that look like the <span class="hero-mark">business</span>, not the template.</h1>
-        <p class="page-lead">Two Business-tier concept demos and a personal microsite — each art-directed for the brand it serves. Every card opens the real, working site in a new tab.</p>
+        <p class="page-lead">{projectMix}, each art-directed for the audience it serves. Every project opens as a real, working site.</p>
       </header>
       <div class="projects-stack">
         {lead && <ProjectCard project={lead} featured headingLevel={2} />}
-        {rest.length > 0 && (
+        {supporting.length > 0 && (
           <div class="grid two">
-            {rest.map((project) => <ProjectCard project={project} headingLevel={2} />)}
+            {supporting.map((project) => <ProjectCard project={project} headingLevel={2} />)}
           </div>
         )}
       </div>
+      {experiments.length > 0 && (
+        <section class="experiments" aria-labelledby="experiments-title">
+          <header class="experiments-head" data-reveal>
+            <p>Personal experiment</p>
+            <h2 id="experiments-title">Small builds with a specific job.</h2>
+          </header>
+          <div class="experiment-list">
+            {experiments.map((project) => <ProjectCard project={project} compact headingLevel={3} />)}
+          </div>
+        </section>
+      )}
     </div>
   </section>
 </Base>

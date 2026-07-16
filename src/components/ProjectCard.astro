@@ -7,13 +7,14 @@ interface Props {
   project: CollectionEntry<'projects'>;
   headingLevel?: 2 | 3 | 4;
   featured?: boolean;
+  compact?: boolean;
 }
 
-const { project, headingLevel = 3, featured = false } = Astro.props;
+const { project, headingLevel = 3, featured = false, compact = false } = Astro.props;
 const Heading = `h${headingLevel}`;
 const href = project.data.liveUrl ?? '#';
 ---
-<a class:list={['card panel', { 'card-lead': featured }]} href={href} target="_blank" rel="noopener" data-reveal>
+<a class:list={['card panel', { 'card-lead': featured, 'card-compact': compact }]} href={href} target="_blank" rel="noopener" data-reveal>
   <div class="card-media">
     <Image src={project.data.cover} alt={`${project.data.title} project preview`} widths={[420, 720, 1000]} sizes="(max-width: 860px) 100vw, 50vw" />
   </div>

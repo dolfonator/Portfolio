@@ -13,7 +13,8 @@ type Project = CollectionEntry<'projects'>;
 const projects: Project[] = await getCollection('projects');
 const featured = projects
   .filter((project: Project) => project.data.featured)
-  .sort((a: Project, b: Project) => a.data.title.localeCompare(b.data.title));
+  .sort((a: Project, b: Project) => a.data.displayOrder - b.data.displayOrder);
+const [leadProject, ...supportingProjects] = featured;
 
 const jsonLd = [
   {
@@ -65,84 +66,38 @@ const jsonLd = [
             </li>
           ))}
         </ol>
-        <p class="works-foot">Static-first builds — instant loads, portable hosting.</p>
+        <p class="works-foot">Three distinct briefs, each designed around the business or story it serves.</p>
       </aside>
     </div>
   </section>
 
   <SectionBand tone="mist">
     <header class="sec-head-bold">
-      <h2>Business clarity, with craft in the details.</h2>
-      <p class="sec-lead">Two Business-tier concept sites — a creative studio and a diner — each art-directed to look like the business it's for, not a template.</p>
+      <h2>Different stories need different visual systems.</h2>
+      <p class="sec-lead">A caterer, a production studio, and a personal keepsake — each working site is shaped around its own audience and next action.</p>
     </header>
-    <div class="grid two">
-      {featured.map((project) => <ProjectCard project={project} />)}
-    </div>
-  </SectionBand>
-
-  <SectionBand tone="paper">
-    <header class="sec-head-bold">
-      <h2>Website packages, by outcome.</h2>
-      <p class="sec-lead">No public pricing — the right scope depends on your content, your urgency, and how much the site needs to do.</p>
-    </header>
-    <div class="tier-list">
-      <article class="tier">
-        <div class="tier-head">
-          <p class="tier-tag">Starter</p>
-          <h3>One-page presence</h3>
+    <div class="projects-stack home-projects">
+      {leadProject && <ProjectCard project={leadProject} featured />}
+      {supportingProjects.length > 0 && (
+        <div class="grid two">
+          {supportingProjects.map((project) => <ProjectCard project={project} />)}
         </div>
-        <p>A polished homepage for a clear offer, essential trust signals, location and contact details, and one direct action.</p>
-      </article>
-      <article class="tier">
-        <div class="tier-head">
-          <p class="tier-tag">Business</p>
-          <h3>Full business site</h3>
-        </div>
-        <p>Menu or services, gallery, reviews, FAQs, structured data, and stronger routes for inquiries, booking, or ordering.</p>
-      </article>
-      <article class="tier">
-        <div class="tier-head">
-          <p class="tier-tag">Premier</p>
-          <h3>Custom build</h3>
-        </div>
-        <p>Special interfaces, content systems, shared state, automation-friendly workflows, and more technical polish.</p>
-      </article>
-    </div>
-    <div class="sec-cta">
-      <CTA label="Email me for a quote" subject="Website quote inquiry" />
+      )}
     </div>
   </SectionBand>
 
   <SectionBand tone="sky">
     <header class="sec-head-bold">
-      <h2>A build should move.</h2>
-      <p class="sec-lead">The v1 goal is a live, useful site in days — then improvement from real feedback.</p>
+      <h2>From the right scope to a useful launch.</h2>
+      <p class="sec-lead">Start with the outcome the business needs, then build only what earns its place.</p>
     </header>
-    <div class="split">
-      <div class="panel panel-pad">
-        <h3>Demo to live, without the fog.</h3>
-        <p>One clear offer, one primary action, a fast static build, and enough structure that the site can grow after launch.</p>
+    <div class="split scope-process">
+      <div class="scope-copy">
+        <h3>One-page presence, full business site, or a focused custom build.</h3>
+        <p>The package follows the content, urgency, and customer action — not a feature checklist. Each option stays portable and easy to maintain.</p>
+        <a class="button secondary" href="/services/">See website packages</a>
       </div>
       <ProcessSteps />
-    </div>
-  </SectionBand>
-
-  <SectionBand tone="paper">
-    <header class="sec-head-bold">
-      <h2>Small sites, built with product judgment.</h2>
-    </header>
-    <div class="split">
-      <div class="placeholder-portrait">
-        <!-- PLACEHOLDER: portrait -->
-        Portrait placeholder
-      </div>
-      <div class="panel panel-pad">
-        <!-- PLACEHOLDER: bio -->
-        <p>I’m Tristan, a freelance web developer in Quezon City. I build quiet, fast, practical websites for local businesses, with enough care in the design and code that the first version can become a real sales asset.</p>
-        <div class="about-actions">
-          <a class="button secondary" href="/about/">More about me</a>
-        </div>
-      </div>
     </div>
   </SectionBand>
 
