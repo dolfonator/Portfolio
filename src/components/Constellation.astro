@@ -5,7 +5,7 @@ interface Props {
 }
 
 const {
-  density = 140,
+  density = 110,
   class: className = ''
 } = Astro.props as Props;
 ---
@@ -30,34 +30,48 @@ const {
 
 <script>
   type RGB = [number, number, number];
-  type MeshNode = {
-    homeX: number;
-    homeY: number;
+  type Point = {
     x: number;
     y: number;
+  };
+  type DriftNode = Point & {
+    vx: number;
+    vy: number;
+  };
+  type IslandVertex = {
+    angle: number;
+    radius: number;
     phase: number;
-    amp: number;
-    speed: number;
+  };
+  type Island = DriftNode & {
+    rotation: number;
+    spin: number;
+    outerRadius: number;
+    vertices: IslandVertex[];
+  };
+  type Link = {
+    start: Point;
+    end: Point;
+    distance: number;
   };
   type NavigatorWithConnection = Navigator & { connection?: { saveData?: boolean } };
 
   const canvases = document.querySelectorAll<HTMLCanvasElement>('canvas[data-constellation]');
 
-  canvases.forEach((canvas) => {
+  canvases.forEach((canvas, canvasIndex) => {
     const parent = canvas.parentElement;
     const context = canvas.getContext('2d');
     if (!parent || !context) return;
 
-    if ((navigator as NavigatorWithConnection).connection?.saveData === true) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
     const root = document.documentElement;
-    const targetCount = Math.max(60, Math.min(220, Math.round(Number(canvas.dataset.density) || 140)));
+    const targetCount = Math.max(60, Math.min(180, Math.round(Number(canvas.dataset.density) || 110)));
+    const shouldAnimate = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      && (navigator as NavigatorWithConnection).connection?.saveData !== true;
     const interactionRadius = 170;
+    const maximumCursorThreads = 6;
     const pointer = { x: 0, y: 0, active: false };
-    let nodes: MeshNode[] = [];
-    let cols = 0;
-    let rows = 0;
+    let nodes: DriftNode[] = [];
+    let islands: Island[] = [];
     let width = 0;
     let height = 0;
     let isVisible = true;
@@ -65,6 +79,22 @@ const {
     let resizeTimer = 0;
     let cleaned = false;
     let lastTime = 0;
+
+    const createRandom = (initialSeed: number) => {
+      let seed = initialSeed >>> 0;
+      return () => {
+        seed += 0x6D2B79F5;
+        let value = seed;
+        value = Math.imul(value ^ value >>> 15, value | 1);
+        value ^= value + Math.imul(value ^ value >>> 7, value | 61);
+        return ((value ^ value >>> 14) >>> 0) / 4294967296;
+      };
+    };
+
+    const clamp = (value: number, minimum: number, maximum: number) => Math.max(
+      minimum,
+      Math.min(maximum, value)
+    );
 
     const parseColor = (value: string): RGB | null => {
       const hex = value.trim().match(/^#([\da-f]{3,8})$/i);
@@ -89,9 +119,8 @@ const {
       return values.length === 3 ? [values[0], values[1], values[2]] as RGB : null;
     };
 
-    // Theme-aware palette, re-read every frame so a data-theme flip recolors
-    // the mesh immediately. Light theme warms toward the AA-tuned amber-dark
-    // and draws slightly stronger, since steel hairlines recede on pale bands.
+    // Re-read the palette every frame so a theme flip recolors the field
+    // immediately. Light mode uses the AA-tuned amber-dark token.
     const readPalette = () => {
       const styles = getComputedStyle(root);
       const dark = root.dataset.theme === 'dark';
@@ -101,9 +130,9 @@ const {
       return {
         steel,
         warm,
-        washAlpha: dark ? 0.05 : 0.055,
-        lineAlpha: dark ? 0.16 : 0.2,
-        dotAlpha: dark ? 0.5 : 0.55
+        lineAlpha: dark ? 0.17 : 0.21,
+        islandAlpha: dark ? 0.25 : 0.29,
+        dotAlpha: dark ? 0.52 : 0.58
       };
     };
 
@@ -118,38 +147,85 @@ const {
 
     const cssColor = (rgb: RGB) => `rgb(${rgb.join(', ')})`;
 
-    // Nodes live on a jittered grid and wobble gently around their homes, so
-    // the mesh reads as a warped quad lattice rather than a random point field.
-    const seedNodes = () => {
-      const cell = Math.sqrt((width * height) / targetCount) || 1;
-      cols = Math.max(3, Math.round(width / cell) + 1);
-      rows = Math.max(3, Math.round(height / cell) + 1);
+    const makeVelocity = (random: () => number, minimum: number, maximum: number) => {
+      const angle = random() * Math.PI * 2;
+      const speed = minimum + random() * (maximum - minimum);
+      return {
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed
+      };
+    };
+
+    const seedScene = () => {
+      const random = createRandom(0x51A7D11 + canvasIndex * 0x9E3779B1);
+      const areaScale = clamp(Math.sqrt((width * height) / (1100 * 700)), 0.68, 1.2);
+      const minimumCount = Math.min(72, targetCount);
+      const maximumCount = Math.max(minimumCount, Math.min(150, targetCount + 24));
+      const nodeCount = clamp(Math.round(targetCount * areaScale), minimumCount, maximumCount);
+      const minimumSpacing = Math.sqrt((width * height) / nodeCount) * 0.43;
+
       nodes = [];
-      const jitterX = (width / (cols - 1)) * 0.3;
-      const jitterY = (height / (rows - 1)) * 0.3;
-      for (let row = 0; row < rows; row += 1) {
-        for (let col = 0; col < cols; col += 1) {
-          const homeX = (col / (cols - 1)) * width + (Math.random() - 0.5) * 2 * jitterX;
-          const homeY = (row / (rows - 1)) * height + (Math.random() - 0.5) * 2 * jitterY;
-          nodes.push({
-            homeX,
-            homeY,
-            x: homeX,
-            y: homeY,
-            phase: Math.random() * Math.PI * 2,
-            amp: 2 + Math.random() * Math.min(10, Math.min(jitterX, jitterY)),
-            speed: 0.00012 + Math.random() * 0.00018
-          });
+      for (let index = 0; index < nodeCount; index += 1) {
+        let x = random() * width;
+        let y = random() * height;
+
+        for (let attempt = 0; attempt < 28; attempt += 1) {
+          const candidateX = 8 + random() * Math.max(1, width - 16);
+          const candidateY = 8 + random() * Math.max(1, height - 16);
+          if (nodes.every((node) => Math.hypot(candidateX - node.x, candidateY - node.y) >= minimumSpacing)) {
+            x = candidateX;
+            y = candidateY;
+            break;
+          }
         }
+
+        nodes.push({ x, y, ...makeVelocity(random, 3.4, 7.2) });
       }
+
+      const minimumIslandCount = width < 700 ? 2 : 3;
+      const islandCount = clamp(
+        Math.round((width * height) / 320000),
+        minimumIslandCount,
+        4
+      );
+      islands = [];
+      for (let islandIndex = 0; islandIndex < islandCount; islandIndex += 1) {
+        const vertexCount = 4 + Math.floor(random() * 3);
+        const outerRadius = 34 + random() * 24;
+        const padding = outerRadius + 14;
+        const x = padding + random() * Math.max(1, width - padding * 2);
+        const y = padding + random() * Math.max(1, height - padding * 2);
+        const velocity = makeVelocity(random, 2.2, 4.4);
+        const rotationOffset = random() * Math.PI * 2;
+        const vertices = Array.from({ length: vertexCount }, (_, vertexIndex) => ({
+          angle: rotationOffset + (vertexIndex / vertexCount) * Math.PI * 2 + (random() - 0.5) * 0.2,
+          radius: outerRadius * (0.68 + random() * 0.32),
+          phase: random() * Math.PI * 2
+        }));
+
+        islands.push({
+          x,
+          y,
+          ...velocity,
+          rotation: random() * Math.PI * 2,
+          spin: (random() < 0.5 ? -1 : 1) * (0.018 + random() * 0.024),
+          outerRadius,
+          vertices
+        });
+      }
+
+      canvas.dataset.nodeCount = String(nodeCount + islands.reduce((sum, island) => sum + island.vertices.length, 0));
+      canvas.dataset.islandCount = String(islands.length);
     };
 
     const resizeCanvas = () => {
       const rect = canvas.getBoundingClientRect();
       if (!rect.width || !rect.height) return;
+      if (Math.abs(rect.width - width) < 0.5 && Math.abs(rect.height - height) < 0.5) return;
       width = rect.width;
       height = rect.height;
-      seedNodes();
+      seedScene();
+      lastTime = 0;
 
       const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.max(1, Math.round(width * pixelRatio));
@@ -161,7 +237,7 @@ const {
       ? Math.max(0, 1 - distance / interactionRadius)
       : 0;
 
-    const segmentDistance = (pointX: number, pointY: number, start: MeshNode, end: MeshNode) => {
+    const segmentDistance = (pointX: number, pointY: number, start: Point, end: Point) => {
       const deltaX = end.x - start.x;
       const deltaY = end.y - start.y;
       const lengthSquared = deltaX * deltaX + deltaY * deltaY || 1;
@@ -173,15 +249,102 @@ const {
       return Math.hypot(pointX - nearestX, pointY - nearestY);
     };
 
-    const strokeEdge = (start: MeshNode, end: MeshNode, palette: NonNullable<ReturnType<typeof readPalette>>) => {
+    const strokeEdge = (
+      start: Point,
+      end: Point,
+      palette: NonNullable<ReturnType<typeof readPalette>>,
+      baseAlpha = palette.lineAlpha
+    ) => {
       const warmth = warmthFor(segmentDistance(pointer.x, pointer.y, start, end));
       context.beginPath();
       context.moveTo(start.x, start.y);
       context.lineTo(end.x, end.y);
       context.strokeStyle = cssColor(mix(palette.steel, palette.warm, warmth));
-      context.globalAlpha = palette.lineAlpha + warmth * 0.42;
+      context.globalAlpha = baseAlpha + warmth * 0.42;
       context.lineWidth = 0.55 + warmth * 0.45;
       context.stroke();
+    };
+
+    const bounce = (point: DriftNode, padding: number) => {
+      if (point.x <= padding && point.vx < 0) point.vx *= -1;
+      if (point.x >= width - padding && point.vx > 0) point.vx *= -1;
+      if (point.y <= padding && point.vy < 0) point.vy *= -1;
+      if (point.y >= height - padding && point.vy > 0) point.vy *= -1;
+      point.x = clamp(point.x, padding, Math.max(padding, width - padding));
+      point.y = clamp(point.y, padding, Math.max(padding, height - padding));
+    };
+
+    const advanceScene = (deltaSeconds: number) => {
+      for (const node of nodes) {
+        node.x += node.vx * deltaSeconds;
+        node.y += node.vy * deltaSeconds;
+        bounce(node, 7);
+      }
+
+      for (const island of islands) {
+        island.x += island.vx * deltaSeconds;
+        island.y += island.vy * deltaSeconds;
+        island.rotation += island.spin * deltaSeconds;
+        bounce(island, island.outerRadius + 10);
+      }
+    };
+
+    const islandPointsAt = (island: Island, time: number): Point[] => island.vertices.map((vertex) => {
+      const radius = vertex.radius * (1 + Math.sin(time * 0.00022 + vertex.phase) * 0.045);
+      const angle = vertex.angle + island.rotation;
+      return {
+        x: island.x + Math.cos(angle) * radius,
+        y: island.y + Math.sin(angle) * radius
+      };
+    });
+
+    const sparseLinks = () => {
+      const spacing = Math.sqrt((width * height) / Math.max(1, nodes.length));
+      const linkRadius = clamp(spacing * 1.45, 88, 138);
+      const candidates: Link[] = [];
+
+      for (let startIndex = 0; startIndex < nodes.length; startIndex += 1) {
+        for (let endIndex = startIndex + 1; endIndex < nodes.length; endIndex += 1) {
+          const start = nodes[startIndex];
+          const end = nodes[endIndex];
+          const distance = Math.hypot(end.x - start.x, end.y - start.y);
+          if (distance <= linkRadius) candidates.push({ start, end, distance });
+        }
+      }
+
+      candidates.sort((a, b) => a.distance - b.distance);
+      const degree = new Map<Point, number>();
+      const links: Link[] = [];
+      const edgeLimit = Math.round(nodes.length * 0.72);
+
+      for (const candidate of candidates) {
+        if (links.length >= edgeLimit) break;
+        const startDegree = degree.get(candidate.start) || 0;
+        const endDegree = degree.get(candidate.end) || 0;
+        if (startDegree >= 3 || endDegree >= 3) continue;
+        links.push(candidate);
+        degree.set(candidate.start, startDegree + 1);
+        degree.set(candidate.end, endDegree + 1);
+      }
+
+      return links;
+    };
+
+    const drawDiamond = (
+      point: Point,
+      palette: NonNullable<ReturnType<typeof readPalette>>
+    ) => {
+      const warmth = warmthFor(Math.hypot(pointer.x - point.x, pointer.y - point.y));
+      const size = 1.25 + warmth * 1.15;
+      context.beginPath();
+      context.moveTo(point.x, point.y - size);
+      context.lineTo(point.x + size, point.y);
+      context.lineTo(point.x, point.y + size);
+      context.lineTo(point.x - size, point.y);
+      context.closePath();
+      context.fillStyle = cssColor(mix(palette.steel, palette.warm, warmth));
+      context.globalAlpha = palette.dotAlpha + warmth * 0.4;
+      context.fill();
     };
 
     const draw = (time: number) => {
@@ -189,56 +352,42 @@ const {
       const palette = readPalette();
       if (!palette) return;
 
-      for (const node of nodes) {
-        node.x = node.homeX + Math.sin(time * node.speed + node.phase) * node.amp;
-        node.y = node.homeY + Math.cos(time * node.speed * 0.85 + node.phase * 1.4) * node.amp;
-      }
-
       context.clearRect(0, 0, width, height);
-      const at = (row: number, col: number) => nodes[row * cols + col];
+      const islandPointSets = islands.map((island) => islandPointsAt(island, time));
 
-      // Pass 1: quad facets — each warped grid cell gets a faint steel wash
-      // that warms toward amber near the cursor.
-      for (let row = 0; row < rows - 1; row += 1) {
-        for (let col = 0; col < cols - 1; col += 1) {
-          const p00 = at(row, col);
-          const p10 = at(row, col + 1);
-          const p11 = at(row + 1, col + 1);
-          const p01 = at(row + 1, col);
-          const warmth = warmthFor(Math.hypot(
-            pointer.x - (p00.x + p10.x + p11.x + p01.x) / 4,
-            pointer.y - (p00.y + p10.y + p11.y + p01.y) / 4
-          ));
-          context.beginPath();
-          context.moveTo(p00.x, p00.y);
-          context.lineTo(p10.x, p10.y);
-          context.lineTo(p11.x, p11.y);
-          context.lineTo(p01.x, p01.y);
-          context.closePath();
-          context.fillStyle = cssColor(mix(palette.steel, palette.warm, warmth));
-          context.globalAlpha = palette.washAlpha + warmth * 0.09;
-          context.fill();
-        }
+      // Sparse drift keeps only the shortest local links and caps both the
+      // total edge count and each star's degree. The field never becomes a mesh.
+      for (const link of sparseLinks()) {
+        strokeEdge(link.start, link.end, palette);
       }
 
-      // Pass 2: lattice edges (each horizontal and vertical edge once).
-      for (let row = 0; row < rows; row += 1) {
-        for (let col = 0; col < cols; col += 1) {
-          if (col < cols - 1) strokeEdge(at(row, col), at(row, col + 1), palette);
-          if (row < rows - 1) strokeEdge(at(row, col), at(row + 1, col), palette);
+      // A few self-contained islands add recognizable local forms without
+      // joining the surrounding stars into continents.
+      islandPointSets.forEach((points, islandIndex) => {
+        for (let index = 0; index < points.length; index += 1) {
+          strokeEdge(points[index], points[(index + 1) % points.length], palette, palette.islandAlpha);
         }
-      }
+        if (points.length >= 5 && islandIndex % 2 === 0) {
+          strokeEdge(points[0], points[Math.floor(points.length / 2)], palette, palette.lineAlpha * 0.72);
+        }
+      });
 
-      // Pass 3: cursor threads — explicit lines from the pointer to every node
-      // within reach, so hovering visibly gathers the nearby mesh.
+      const allPoints = [...nodes, ...islandPointSets.flat()];
+
+      // Cursor threads are limited to the nearest stars so interaction stays
+      // focused instead of turning into a spiderweb.
       if (pointer.active) {
-        for (const node of nodes) {
-          const distance = Math.hypot(pointer.x - node.x, pointer.y - node.y);
-          if (distance > interactionRadius) continue;
+        const nearby = allPoints
+          .map((point) => ({ point, distance: Math.hypot(pointer.x - point.x, pointer.y - point.y) }))
+          .filter(({ distance }) => distance <= interactionRadius)
+          .sort((a, b) => a.distance - b.distance)
+          .slice(0, maximumCursorThreads);
+
+        for (const { point, distance } of nearby) {
           const pull = 1 - distance / interactionRadius;
           context.beginPath();
           context.moveTo(pointer.x, pointer.y);
-          context.lineTo(node.x, node.y);
+          context.lineTo(point.x, point.y);
           context.strokeStyle = cssColor(mix(palette.steel, palette.warm, 0.5 + pull * 0.5));
           context.globalAlpha = 0.1 + pull * 0.38;
           context.lineWidth = 0.6 + pull * 0.5;
@@ -246,20 +395,7 @@ const {
         }
       }
 
-      // Pass 4: node markers as small diamonds — squares, not the sample's dots.
-      for (const node of nodes) {
-        const warmth = warmthFor(Math.hypot(pointer.x - node.x, pointer.y - node.y));
-        const size = 1.3 + warmth * 1.1;
-        context.beginPath();
-        context.moveTo(node.x, node.y - size);
-        context.lineTo(node.x + size, node.y);
-        context.lineTo(node.x, node.y + size);
-        context.lineTo(node.x - size, node.y);
-        context.closePath();
-        context.fillStyle = cssColor(mix(palette.steel, palette.warm, warmth));
-        context.globalAlpha = palette.dotAlpha + warmth * 0.4;
-        context.fill();
-      }
+      for (const point of allPoints) drawDiamond(point, palette);
       context.globalAlpha = 1;
     };
 
@@ -268,13 +404,18 @@ const {
         animationFrame = 0;
         return;
       }
+      const deltaSeconds = lastTime ? Math.min(50, time - lastTime) / 1000 : 0;
       lastTime = time;
+      advanceScene(deltaSeconds);
       draw(time);
       animationFrame = requestAnimationFrame(animate);
     };
 
     const startAnimation = () => {
-      if (!animationFrame && isVisible) {
+      if (!shouldAnimate) {
+        draw(lastTime);
+      } else if (!animationFrame && isVisible) {
+        lastTime = 0;
         animationFrame = requestAnimationFrame(animate);
       }
     };
@@ -291,10 +432,12 @@ const {
       pointer.x = event.clientX - rect.left;
       pointer.y = event.clientY - rect.top;
       pointer.active = true;
+      if (!shouldAnimate) draw(lastTime);
     };
 
     const onPointerLeave = () => {
       pointer.active = false;
+      if (!shouldAnimate) draw(lastTime);
     };
 
     const onResize = () => {
@@ -323,6 +466,7 @@ const {
       visibilityObserver.observe(canvas);
     }
 
+    const resizeObserver = new ResizeObserver(onResize);
     let documentObserver: MutationObserver | undefined;
     const cleanup = () => {
       if (cleaned) return;
@@ -331,19 +475,28 @@ const {
       window.clearTimeout(resizeTimer);
       parent.removeEventListener('pointermove', onPointerMove);
       parent.removeEventListener('pointerleave', onPointerLeave);
-      window.removeEventListener('resize', onResize);
+      resizeObserver.disconnect();
       visibilityObserver?.disconnect();
       documentObserver?.disconnect();
     };
 
-    documentObserver = new MutationObserver(() => {
-      if (!canvas.isConnected) cleanup();
+    documentObserver = new MutationObserver((records) => {
+      if (!canvas.isConnected) {
+        cleanup();
+        return;
+      }
+      if (!shouldAnimate && records.some((record) => record.type === 'attributes')) draw(lastTime);
     });
-    documentObserver.observe(root, { childList: true, subtree: true });
+    documentObserver.observe(root, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+      childList: true,
+      subtree: true
+    });
 
     parent.addEventListener('pointermove', onPointerMove, { passive: true });
     parent.addEventListener('pointerleave', onPointerLeave, { passive: true });
-    window.addEventListener('resize', onResize, { passive: true });
+    resizeObserver.observe(canvas);
 
     resizeCanvas();
     startAnimation();
