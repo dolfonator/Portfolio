@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import CTA from '../components/CTA.astro';
+import Constellation from '../components/Constellation.astro';
 import Icon from '../components/Icon.astro';
 
 const tiers = [
@@ -90,6 +91,7 @@ const compose = (subject: string) => `https://mail.google.com/mail/?view=cm&fs=1
   </section>
 
   <section class="section band-dark closer">
+    <Constellation />
     <div class="container closer-inner">
       <p class="closer-kicker">After launch</p>
       <h2 class="closer-title">Every site can stay <span class="closer-mark">maintained.</span></h2>

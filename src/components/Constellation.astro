@@ -158,13 +158,54 @@ const {
       if (!palette) return;
 
       context.clearRect(0, 0, width, height);
+
+      // Pass 1: collect linked pairs once, building an adjacency list so the
+      // triangle pass below stays cheap (neighbor degrees are small).
+      const neighbors: number[][] = nodes.map(() => []);
+      const linked = new Set<number>();
+      const pairKey = (a: number, b: number) => a * nodes.length + b;
       for (let first = 0; first < nodes.length; first += 1) {
         const start = nodes[first];
         for (let second = first + 1; second < nodes.length; second += 1) {
           const end = nodes[second];
           const distance = Math.hypot(end.x - start.x, end.y - start.y);
           if (distance > linkDistance) continue;
+          neighbors[first].push(second);
+          linked.add(pairKey(first, second));
+        }
+      }
 
+      // Pass 2: low-poly facets — fill triangles of mutually linked nodes with
+      // a faint steel wash that warms toward amber near the cursor.
+      for (let first = 0; first < nodes.length; first += 1) {
+        const near = neighbors[first];
+        for (let a = 0; a < near.length; a += 1) {
+          for (let b = a + 1; b < near.length; b += 1) {
+            if (!linked.has(pairKey(near[a], near[b]))) continue;
+            const p1 = nodes[first];
+            const p2 = nodes[near[a]];
+            const p3 = nodes[near[b]];
+            const warmth = warmthFor(Math.hypot(
+              pointer.x - (p1.x + p2.x + p3.x) / 3,
+              pointer.y - (p1.y + p2.y + p3.y) / 3
+            ));
+            context.beginPath();
+            context.moveTo(p1.x, p1.y);
+            context.lineTo(p2.x, p2.y);
+            context.lineTo(p3.x, p3.y);
+            context.closePath();
+            context.fillStyle = cssColor(mix(palette.steel, palette.amber, warmth));
+            context.globalAlpha = 0.045 + warmth * 0.09;
+            context.fill();
+          }
+        }
+      }
+
+      // Pass 3: constellation edges.
+      for (let first = 0; first < nodes.length; first += 1) {
+        const start = nodes[first];
+        for (const second of neighbors[first]) {
+          const end = nodes[second];
           const warmth = warmthFor(segmentDistance(pointer.x, pointer.y, start, end));
           context.beginPath();
           context.moveTo(start.x, start.y);
@@ -174,6 +215,23 @@ const {
           context.lineWidth = 0.55 + warmth * 0.45;
           context.stroke();
         }
+      }
+
+      // Pass 4: cursor threads — explicit lines from the pointer to every node
+      // within reach, so hovering visibly gathers the nearby constellation.
+      if (pointer.active) {
+        nodes.forEach((node) => {
+          const distance = Math.hypot(pointer.x - node.x, pointer.y - node.y);
+          if (distance > interactionRadius) return;
+          const pull = 1 - distance / interactionRadius;
+          context.beginPath();
+          context.moveTo(pointer.x, pointer.y);
+          context.lineTo(node.x, node.y);
+          context.strokeStyle = cssColor(mix(palette.steel, palette.amber, 0.5 + pull * 0.5));
+          context.globalAlpha = 0.1 + pull * 0.38;
+          context.lineWidth = 0.6 + pull * 0.5;
+          context.stroke();
+        });
       }
 
       nodes.forEach((node) => {
