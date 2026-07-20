@@ -5,7 +5,7 @@ interface Props {
 }
 
 const {
-  density = 45,
+  density = 140,
   class: className = ''
 } = Astro.props as Props;
 ---
@@ -30,7 +30,15 @@ const {
 
 <script>
   type RGB = [number, number, number];
-  type Node = { x: number; y: number; vx: number; vy: number };
+  type MeshNode = {
+    homeX: number;
+    homeY: number;
+    x: number;
+    y: number;
+    phase: number;
+    amp: number;
+    speed: number;
+  };
   type NavigatorWithConnection = Navigator & { connection?: { saveData?: boolean } };
 
   const canvases = document.querySelectorAll<HTMLCanvasElement>('canvas[data-constellation]');
@@ -44,17 +52,19 @@ const {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const root = document.documentElement;
-    const nodeCount = Math.max(30, Math.min(60, Math.round(Number(canvas.dataset.density) || 45)));
+    const targetCount = Math.max(60, Math.min(220, Math.round(Number(canvas.dataset.density) || 140)));
     const interactionRadius = 170;
     const pointer = { x: 0, y: 0, active: false };
-    const nodes: Node[] = [];
+    let nodes: MeshNode[] = [];
+    let cols = 0;
+    let rows = 0;
     let width = 0;
     let height = 0;
-    let linkDistance = 150;
     let isVisible = true;
     let animationFrame = 0;
     let resizeTimer = 0;
     let cleaned = false;
+    let lastTime = 0;
 
     const parseColor = (value: string): RGB | null => {
       const hex = value.trim().match(/^#([\da-f]{3,8})$/i);
@@ -79,11 +89,22 @@ const {
       return values.length === 3 ? [values[0], values[1], values[2]] as RGB : null;
     };
 
+    // Theme-aware palette, re-read every frame so a data-theme flip recolors
+    // the mesh immediately. Light theme warms toward the AA-tuned amber-dark
+    // and draws slightly stronger, since steel hairlines recede on pale bands.
     const readPalette = () => {
       const styles = getComputedStyle(root);
+      const dark = root.dataset.theme === 'dark';
       const steel = parseColor(styles.getPropertyValue('--steel'));
-      const amber = parseColor(styles.getPropertyValue('--amber'));
-      return steel && amber ? { steel, amber } : null;
+      const warm = parseColor(styles.getPropertyValue(dark ? '--amber' : '--amber-dark'));
+      if (!steel || !warm) return null;
+      return {
+        steel,
+        warm,
+        washAlpha: dark ? 0.05 : 0.055,
+        lineAlpha: dark ? 0.16 : 0.2,
+        dotAlpha: dark ? 0.5 : 0.55
+      };
     };
 
     const mix = (cool: RGB, warm: RGB, amount: number): RGB => {
@@ -97,38 +118,38 @@ const {
 
     const cssColor = (rgb: RGB) => `rgb(${rgb.join(', ')})`;
 
+    // Nodes live on a jittered grid and wobble gently around their homes, so
+    // the mesh reads as a warped quad lattice rather than a random point field.
     const seedNodes = () => {
-      nodes.length = 0;
-      for (let index = 0; index < nodeCount; index += 1) {
-        nodes.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.006,
-          vy: (Math.random() - 0.5) * 0.006
-        });
+      const cell = Math.sqrt((width * height) / targetCount) || 1;
+      cols = Math.max(3, Math.round(width / cell) + 1);
+      rows = Math.max(3, Math.round(height / cell) + 1);
+      nodes = [];
+      const jitterX = (width / (cols - 1)) * 0.3;
+      const jitterY = (height / (rows - 1)) * 0.3;
+      for (let row = 0; row < rows; row += 1) {
+        for (let col = 0; col < cols; col += 1) {
+          const homeX = (col / (cols - 1)) * width + (Math.random() - 0.5) * 2 * jitterX;
+          const homeY = (row / (rows - 1)) * height + (Math.random() - 0.5) * 2 * jitterY;
+          nodes.push({
+            homeX,
+            homeY,
+            x: homeX,
+            y: homeY,
+            phase: Math.random() * Math.PI * 2,
+            amp: 2 + Math.random() * Math.min(10, Math.min(jitterX, jitterY)),
+            speed: 0.00012 + Math.random() * 0.00018
+          });
+        }
       }
     };
 
     const resizeCanvas = () => {
       const rect = canvas.getBoundingClientRect();
-      const nextWidth = rect.width;
-      const nextHeight = rect.height;
-      if (!nextWidth || !nextHeight) return;
-
-      const scaleX = width ? nextWidth / width : 1;
-      const scaleY = height ? nextHeight / height : 1;
-      width = nextWidth;
-      height = nextHeight;
-      linkDistance = Math.min(170, Math.max(110, Math.min(width, height) * 0.34));
-
-      if (nodes.length !== nodeCount || !scaleX || !scaleY) {
-        seedNodes();
-      } else {
-        nodes.forEach((node) => {
-          node.x = Math.min(width, node.x * scaleX);
-          node.y = Math.min(height, node.y * scaleY);
-        });
-      }
+      if (!rect.width || !rect.height) return;
+      width = rect.width;
+      height = rect.height;
+      seedNodes();
 
       const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.max(1, Math.round(width * pixelRatio));
@@ -140,7 +161,7 @@ const {
       ? Math.max(0, 1 - distance / interactionRadius)
       : 0;
 
-    const segmentDistance = (pointX: number, pointY: number, start: Node, end: Node) => {
+    const segmentDistance = (pointX: number, pointY: number, start: MeshNode, end: MeshNode) => {
       const deltaX = end.x - start.x;
       const deltaY = end.y - start.y;
       const lengthSquared = deltaX * deltaX + deltaY * deltaY || 1;
@@ -152,123 +173,108 @@ const {
       return Math.hypot(pointX - nearestX, pointY - nearestY);
     };
 
-    const draw = () => {
+    const strokeEdge = (start: MeshNode, end: MeshNode, palette: NonNullable<ReturnType<typeof readPalette>>) => {
+      const warmth = warmthFor(segmentDistance(pointer.x, pointer.y, start, end));
+      context.beginPath();
+      context.moveTo(start.x, start.y);
+      context.lineTo(end.x, end.y);
+      context.strokeStyle = cssColor(mix(palette.steel, palette.warm, warmth));
+      context.globalAlpha = palette.lineAlpha + warmth * 0.42;
+      context.lineWidth = 0.55 + warmth * 0.45;
+      context.stroke();
+    };
+
+    const draw = (time: number) => {
       if (cleaned || !width || !height) return;
       const palette = readPalette();
       if (!palette) return;
 
+      for (const node of nodes) {
+        node.x = node.homeX + Math.sin(time * node.speed + node.phase) * node.amp;
+        node.y = node.homeY + Math.cos(time * node.speed * 0.85 + node.phase * 1.4) * node.amp;
+      }
+
       context.clearRect(0, 0, width, height);
+      const at = (row: number, col: number) => nodes[row * cols + col];
 
-      // Pass 1: collect linked pairs once, building an adjacency list so the
-      // triangle pass below stays cheap (neighbor degrees are small).
-      const neighbors: number[][] = nodes.map(() => []);
-      const linked = new Set<number>();
-      const pairKey = (a: number, b: number) => a * nodes.length + b;
-      for (let first = 0; first < nodes.length; first += 1) {
-        const start = nodes[first];
-        for (let second = first + 1; second < nodes.length; second += 1) {
-          const end = nodes[second];
-          const distance = Math.hypot(end.x - start.x, end.y - start.y);
-          if (distance > linkDistance) continue;
-          neighbors[first].push(second);
-          linked.add(pairKey(first, second));
-        }
-      }
-
-      // Pass 2: low-poly facets — fill triangles of mutually linked nodes with
-      // a faint steel wash that warms toward amber near the cursor.
-      for (let first = 0; first < nodes.length; first += 1) {
-        const near = neighbors[first];
-        for (let a = 0; a < near.length; a += 1) {
-          for (let b = a + 1; b < near.length; b += 1) {
-            if (!linked.has(pairKey(near[a], near[b]))) continue;
-            const p1 = nodes[first];
-            const p2 = nodes[near[a]];
-            const p3 = nodes[near[b]];
-            const warmth = warmthFor(Math.hypot(
-              pointer.x - (p1.x + p2.x + p3.x) / 3,
-              pointer.y - (p1.y + p2.y + p3.y) / 3
-            ));
-            context.beginPath();
-            context.moveTo(p1.x, p1.y);
-            context.lineTo(p2.x, p2.y);
-            context.lineTo(p3.x, p3.y);
-            context.closePath();
-            context.fillStyle = cssColor(mix(palette.steel, palette.amber, warmth));
-            context.globalAlpha = 0.045 + warmth * 0.09;
-            context.fill();
-          }
-        }
-      }
-
-      // Pass 3: constellation edges.
-      for (let first = 0; first < nodes.length; first += 1) {
-        const start = nodes[first];
-        for (const second of neighbors[first]) {
-          const end = nodes[second];
-          const warmth = warmthFor(segmentDistance(pointer.x, pointer.y, start, end));
+      // Pass 1: quad facets — each warped grid cell gets a faint steel wash
+      // that warms toward amber near the cursor.
+      for (let row = 0; row < rows - 1; row += 1) {
+        for (let col = 0; col < cols - 1; col += 1) {
+          const p00 = at(row, col);
+          const p10 = at(row, col + 1);
+          const p11 = at(row + 1, col + 1);
+          const p01 = at(row + 1, col);
+          const warmth = warmthFor(Math.hypot(
+            pointer.x - (p00.x + p10.x + p11.x + p01.x) / 4,
+            pointer.y - (p00.y + p10.y + p11.y + p01.y) / 4
+          ));
           context.beginPath();
-          context.moveTo(start.x, start.y);
-          context.lineTo(end.x, end.y);
-          context.strokeStyle = cssColor(mix(palette.steel, palette.amber, warmth));
-          context.globalAlpha = 0.16 + warmth * 0.42;
-          context.lineWidth = 0.55 + warmth * 0.45;
-          context.stroke();
+          context.moveTo(p00.x, p00.y);
+          context.lineTo(p10.x, p10.y);
+          context.lineTo(p11.x, p11.y);
+          context.lineTo(p01.x, p01.y);
+          context.closePath();
+          context.fillStyle = cssColor(mix(palette.steel, palette.warm, warmth));
+          context.globalAlpha = palette.washAlpha + warmth * 0.09;
+          context.fill();
         }
       }
 
-      // Pass 4: cursor threads — explicit lines from the pointer to every node
-      // within reach, so hovering visibly gathers the nearby constellation.
+      // Pass 2: lattice edges (each horizontal and vertical edge once).
+      for (let row = 0; row < rows; row += 1) {
+        for (let col = 0; col < cols; col += 1) {
+          if (col < cols - 1) strokeEdge(at(row, col), at(row, col + 1), palette);
+          if (row < rows - 1) strokeEdge(at(row, col), at(row + 1, col), palette);
+        }
+      }
+
+      // Pass 3: cursor threads — explicit lines from the pointer to every node
+      // within reach, so hovering visibly gathers the nearby mesh.
       if (pointer.active) {
-        nodes.forEach((node) => {
+        for (const node of nodes) {
           const distance = Math.hypot(pointer.x - node.x, pointer.y - node.y);
-          if (distance > interactionRadius) return;
+          if (distance > interactionRadius) continue;
           const pull = 1 - distance / interactionRadius;
           context.beginPath();
           context.moveTo(pointer.x, pointer.y);
           context.lineTo(node.x, node.y);
-          context.strokeStyle = cssColor(mix(palette.steel, palette.amber, 0.5 + pull * 0.5));
+          context.strokeStyle = cssColor(mix(palette.steel, palette.warm, 0.5 + pull * 0.5));
           context.globalAlpha = 0.1 + pull * 0.38;
           context.lineWidth = 0.6 + pull * 0.5;
           context.stroke();
-        });
+        }
       }
 
-      nodes.forEach((node) => {
+      // Pass 4: node markers as small diamonds — squares, not the sample's dots.
+      for (const node of nodes) {
         const warmth = warmthFor(Math.hypot(pointer.x - node.x, pointer.y - node.y));
+        const size = 1.3 + warmth * 1.1;
         context.beginPath();
-        context.fillStyle = cssColor(mix(palette.steel, palette.amber, warmth));
-        context.globalAlpha = 0.48 + warmth * 0.42;
-        context.arc(node.x, node.y, 1.05 + warmth * 0.7, 0, Math.PI * 2);
+        context.moveTo(node.x, node.y - size);
+        context.lineTo(node.x + size, node.y);
+        context.lineTo(node.x, node.y + size);
+        context.lineTo(node.x - size, node.y);
+        context.closePath();
+        context.fillStyle = cssColor(mix(palette.steel, palette.warm, warmth));
+        context.globalAlpha = palette.dotAlpha + warmth * 0.4;
         context.fill();
-      });
+      }
       context.globalAlpha = 1;
     };
 
-    let lastTime = 0;
     const animate = (time: number) => {
       if (cleaned || !isVisible) {
         animationFrame = 0;
         return;
       }
-
-      const elapsed = Math.min(time - (lastTime || time), 50);
       lastTime = time;
-      nodes.forEach((node) => {
-        node.x += node.vx * elapsed;
-        node.y += node.vy * elapsed;
-        if (node.x < 0 || node.x > width) node.vx *= -1;
-        if (node.y < 0 || node.y > height) node.vy *= -1;
-        node.x = Math.max(0, Math.min(width, node.x));
-        node.y = Math.max(0, Math.min(height, node.y));
-      });
-      draw();
+      draw(time);
       animationFrame = requestAnimationFrame(animate);
     };
 
     const startAnimation = () => {
       if (!animationFrame && isVisible) {
-        lastTime = 0;
         animationFrame = requestAnimationFrame(animate);
       }
     };
@@ -276,9 +282,10 @@ const {
     const stopAnimation = () => {
       if (animationFrame) cancelAnimationFrame(animationFrame);
       animationFrame = 0;
-      lastTime = 0;
     };
 
+    // Listen on the parent because the canvas passes pointer events through to
+    // content above it.
     const onPointerMove = (event: PointerEvent) => {
       const rect = canvas.getBoundingClientRect();
       pointer.x = event.clientX - rect.left;
@@ -295,7 +302,7 @@ const {
       resizeTimer = window.setTimeout(() => {
         if (cleaned) return;
         resizeCanvas();
-        draw();
+        draw(lastTime);
       }, 120);
     };
 
@@ -308,7 +315,6 @@ const {
         isVisible = entry.isIntersecting;
         if (isVisible) {
           resizeCanvas();
-          draw();
           startAnimation();
         } else {
           stopAnimation();
@@ -331,24 +337,15 @@ const {
     };
 
     documentObserver = new MutationObserver(() => {
-      if (!canvas.isConnected) {
-        cleanup();
-      }
+      if (!canvas.isConnected) cleanup();
     });
-    documentObserver.observe(root, {
-      attributes: true,
-      attributeFilter: ['data-theme'],
-      childList: true,
-      subtree: true
-    });
+    documentObserver.observe(root, { childList: true, subtree: true });
 
-    // Listen on the parent because the canvas passes pointer events through to content above it.
     parent.addEventListener('pointermove', onPointerMove, { passive: true });
     parent.addEventListener('pointerleave', onPointerLeave, { passive: true });
     window.addEventListener('resize', onResize, { passive: true });
 
     resizeCanvas();
-    draw();
     startAnimation();
   });
 </script>

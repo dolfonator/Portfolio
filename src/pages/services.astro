@@ -50,6 +50,7 @@ const compose = (subject: string) => `https://mail.google.com/mail/?view=cm&fs=1
 ---
 <Base title="Services | Tristan" description="Website packages for Philippine local businesses, shown by outcome and scope without public pricing." canonical="/services/">
   <section class="section band-paper">
+    <Constellation />
     <div class="container">
       <header class="page-head" data-reveal>
         <p class="page-kicker"><span class="hero-dot" aria-hidden="true"></span>Website packages</p>
@@ -80,12 +81,14 @@ const compose = (subject: string) => `https://mail.google.com/mail/?view=cm&fs=1
         ))}
       </div>
       <div class="svc-includes" data-reveal>
-        <p>Every tier includes</p>
+        <p class="svc-includes-label">Every tier includes</p>
         <ul aria-label="Included with every website tier">
           <li class="pill">Mobile-first build</li>
           <li class="pill">SEO basics</li>
-          <li class="pill">Optional care plan after launch</li>
+          <li class="pill">Structured data</li>
+          <li class="pill">Fast static deployment</li>
         </ul>
+        <p class="svc-includes-plus">+ Optional care and growth plans after launch</p>
       </div>
     </div>
   </section>

@@ -51,6 +51,8 @@ li + li { margin-top: .35rem; }
 .skip-link:focus { transform: translateY(0); }
 
 .container {
+  position: relative;
+  z-index: 1;
   width: min(100% - 2rem, var(--maxw));
   margin-inline: auto;
 }
@@ -983,17 +985,39 @@ li + li { margin-top: .35rem; }
   align-self: flex-start;
   margin-top: auto;
 }
+/* "Every tier includes" — a quiet centered coda under the three tier cards. */
 .svc-includes {
   display: grid;
-  grid-template-columns: minmax(9rem, .35fr) minmax(0, 1fr);
-  gap: var(--space-4);
-  align-items: start;
-  margin-top: var(--space-5);
-  padding-top: var(--space-4);
+  justify-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
   border-top: 1px solid var(--line);
 }
-.svc-includes > p { color: var(--ink-soft); font-weight: 800; }
-.svc-includes ul { display: flex; flex-wrap: wrap; gap: .45rem; margin: 0; padding: 0; list-style: none; }
+.svc-includes-label {
+  color: var(--ink-soft);
+  font-size: var(--step--1);
+  font-weight: 820;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.svc-includes ul {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.svc-includes ul li { margin: 0; }
+.svc-includes-plus {
+  color: var(--accent-ink);
+  font-weight: 760;
+  font-size: var(--step--1);
+}
 
 /* About: identity, factual proof, stack, and principles */
 .about-identity { display: grid; gap: var(--space-5); }
@@ -1055,10 +1079,21 @@ li + li { margin-top: .35rem; }
   padding: var(--space-4) 0;
   border-bottom: 1px solid var(--line);
 }
+.tech-row { align-items: center; }
 .tech-row h3,
 .principle-head h3 { font-size: clamp(1.2rem, 1.05rem + .6vw, 1.5rem); }
 .tech-row h3.is-accent { color: var(--accent-ink); }
-.tech-row ul { margin: 0; padding: 0; list-style: none; justify-content: flex-end; }
+.tech-row ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .5rem;
+}
+.tech-row ul li { margin: 0; }
 .principle-detail { display: grid; gap: var(--space-3); }
 .principle-detail > p {
   color: var(--ink-soft);
