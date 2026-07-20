@@ -1,0 +1,296 @@
+---
+interface Props {
+  density?: number;
+  class?: string;
+}
+
+const {
+  density = 45,
+  class: className = ''
+} = Astro.props as Props;
+---
+
+<canvas
+  class:list={['constellation', className]}
+  data-constellation
+  data-density={density}
+  aria-hidden="true"
+></canvas>
+
+<style>
+  .constellation {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  type RGB = [number, number, number];
+  type Node = { x: number; y: number; vx: number; vy: number };
+  type NavigatorWithConnection = Navigator & { connection?: { saveData?: boolean } };
+
+  const canvases = document.querySelectorAll<HTMLCanvasElement>('canvas[data-constellation]');
+
+  canvases.forEach((canvas) => {
+    const parent = canvas.parentElement;
+    const context = canvas.getContext('2d');
+    if (!parent || !context) return;
+
+    if ((navigator as NavigatorWithConnection).connection?.saveData === true) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const root = document.documentElement;
+    const nodeCount = Math.max(30, Math.min(60, Math.round(Number(canvas.dataset.density) || 45)));
+    const interactionRadius = 170;
+    const pointer = { x: 0, y: 0, active: false };
+    const nodes: Node[] = [];
+    let width = 0;
+    let height = 0;
+    let linkDistance = 150;
+    let isVisible = true;
+    let animationFrame = 0;
+    let resizeTimer = 0;
+    let cleaned = false;
+
+    const parseColor = (value: string): RGB | null => {
+      const hex = value.trim().match(/^#([\da-f]{3,8})$/i);
+      if (hex) {
+        let digits = hex[1];
+        if (digits.length === 3 || digits.length === 4) {
+          digits = digits.split('').map((digit) => digit + digit).join('');
+        }
+        return [
+          parseInt(digits.slice(0, 2), 16),
+          parseInt(digits.slice(2, 4), 16),
+          parseInt(digits.slice(4, 6), 16)
+        ] as RGB;
+      }
+
+      const rgb = value.trim().match(/^rgba?\(([^)]+)\)$/i);
+      if (!rgb) return null;
+      const channels = rgb[1].split(/[,\s/]+/).filter(Boolean).slice(0, 3);
+      const values = channels.map((channel) => channel.endsWith('%')
+        ? Math.round(parseFloat(channel) * 2.55)
+        : parseFloat(channel));
+      return values.length === 3 ? [values[0], values[1], values[2]] as RGB : null;
+    };
+
+    const readPalette = () => {
+      const styles = getComputedStyle(root);
+      const steel = parseColor(styles.getPropertyValue('--steel'));
+      const amber = parseColor(styles.getPropertyValue('--amber'));
+      return steel && amber ? { steel, amber } : null;
+    };
+
+    const mix = (cool: RGB, warm: RGB, amount: number): RGB => {
+      const ratio = Math.max(0, Math.min(1, amount));
+      return [
+        Math.round(cool[0] + (warm[0] - cool[0]) * ratio),
+        Math.round(cool[1] + (warm[1] - cool[1]) * ratio),
+        Math.round(cool[2] + (warm[2] - cool[2]) * ratio)
+      ];
+    };
+
+    const cssColor = (rgb: RGB) => `rgb(${rgb.join(', ')})`;
+
+    const seedNodes = () => {
+      nodes.length = 0;
+      for (let index = 0; index < nodeCount; index += 1) {
+        nodes.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.006,
+          vy: (Math.random() - 0.5) * 0.006
+        });
+      }
+    };
+
+    const resizeCanvas = () => {
+      const rect = canvas.getBoundingClientRect();
+      const nextWidth = rect.width;
+      const nextHeight = rect.height;
+      if (!nextWidth || !nextHeight) return;
+
+      const scaleX = width ? nextWidth / width : 1;
+      const scaleY = height ? nextHeight / height : 1;
+      width = nextWidth;
+      height = nextHeight;
+      linkDistance = Math.min(170, Math.max(110, Math.min(width, height) * 0.34));
+
+      if (nodes.length !== nodeCount || !scaleX || !scaleY) {
+        seedNodes();
+      } else {
+        nodes.forEach((node) => {
+          node.x = Math.min(width, node.x * scaleX);
+          node.y = Math.min(height, node.y * scaleY);
+        });
+      }
+
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.max(1, Math.round(width * pixelRatio));
+      canvas.height = Math.max(1, Math.round(height * pixelRatio));
+      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    };
+
+    const warmthFor = (distance: number) => pointer.active
+      ? Math.max(0, 1 - distance / interactionRadius)
+      : 0;
+
+    const segmentDistance = (pointX: number, pointY: number, start: Node, end: Node) => {
+      const deltaX = end.x - start.x;
+      const deltaY = end.y - start.y;
+      const lengthSquared = deltaX * deltaX + deltaY * deltaY || 1;
+      const projection = Math.max(0, Math.min(1, (
+        (pointX - start.x) * deltaX + (pointY - start.y) * deltaY
+      ) / lengthSquared));
+      const nearestX = start.x + deltaX * projection;
+      const nearestY = start.y + deltaY * projection;
+      return Math.hypot(pointX - nearestX, pointY - nearestY);
+    };
+
+    const draw = () => {
+      if (cleaned || !width || !height) return;
+      const palette = readPalette();
+      if (!palette) return;
+
+      context.clearRect(0, 0, width, height);
+      for (let first = 0; first < nodes.length; first += 1) {
+        const start = nodes[first];
+        for (let second = first + 1; second < nodes.length; second += 1) {
+          const end = nodes[second];
+          const distance = Math.hypot(end.x - start.x, end.y - start.y);
+          if (distance > linkDistance) continue;
+
+          const warmth = warmthFor(segmentDistance(pointer.x, pointer.y, start, end));
+          context.beginPath();
+          context.moveTo(start.x, start.y);
+          context.lineTo(end.x, end.y);
+          context.strokeStyle = cssColor(mix(palette.steel, palette.amber, warmth));
+          context.globalAlpha = 0.16 + warmth * 0.42;
+          context.lineWidth = 0.55 + warmth * 0.45;
+          context.stroke();
+        }
+      }
+
+      nodes.forEach((node) => {
+        const warmth = warmthFor(Math.hypot(pointer.x - node.x, pointer.y - node.y));
+        context.beginPath();
+        context.fillStyle = cssColor(mix(palette.steel, palette.amber, warmth));
+        context.globalAlpha = 0.48 + warmth * 0.42;
+        context.arc(node.x, node.y, 1.05 + warmth * 0.7, 0, Math.PI * 2);
+        context.fill();
+      });
+      context.globalAlpha = 1;
+    };
+
+    let lastTime = 0;
+    const animate = (time: number) => {
+      if (cleaned || !isVisible) {
+        animationFrame = 0;
+        return;
+      }
+
+      const elapsed = Math.min(time - (lastTime || time), 50);
+      lastTime = time;
+      nodes.forEach((node) => {
+        node.x += node.vx * elapsed;
+        node.y += node.vy * elapsed;
+        if (node.x < 0 || node.x > width) node.vx *= -1;
+        if (node.y < 0 || node.y > height) node.vy *= -1;
+        node.x = Math.max(0, Math.min(width, node.x));
+        node.y = Math.max(0, Math.min(height, node.y));
+      });
+      draw();
+      animationFrame = requestAnimationFrame(animate);
+    };
+
+    const startAnimation = () => {
+      if (!animationFrame && isVisible) {
+        lastTime = 0;
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    const stopAnimation = () => {
+      if (animationFrame) cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+      lastTime = 0;
+    };
+
+    const onPointerMove = (event: PointerEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      pointer.x = event.clientX - rect.left;
+      pointer.y = event.clientY - rect.top;
+      pointer.active = true;
+    };
+
+    const onPointerLeave = () => {
+      pointer.active = false;
+    };
+
+    const onResize = () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        if (cleaned) return;
+        resizeCanvas();
+        draw();
+      }, 120);
+    };
+
+    let visibilityObserver: IntersectionObserver | undefined;
+    if ('IntersectionObserver' in window) {
+      isVisible = false;
+      visibilityObserver = new IntersectionObserver((entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+        isVisible = entry.isIntersecting;
+        if (isVisible) {
+          resizeCanvas();
+          draw();
+          startAnimation();
+        } else {
+          stopAnimation();
+        }
+      }, { threshold: 0 });
+      visibilityObserver.observe(canvas);
+    }
+
+    let documentObserver: MutationObserver | undefined;
+    const cleanup = () => {
+      if (cleaned) return;
+      cleaned = true;
+      stopAnimation();
+      window.clearTimeout(resizeTimer);
+      parent.removeEventListener('pointermove', onPointerMove);
+      parent.removeEventListener('pointerleave', onPointerLeave);
+      window.removeEventListener('resize', onResize);
+      visibilityObserver?.disconnect();
+      documentObserver?.disconnect();
+    };
+
+    documentObserver = new MutationObserver(() => {
+      if (!canvas.isConnected) {
+        cleanup();
+      }
+    });
+    documentObserver.observe(root, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+      childList: true,
+      subtree: true
+    });
+
+    // Listen on the parent because the canvas passes pointer events through to content above it.
+    parent.addEventListener('pointermove', onPointerMove, { passive: true });
+    parent.addEventListener('pointerleave', onPointerLeave, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
+
+    resizeCanvas();
+    draw();
+    startAnimation();
+  });
+</script>

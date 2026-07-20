@@ -1,29 +1,71 @@
 ---
 import Base from '../layouts/Base.astro';
 import CTA from '../components/CTA.astro';
+import Icon from '../components/Icon.astro';
 
 const principles = [
   {
     title: 'Clear offer',
     body: 'The page should explain what the business does, who it helps, and what the visitor should do next without making them hunt.',
+    projectName: "Herminia's Food Catering",
+    evidenceHref: 'https://herminias-catering.vercel.app/',
   },
   {
     title: 'Fast, portable build',
     body: 'Lean HTML, CSS, JavaScript, and Astro keep the site quick on mobile and easy to move between practical hosting options.',
+    projectName: 'Justdiz Preproductions',
+    evidenceHref: 'https://justdiz-preproductions.vercel.app/',
   },
   {
     title: 'Room to grow',
     body: 'The first version stays focused, with enough structure to add richer content or a small custom system when the business needs it.',
+    projectName: 'The Big Thirty',
+    evidenceHref: 'https://bday-public.netlify.app/',
   },
+];
+
+const stackGroups = [
+  { label: 'Languages', items: ['Python', 'JavaScript', 'TypeScript'] },
+  { label: 'Frontend', items: ['React', 'Svelte', 'Next.js', 'Angular', 'Astro'] },
+  { label: 'Backend', items: ['Django', 'FastAPI', 'Node.js'] },
+  { label: 'Agentic Tools', items: ['Claude', 'Codex', 'SuperGrok'], accent: true },
+  { label: 'Automation & Infra', items: ['n8n', 'Supabase', 'Cloudflare', 'Docker'] },
+  { label: 'Embedded', items: ['ESP32', 'Arduino', 'Raspberry Pi', 'C++'] },
+  { label: 'Design', items: ['Figma', 'Google Stitch'] },
 ];
 ---
 <Base title="About | Tristan" description="About Tristan, a freelance web developer in Quezon City building fast sites for local businesses." canonical="/about/">
   <section class="section band-mist">
     <div class="container about-masthead">
-      <header class="page-head" data-reveal>
-        <p class="page-kicker"><span class="hero-dot" aria-hidden="true"></span>Quezon City · independent web developer</p>
-        <h1 class="page-title">A practical web partner for <span class="hero-mark">small-business</span> sites.</h1>
-      </header>
+      <div class="about-identity">
+        <header class="page-head" data-reveal>
+          <p class="page-kicker"><span class="hero-dot" aria-hidden="true"></span>Quezon City · independent web developer</p>
+          <h1 class="page-title">A practical web partner for <span class="hero-mark">small-business</span> sites.</h1>
+        </header>
+        <div class="about-profile" data-reveal>
+          <div class="about-monogram" role="img" aria-label="Tristan monogram">
+            <span aria-hidden="true">T</span>
+            <i aria-hidden="true"></i>
+          </div>
+          <div class="about-profile-notes">
+            <blockquote>Make the offer clear, make the site fast, make the next action obvious.</blockquote>
+            <dl class="about-facts">
+              <div><dt>Based in</dt><dd>Quezon City, Philippines</dd></div>
+              <div><dt>Builds with</dt><dd>Astro, HTML, CSS, JavaScript</dd></div>
+              <div><dt>Replies</dt><dd>within a day</dd></div>
+              <div>
+                <dt>GitHub</dt>
+                <dd>
+                  <a href="https://github.com/dolfonator" target="_blank" rel="noopener">
+                    <Icon name="github" />
+                    dolfonator
+                  </a>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
       <div class="about-intro" data-reveal>
         <div class="about-bio">
           <p class="about-lede">I’m Tristan, a freelance web developer in Quezon City. I build fast, polished, static-first websites for restaurants, cafés, clinics, and local service businesses.</p>
@@ -37,16 +79,37 @@ const principles = [
   <section class="section band-paper">
     <div class="container">
       <header class="sec-head-bold" data-reveal>
+        <h2>What I build with.</h2>
+      </header>
+      <div class="tech-list" data-reveal>
+        {stackGroups.map((group) => (
+          <div class="tech-row">
+            <h3 class:list={{ 'is-accent': group.accent }}>{group.label}</h3>
+            <ul class="stack" aria-label={`${group.label} tools`}>
+              {group.items.map((item) => <li class="pill">{item}</li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-paper">
+    <div class="container">
+      <header class="sec-head-bold" data-reveal>
         <h2>How I approach the work.</h2>
       </header>
-      <div class="svc-tiers">
+      <div class="principles-list">
         {principles.map((principle) => (
-          <article class="svc-tier" data-reveal>
-            <div class="svc-head">
+          <article class="principle" data-reveal>
+            <div class="principle-head">
               <h3>{principle.title}</h3>
             </div>
-            <div class="svc-detail">
+            <div class="principle-detail">
               <p>{principle.body}</p>
+              <a class="principle-evidence" href={principle.evidenceHref} target="_blank" rel="noopener">
+                See it in → {principle.projectName}
+              </a>
             </div>
           </article>
         ))}

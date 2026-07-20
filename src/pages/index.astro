@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import CTA from '../components/CTA.astro';
+import Constellation from '../components/Constellation.astro';
 import SectionBand from '../components/SectionBand.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ProcessSteps from '../components/ProcessSteps.astro';
@@ -11,6 +12,7 @@ import Icon from '../components/Icon.astro';
 type Project = CollectionEntry<'projects'>;
 
 const projects: Project[] = await getCollection('projects');
+const projectCount = projects.length;
 const featured = projects
   .filter((project: Project) => project.data.featured)
   .sort((a: Project, b: Project) => a.data.displayOrder - b.data.displayOrder);
@@ -43,19 +45,27 @@ const jsonLd = [
 ---
 <Base jsonLd={jsonLd}>
   <section class="hero">
+    <Constellation />
     <div class="container hero-grid">
       <div class="hero-copy">
         <p class="hero-kicker"><span class="hero-dot" aria-hidden="true"></span>Quezon City · freelance web developer</p>
         <h1 class="hero-title">Fast websites for <span class="hero-mark">local businesses.</span></h1>
         <p class="hero-sub">I build focused, polished sites for restaurants, cafés, clinics, and small teams — the kind where a customer understands the offer and acts in seconds.</p>
         <CTA showPhone />
+        <p class="hero-trust"><span class="hero-trust-count">{projectCount}</span> builds · Quezon City · replies within a day</p>
       </div>
       <aside class="works panel" aria-label="Selected work">
         <p class="works-label">Selected work</p>
         <ol class="works-list">
           {featured.map((project, i) => (
             <li>
-              <a class="work" href={project.data.liveUrl} target="_blank" rel="noopener">
+              <a
+                class="work"
+                href={project.data.liveUrl ?? project.data.repoUrl}
+                target="_blank"
+                rel="noopener"
+                aria-label={`${project.data.title} — ${project.data.liveUrl ? 'open live site' : 'view source on GitHub'} (opens in new tab)`}
+              >
                 <span class="work-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                 <span class="work-text">
                   <strong>{project.data.title}</strong>
@@ -66,7 +76,7 @@ const jsonLd = [
             </li>
           ))}
         </ol>
-        <p class="works-foot">Three distinct briefs, each designed around the business or story it serves.</p>
+        <p class="works-foot">{featured.length} distinct briefs, each designed around the business or story it serves.</p>
       </aside>
     </div>
   </section>
@@ -74,13 +84,13 @@ const jsonLd = [
   <SectionBand tone="mist">
     <header class="sec-head-bold">
       <h2>Different stories need different visual systems.</h2>
-      <p class="sec-lead">A caterer, a production studio, and a shared birthday monograph — each working site is shaped around its own audience and next action.</p>
+      <p class="sec-lead">A caterer, a café dashboard, a production studio, and a shared birthday monograph. Each working site is shaped around its own audience and next action.</p>
     </header>
     <div class="projects-stack home-projects">
       {leadProject && <ProjectCard project={leadProject} featured />}
       {supportingProjects.length > 0 && (
-        <div class="grid two">
-          {supportingProjects.map((project) => <ProjectCard project={project} />)}
+        <div class="grid home-supporting-grid">
+          {supportingProjects.map((project) => <ProjectCard project={project} compact />)}
         </div>
       )}
     </div>
@@ -102,10 +112,12 @@ const jsonLd = [
   </SectionBand>
 
   <section class="section band-dark closer">
+    <Constellation />
     <div class="container closer-inner">
       <p class="closer-kicker">Ready when you are</p>
       <h2 class="closer-title">Tell me what you need your site to <span class="closer-mark">do.</span></h2>
       <CTA label="Email me" showPhone />
+      <p class="closer-note">No forms, no pressure. A plain email describing your business is enough. I reply within a day.</p>
     </div>
   </section>
 </Base>

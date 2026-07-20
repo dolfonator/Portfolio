@@ -2,6 +2,8 @@
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+import Constellation from '../../components/Constellation.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 
 type Project = CollectionEntry<'projects'>;
@@ -19,9 +21,9 @@ const projectMix = `${commercialCount} commercial ${commercialCount === 1 ? 'sit
   <section class="section band-mist">
     <div class="container">
       <header class="page-head" data-reveal>
-        <p class="page-kicker"><span class="hero-dot" aria-hidden="true"></span>{projects.length} builds — live and clickable</p>
+        <p class="page-kicker"><span class="hero-dot" aria-hidden="true"></span>{projects.length} builds — open and explorable</p>
         <h1 class="page-title">Sites that look like the <span class="hero-mark">business</span>, not the template.</h1>
-        <p class="page-lead">{projectMix}, each art-directed for the audience it serves. Every project opens as a real, working site.</p>
+        <p class="page-lead">{projectMix}, each art-directed for the audience it serves. Every project opens as a real site or a real repo — nothing here is a mockup.</p>
       </header>
       <div class="projects-stack">
         {lead && <ProjectCard project={lead} featured headingLevel={2} />}
@@ -31,17 +33,29 @@ const projectMix = `${commercialCount} commercial ${commercialCount === 1 ? 'sit
           </div>
         )}
       </div>
-      {personalProjects.length > 0 && (
-        <section class="commissions" aria-labelledby="commissions-title">
-          <header class="commissions-head" data-reveal>
-            <p>Personal Commissions</p>
-            <h2 id="commissions-title">Specific builds for specific needs.</h2>
-          </header>
-          <div class="commission-list">
-            {personalProjects.map((project) => <ProjectCard project={project} compact headingLevel={3} />)}
-          </div>
-        </section>
-      )}
+    </div>
+  </section>
+
+  {personalProjects.length > 0 && (
+    <section class="section band-paper commissions" aria-labelledby="commissions-title">
+      <div class="container">
+        <header class="commissions-head" data-reveal>
+          <p>Personal Commissions</p>
+          <h2 id="commissions-title">Specific builds for specific needs.</h2>
+        </header>
+        <div class="commission-list">
+          {personalProjects.map((project) => <ProjectCard project={project} compact headingLevel={3} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="section band-dark closer">
+    <Constellation />
+    <div class="container closer-inner">
+      <p class="closer-kicker">Seen enough?</p>
+      <h2 class="closer-title">Tell me which one is <span class="closer-mark">closest</span> to your business.</h2>
+      <CTA label="Email me" showPhone />
     </div>
   </section>
 </Base>

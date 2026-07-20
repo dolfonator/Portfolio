@@ -12,33 +12,62 @@ interface Props {
 
 const { project, headingLevel = 3, featured = false, compact = false } = Astro.props;
 const Heading = `h${headingLevel}`;
-const href = project.data.liveUrl ?? '#';
+const href = project.data.liveUrl ?? project.data.repoUrl ?? '#';
+const titleLinkLabel = project.data.liveUrl
+  ? `${project.data.title} — open live site (opens in new tab)`
+  : project.data.repoUrl
+    ? `${project.data.title} — view source on GitHub (opens in new tab)`
+    : `${project.data.title} — view project`;
 ---
-<a class:list={[
+<article class:list={[
   'card panel',
   {
     'card-lead': featured,
     'card-compact': compact,
     'card-bubu': project.data.slug === 'bubu-workout',
   },
-]} href={href} target="_blank" rel="noopener" data-reveal>
+]} data-reveal>
   <div class="card-media">
-    <Image src={project.data.cover} alt={`${project.data.title} project preview`} widths={[420, 720, 1000]} sizes="(max-width: 860px) 100vw, 50vw" />
+    <span class="card-media-fallback" aria-hidden="true">{project.data.title.slice(0, 1)}</span>
+    <Image src={project.data.cover} alt={project.data.coverAlt ?? `${project.data.title} project preview`} widths={[420, 720, 1000]} sizes="(max-width: 860px) 100vw, 50vw" />
   </div>
   <div class="card-body panel-pad">
     <div class="card-meta">
       <span>{project.data.kind === 'commercial' ? 'Commercial' : 'Personal'}</span>
       <span>{project.data.year}</span>
+      {!project.data.liveUrl && project.data.repoUrl && <span class="pill card-kind">Code sample</span>}
     </div>
-    <Heading>{project.data.title}</Heading>
+    <Heading>
+      <a class="card-title-link" href={href} target="_blank" rel="noopener" aria-label={titleLinkLabel}>
+        {project.data.title}
+      </a>
+    </Heading>
     <p>{project.data.summary}</p>
-    {project.data.outcome && <p><strong>{project.data.outcome}</strong></p>}
+    {project.data.outcome && (
+      <div class="card-outcome">
+        <span class="card-outcome-label">Outcome</span>
+        <strong class="card-outcome-text">{project.data.outcome}</strong>
+      </div>
+    )}
     <div class="stack" aria-label="Stack">
       {project.data.stack.slice(0, 4).map((item: string) => <span class="pill">{item}</span>)}
     </div>
-    <span class="button secondary">
-      Open website
-      <Icon name="external" />
-    </span>
+    <div class="card-actions">
+      <span class="button secondary">
+        {project.data.liveUrl ? 'Open website' : 'View code'}
+        <Icon name="external" />
+      </span>
+      {project.data.liveUrl && project.data.repoUrl && (
+        <a
+          class="card-repo-link"
+          href={project.data.repoUrl}
+          target="_blank"
+          rel="noopener"
+          aria-label={`View ${project.data.title} source on GitHub`}
+        >
+          Code ↗
+        </a>
+      )}
+    </div>
   </div>
-</a>
+</article>

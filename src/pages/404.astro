@@ -4,17 +4,13 @@ import CTA from '../components/CTA.astro';
 ---
 <Base title="Page not found | Tristan" description="This page could not be found." canonical="/404/">
   <section class="section band-paper">
-    <div class="container split">
-      <div>
-        <p class="eyebrow">404</p>
-        <h1 class="page-title">That page is not here.</h1>
-        <p class="section-lead">The portfolio moved, or the link is mistyped. Start from the projects page or email me directly.</p>
-      </div>
-      <div class="panel panel-pad">
-        <div class="button-row">
-          <a class="button secondary" href="/projects/">View projects</a>
-          <CTA />
-        </div>
+    <div class="container not-found">
+      <p class="eyebrow">404</p>
+      <h1 class="page-title">That page is not here.</h1>
+      <p class="section-lead">The portfolio moved, or the link is mistyped. Start from the projects page or email me directly.</p>
+      <div class="button-row">
+        <a class="button secondary" href="/projects/">View projects</a>
+        <CTA />
       </div>
     </div>
   </section>

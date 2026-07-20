@@ -2,23 +2,27 @@
 const steps = [
   {
     title: 'Scope',
+    time: 'Usually 2–3 days',
     text: 'We choose the clearest version of the offer, the content you already have, and the action your customer should take.'
   },
   {
     title: 'Build',
+    time: 'Usually about a week',
     text: 'I turn that into a fast, responsive site with SEO basics, structured data, and direct contact routes.'
   },
   {
     title: 'Launch',
+    time: 'Same day',
     text: 'The first version goes online small enough to improve quickly after real visitors arrive.'
   }
 ];
 ---
-<ol class="process-list">
+<ol class="process-list panel">
   {steps.map((step) => (
     <li data-reveal>
       <div>
         <h3>{step.title}</h3>
+        <p class="process-time">{step.time}</p>
         <p>{step.text}</p>
       </div>
     </li>

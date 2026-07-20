@@ -246,8 +246,10 @@ CTAs, and a purposeful hover lift. Nothing tentative, nothing overwrought.
 - **Style:** sticky, blurred translucent Paper header with a 1px Line underbottom.
   Text links in Ink, pill hover fill in Mist. Brand mark is a navy disc with a white
   serif "T".
-- **Mobile:** below 860px the links collapse into a hamburger-triggered panel; the
-  theme toggle rides inside it.
+- **Mobile:** below 860px the links collapse into a hamburger-triggered panel
+  (icon swaps to an X while open; Escape and outside-click close it and return
+  focus). The theme toggle stays visible in the header bar, outside the panel.
+  "Email me" renders as the primary pill CTA at the end of the nav.
 - **Theme toggle:** a circular icon button (moon in light, sun in dark) that writes
   `data-theme` and persists to `localStorage`, with a no-flash inline script in
   `<head>` and `prefers-color-scheme` as the default.
@@ -255,15 +257,17 @@ CTAs, and a purposeful hover lift. Nothing tentative, nothing overwrought.
 ### Project Card (signature)
 The core proof unit. A 16:10 cover image (real project photography, screenshots, or
 character GIFs), a Commercial/Personal + year meta row, a Fraunces title, a concise
-summary, a bold outcome line, up to four stack pills, and an "Open website ↗"
-affordance. The whole card is one link straight to the canonical live site. Homepage
-featured work uses one wide lead card followed by two supporting cards. The Projects
-page separates commercial work from a two-card Personal Commissions row that stacks
-cleanly on mobile.
+summary, a hairline-topped "Outcome" row, up to four stack pills, and an honest
+"Open website ↗" (or "View code ↗" for repo-only work) affordance. The card is an
+`<article>`; the Fraunces title is the link, stretched over the whole card via a
+pseudo-element, with a separate z-raised "Code ↗" link when a live project also has
+a public repo. Homepage featured work uses one wide lead card followed by three
+compact supporting cards. The Projects page separates commercial work from a
+Personal Commissions band that stacks cleanly on mobile.
 
 ### Hero (signature)
 Two-column on desktop: left is eyebrow → serif H1 (≤11ch) → subhead → contact CTAs;
-right is the **Proof Panel**, a hairline-divided stack of three featured-work links. The
+right is the **Proof Panel**, a hairline-divided stack of featured-work links. The
 background is a theme-aware token gradient (a soft Steel glow top-right, a faint Amber
 glow bottom-left over Paper) — no raster image, so it stays clean in both themes.
 

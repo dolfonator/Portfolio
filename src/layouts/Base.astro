@@ -67,8 +67,13 @@ const navLinks = [
           <span class="brand-mark">T</span>
           <span>Tristan Dolfo<small>Freelance web developer</small></span>
         </a>
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" data-nav-toggle>
-          <Icon name="menu" />
+        <button class="theme-toggle" type="button" aria-label="Switch to dark theme" data-theme-toggle>
+          <span data-icon="moon"><Icon name="moon" /></span>
+          <span data-icon="sun"><Icon name="sun" /></span>
+        </button>
+        <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="nav" data-nav-toggle>
+          <span data-icon="menu"><Icon name="menu" /></span>
+          <span data-icon="close"><Icon name="close" /></span>
         </button>
         <nav class="nav" id="nav" aria-label="Primary" data-nav>
           {navLinks.map((link) => (
@@ -78,11 +83,7 @@ const navLinks = [
               aria-current={isCurrent(link.href) ? 'page' : undefined}
             >{link.label}</a>
           ))}
-          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=tristandolfo@gmail.com&su=Portfolio%20inquiry" target="_blank" rel="noopener">Email me</a>
-          <button class="theme-toggle" type="button" aria-label="Switch color theme" data-theme-toggle>
-            <span data-icon="moon"><Icon name="moon" /></span>
-            <span data-icon="sun"><Icon name="sun" /></span>
-          </button>
+          <a class="nav-cta" href="https://mail.google.com/mail/?view=cm&fs=1&to=tristandolfo@gmail.com&su=Portfolio%20inquiry" target="_blank" rel="noopener">Email me</a>
         </nav>
       </div>
     </header>
@@ -91,8 +92,25 @@ const navLinks = [
     </main>
     <footer class="site-footer">
       <div class="container footer-inner">
-        <p>Tristan, freelance web developer in Quezon City.</p>
-        <p><a href="https://mail.google.com/mail/?view=cm&fs=1&to=tristandolfo@gmail.com" target="_blank" rel="noopener">tristandolfo@gmail.com</a> · <a href="tel:+639998827004">0999-882-7004</a></p>
+        <div class="footer-primary">
+          <p class="footer-signoff">Built by hand — this site is the sample.</p>
+          <div class="footer-actions">
+            <a class="footer-contact" href="https://mail.google.com/mail/?view=cm&fs=1&to=tristandolfo@gmail.com&su=Portfolio%20inquiry" target="_blank" rel="noopener">Email me</a>
+            <a class="footer-contact" href="tel:+639998827004">0999-882-7004</a>
+            <a class="footer-social" href="https://github.com/dolfonator" target="_blank" rel="noopener" aria-label="Tristan Dolfo on GitHub">
+              <Icon name="github" />
+            </a>
+            <a class="footer-social" href="https://www.facebook.com/tristan.dolfo.7" target="_blank" rel="noopener" aria-label="Tristan Dolfo on Facebook">
+              <Icon name="facebook" />
+            </a>
+          </div>
+        </div>
+        <div class="footer-secondary">
+          <nav class="footer-nav" aria-label="Footer">
+            {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+          </nav>
+          <p>Quezon City, Philippines · usually replies within a day</p>
+        </div>
       </div>
     </footer>
     <script>
@@ -103,19 +121,60 @@ const navLinks = [
         'font: 400 13px/1.6 system-ui, sans-serif; color: #4A6FA5'
       );
 
-      const nav = document.querySelector('[data-nav]');
-      const toggle = document.querySelector('[data-nav-toggle]');
-      const themeToggle = document.querySelector('[data-theme-toggle]');
+      const nav = document.querySelector<HTMLElement>('[data-nav]');
+      const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+      const themeToggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+
+      const handleNavKeydown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') closeNav(true);
+      };
+
+      const handleOutsideClick = (event: MouseEvent) => {
+        const target = event.target;
+        if (target instanceof Node && !nav?.contains(target) && !toggle?.contains(target)) {
+          closeNav(true);
+        }
+      };
+
+      const setNavOpen = (isOpen: boolean) => {
+        nav?.setAttribute('data-open', String(isOpen));
+        toggle?.setAttribute('aria-expanded', String(isOpen));
+        toggle?.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+        if (isOpen) {
+          document.addEventListener('keydown', handleNavKeydown);
+          document.addEventListener('click', handleOutsideClick);
+        } else {
+          document.removeEventListener('keydown', handleNavKeydown);
+          document.removeEventListener('click', handleOutsideClick);
+        }
+      };
+
+      const closeNav = (returnFocus = false) => {
+        if (nav?.getAttribute('data-open') !== 'true') return;
+        setNavOpen(false);
+        if (returnFocus) toggle?.focus();
+      };
+
       toggle?.addEventListener('click', () => {
-        const isOpen = nav?.getAttribute('data-open') === 'true';
-        nav?.setAttribute('data-open', String(!isOpen));
-        toggle.setAttribute('aria-expanded', String(!isOpen));
+        setNavOpen(nav?.getAttribute('data-open') !== 'true');
       });
+
+      nav?.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => closeNav());
+      });
+
+      const updateThemeLabel = () => {
+        const isDark = document.documentElement.dataset.theme === 'dark';
+        themeToggle?.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
+      };
+
+      updateThemeLabel();
 
       themeToggle?.addEventListener('click', () => {
         const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
         document.documentElement.dataset.theme = nextTheme;
         localStorage.setItem('theme', nextTheme);
+        updateThemeLabel();
       });
 
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

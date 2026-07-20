@@ -7,7 +7,9 @@ const tiers = [
   {
     tag: 'Starter',
     title: 'A polished one-page presence',
+    bestFor: 'a café or clinic that just needs to be found and called.',
     subject: 'Starter website quote',
+    ctaLabel: 'Start a Starter conversation',
     points: [
       'Hero, offer, proof, location and contact, one clear CTA',
       'Mobile-first responsive design',
@@ -18,7 +20,9 @@ const tiers = [
   {
     tag: 'Business',
     title: 'Your full menu or service story, on-site',
+    bestFor: 'a restaurant or service business with real content to show, such as a menu, services, or a gallery.',
     subject: 'Business website quote',
+    ctaLabel: 'Start a Business conversation',
     points: [
       'Multi-section or multi-page site',
       'Menu or services, gallery, reviews, FAQs',
@@ -29,7 +33,9 @@ const tiers = [
   {
     tag: 'Premier',
     title: 'Custom builds for specific workflows',
+    bestFor: 'a business that needs an interactive tool or system, not a brochure.',
     subject: 'Premier website quote',
+    ctaLabel: 'Start a Premier conversation',
     points: [
       'Interactive tools or richer content systems',
       'Serverless functions when the site needs state',
@@ -51,22 +57,34 @@ const compose = (subject: string) => `https://mail.google.com/mail/?view=cm&fs=1
       </header>
       <div class="svc-tiers">
         {tiers.map((tier) => (
-          <article class="svc-tier" data-reveal>
+          <article class:list={['svc-tier', { 'is-recommended': tier.tag === 'Business' }]} data-reveal>
             <div class="svc-head">
-              <span class="svc-tag">{tier.tag}</span>
+              <div class="svc-labels">
+                <span class="svc-tag">{tier.tag}</span>
+                {tier.tag === 'Business' && <span class="svc-recommendation">Most owners start here</span>}
+              </div>
               <h2>{tier.title}</h2>
+              <p class="svc-fit"><strong>Best for:</strong> {tier.bestFor}</p>
             </div>
             <div class="svc-detail">
               <ul class="svc-list">
                 {tier.points.map((point) => <li>{point}</li>)}
               </ul>
-              <a class="svc-link" href={compose(tier.subject)} target="_blank" rel="noopener">
-                Email me for a quote
+              <a class:list={['button', { secondary: tier.tag !== 'Business' }]} href={compose(tier.subject)} target="_blank" rel="noopener">
+                {tier.ctaLabel}
                 <Icon name="arrow" />
               </a>
             </div>
           </article>
         ))}
+      </div>
+      <div class="svc-includes" data-reveal>
+        <p>Every tier includes</p>
+        <ul aria-label="Included with every website tier">
+          <li class="pill">Mobile-first build</li>
+          <li class="pill">SEO basics</li>
+          <li class="pill">Optional care plan after launch</li>
+        </ul>
       </div>
     </div>
   </section>

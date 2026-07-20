@@ -14,9 +14,11 @@ const projects = defineCollection({
       clientType: z.string(),
       stack: z.array(z.string()),
       liveUrl: z.string().optional(),
+      repoUrl: z.string().optional(),
       year: z.number(),
       summary: z.string(),
       outcome: z.string().optional(),
+      coverAlt: z.string().optional(),
       cover: image()
     })
 });
