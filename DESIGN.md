@@ -1,6 +1,6 @@
 ---
 name: Tristan Portfolio
-description: A confident, navy-anchored portfolio for a Quezon City freelance web developer — warm amber accents, editorial serif display, light + dark.
+description: A confident, navy-anchored portfolio for a Quezon City software developer, with warm amber accents, editorial serif display, light + dark.
 colors:
   navy: "#14304E"
   navy-deep: "#0B1F35"
@@ -261,9 +261,9 @@ summary, a hairline-topped "Outcome" row, up to four stack pills, and an honest
 "Open website ↗" (or "View code ↗" for repo-only work) affordance. The card is an
 `<article>`; the Fraunces title is the link, stretched over the whole card via a
 pseudo-element, with a separate z-raised "Code ↗" link when a live project also has
-a public repo. Homepage featured work uses one wide lead card followed by three
-compact supporting cards. The Projects page separates commercial work from a
-Personal Commissions band that stacks cleanly on mobile.
+a public repo. The homepage and Projects page use consistent compact rows for
+commercial work. The Projects page separates that work from a Personal Commissions
+band that stacks cleanly on mobile.
 
 ### Hero (signature)
 Two-column on desktop: left is eyebrow → serif H1 (≤11ch) → subhead → contact CTAs;

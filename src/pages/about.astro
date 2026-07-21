@@ -6,7 +6,7 @@ import Icon from '../components/Icon.astro';
 const principles = [
   {
     title: 'Clear offer',
-    body: 'The page should explain what the business does, who it helps, and what visitors should do next without making wasting time.',
+    body: 'The page should explain what the business does, who it helps, and what visitors should do next without wasting time.',
     projectName: "Herminia's Food Catering",
     evidenceHref: 'https://herminias-catering.vercel.app/',
   },
@@ -28,11 +28,11 @@ const stackGroups = [
   { label: 'Languages', items: ['Python', 'JavaScript', 'TypeScript'] },
   { label: 'Frontend', items: ['React', 'Next.js', 'Astro'] },
   { label: 'Backend', items: ['Django', 'FastAPI', 'Node.js', 'n8n', 'Supabase'] },
-  { label: 'Agentic Tools', items: ['Claude', 'Codex', 'SuperGrok'], accent: true },
+  { label: 'Agentic Tools', items: ['Claude', 'Codex', 'SuperGrok'] },
   { label: 'Embedded', items: ['ESP32', 'Arduino', 'Raspberry Pi', 'C++'] },
 ];
 ---
-<Base title="About | Tristan" description="About Tristan, a freelance software developer in Quezon City building reliable sites and systems for various businesses, and specific needs." canonical="/about/">
+<Base title="About | Tristan" description="About Tristan, a software developer in Quezon City building reliable sites and systems for businesses and specific needs." canonical="/about/">
   <section class="section band-mist">
     <div class="container about-masthead">
       <div class="about-identity">
@@ -65,7 +65,7 @@ const stackGroups = [
       <div class="about-intro" data-reveal>
         <div class="about-bio">
           <p class="about-lede">I’m Tristan, a software developer in Quezon City. I build fast, polished, and reliable websites and systems for various businesses.</p>
-          <p>My working style is simple: make the offer clear, make the site/system fast, and make you feel secured in your product. For clients who need more than a brochure, I build small interactive systems with serverless APIs and meticuluous frontend behavior.</p>
+          <p>My working style is simple: make the offer clear, make the site or system fast, and make you feel confident in your product. For clients who need more than a brochure, I build small interactive systems with serverless APIs and meticulous frontend behavior.</p>
           <CTA showPhone subject="Portfolio inquiry" class="about-cta" />
         </div>
       </div>
@@ -75,12 +75,12 @@ const stackGroups = [
   <section class="section band-paper">
     <div class="container">
       <header class="sec-head-bold" data-reveal>
-        <h2>What I build with.</h2> 
+        <h2 class="is-accent">What I build with:</h2>
       </header>
       <div class="tech-list" data-reveal>
         {stackGroups.map((group) => (
           <div class="tech-row">
-            <h3 class:list={{ 'is-accent': group.accent }}>{group.label}</h3>
+            <h3>{group.label}</h3>
             <ul class="stack" aria-label={`${group.label} tools`}>
               {group.items.map((item) => <li class="pill">{item}</li>)}
             </ul>

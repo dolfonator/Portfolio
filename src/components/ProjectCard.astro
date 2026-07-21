@@ -14,10 +14,10 @@ const { project, headingLevel = 3, featured = false, compact = false } = Astro.p
 const Heading = `h${headingLevel}`;
 const href = project.data.liveUrl ?? project.data.repoUrl ?? '#';
 const titleLinkLabel = project.data.liveUrl
-  ? `${project.data.title} — open live site (opens in new tab)`
+  ? `${project.data.title}: open live site (opens in new tab)`
   : project.data.repoUrl
-    ? `${project.data.title} — view source on GitHub (opens in new tab)`
-    : `${project.data.title} — view project`;
+    ? `${project.data.title}: view source on GitHub (opens in new tab)`
+    : `${project.data.title}: view project`;
 ---
 <article class:list={[
   'card panel',

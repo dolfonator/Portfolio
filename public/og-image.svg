@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
   <title id="title">Tristan Dolfo Portfolio</title>
-  <desc id="desc">Freelance web developer in Quezon City — fast websites for local businesses</desc>
+  <desc id="desc">Software developer in Quezon City, building fast websites for local businesses</desc>
   <rect width="1200" height="630" fill="#F7F9FC"/>
   <rect x="48" y="48" width="1104" height="534" rx="18" fill="#DCE6F1" stroke="#14304E" stroke-width="3"/>
   <path d="M48 430h1104v152H48z" fill="#14304E"/>
@@ -8,7 +8,7 @@
   <rect x="766" y="120" width="158" height="104" rx="8" fill="#FFFFFF" stroke="#14304E" stroke-width="3"/>
   <rect x="802" y="160" width="224" height="140" rx="8" fill="#FFFFFF" stroke="#14304E" stroke-width="3"/>
   <path d="M832 200h108M832 230h152M832 260h80" stroke="#D9822B" stroke-width="12" stroke-linecap="round"/>
-  <text x="104" y="150" fill="#935214" font-family="Arial, sans-serif" font-size="27" font-weight="700" letter-spacing="5">QUEZON CITY WEB DEVELOPER</text>
+  <text x="104" y="150" fill="#935214" font-family="Arial, sans-serif" font-size="27" font-weight="700" letter-spacing="5">QUEZON CITY SOFTWARE DEVELOPER</text>
   <text x="102" y="268" fill="#16202B" font-family="Georgia, serif" font-size="84" font-weight="700">Tristan Dolfo</text>
   <text x="104" y="352" fill="#16202B" font-family="Georgia, serif" font-size="50" font-weight="700">Fast websites for local businesses.</text>
   <text x="104" y="512" fill="#F7F9FC" font-family="Arial, sans-serif" font-size="34" font-weight="700">tristandolfo@gmail.com</text>

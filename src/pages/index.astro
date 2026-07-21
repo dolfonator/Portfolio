@@ -16,7 +16,6 @@ const projectCount = projects.length;
 const featured = projects
   .filter((project: Project) => project.data.featured)
   .sort((a: Project, b: Project) => a.data.displayOrder - b.data.displayOrder);
-const [leadProject, ...supportingProjects] = featured;
 
 const jsonLd = [
   {
@@ -30,7 +29,7 @@ const jsonLd = [
       addressLocality: 'Quezon City',
       addressCountry: 'PH'
     },
-    jobTitle: 'Freelance Web Developer'
+    jobTitle: 'Software Developer'
   },
   {
     '@context': 'https://schema.org',
@@ -48,7 +47,7 @@ const jsonLd = [
     <Constellation />
     <div class="container hero-grid">
       <div class="hero-copy">
-        <p class="hero-kicker"><span class="hero-dot" aria-hidden="true"></span>Quezon City · freelance web developer</p>
+        <p class="hero-kicker"><span class="hero-dot" aria-hidden="true"></span>Quezon City · software developer</p>
         <h1 class="hero-title">Sites and systems for your <span class="hero-mark">every need.</span></h1>
         <p class="hero-sub">I build polished and reliable sites and management systems for restaurants, cafés, small teams, and just about anyone who needs software or tech help.</p>
         <CTA showPhone />
@@ -64,7 +63,7 @@ const jsonLd = [
                 href={project.data.liveUrl ?? project.data.repoUrl}
                 target="_blank"
                 rel="noopener"
-                aria-label={`${project.data.title} — ${project.data.liveUrl ? 'open live site' : 'view source on GitHub'} (opens in new tab)`}
+                aria-label={`${project.data.title}: ${project.data.liveUrl ? 'open live site' : 'view source on GitHub'} (opens in new tab)`}
               >
                 <span class="work-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                 <span class="work-text">
@@ -86,13 +85,8 @@ const jsonLd = [
       <h2>Different stories need different visual systems.</h2>
       <p class="sec-lead">A caterer and a production studio's online presence; a café dashboard system; and personal commissions. Each working product is shaped around its own client and audience.</p>
     </header>
-    <div class="projects-stack home-projects">
-      {leadProject && <ProjectCard project={leadProject} featured />}
-      {supportingProjects.length > 0 && (
-        <div class="grid home-supporting-grid">
-          {supportingProjects.map((project) => <ProjectCard project={project} compact />)}
-        </div>
-      )}
+    <div class="commercial-supporting home-projects">
+      {featured.map((project) => <ProjectCard project={project} compact />)}
     </div>
   </SectionBand>
 
