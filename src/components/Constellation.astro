@@ -5,7 +5,7 @@ interface Props {
 }
 
 const {
-  density = 110,
+  density = 130,
   class: className = ''
 } = Astro.props as Props;
 ---
@@ -37,6 +37,7 @@ const {
   type DriftNode = Point & {
     vx: number;
     vy: number;
+    phase: number;
   };
   type IslandVertex = {
     angle: number;
@@ -52,7 +53,13 @@ const {
   type Link = {
     start: Point;
     end: Point;
-    distance: number;
+    strength: number;
+  };
+  type ShootingStar = Point & {
+    vx: number;
+    vy: number;
+    life: number;
+    maxLife: number;
   };
   type NavigatorWithConnection = Navigator & { connection?: { saveData?: boolean } };
 
@@ -64,7 +71,7 @@ const {
     if (!parent || !context) return;
 
     const root = document.documentElement;
-    const targetCount = Math.max(60, Math.min(180, Math.round(Number(canvas.dataset.density) || 110)));
+    const targetCount = Math.max(60, Math.min(180, Math.round(Number(canvas.dataset.density) || 130)));
     const shouldAnimate = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
       && (navigator as NavigatorWithConnection).connection?.saveData !== true;
     const interactionRadius = 170;
@@ -72,6 +79,8 @@ const {
     const pointer = { x: 0, y: 0, active: false };
     let nodes: DriftNode[] = [];
     let islands: Island[] = [];
+    const shootingStars: ShootingStar[] = [];
+    let shootingTimer = 4 + Math.random() * 8;
     let width = 0;
     let height = 0;
     let isVisible = true;
@@ -132,6 +141,7 @@ const {
         warm,
         lineAlpha: dark ? 0.17 : 0.21,
         islandAlpha: dark ? 0.25 : 0.29,
+        fillAlpha: dark ? 0.06 : 0.07,
         dotAlpha: dark ? 0.52 : 0.58
       };
     };
@@ -159,8 +169,8 @@ const {
     const seedScene = () => {
       const random = createRandom(0x51A7D11 + canvasIndex * 0x9E3779B1);
       const areaScale = clamp(Math.sqrt((width * height) / (1100 * 700)), 0.68, 1.2);
-      const minimumCount = Math.min(72, targetCount);
-      const maximumCount = Math.max(minimumCount, Math.min(150, targetCount + 24));
+      const minimumCount = Math.min(84, targetCount);
+      const maximumCount = Math.max(minimumCount, Math.min(168, targetCount + 24));
       const nodeCount = clamp(Math.round(targetCount * areaScale), minimumCount, maximumCount);
       const minimumSpacing = Math.sqrt((width * height) / nodeCount) * 0.43;
 
@@ -179,14 +189,15 @@ const {
           }
         }
 
-        nodes.push({ x, y, ...makeVelocity(random, 3.4, 7.2) });
+        nodes.push({ x, y, phase: random() * Math.PI * 2, ...makeVelocity(random, 7, 13) });
       }
 
-      const minimumIslandCount = width < 700 ? 2 : 3;
+      // Islands stay scarce so free stars dominate the field.
+      const minimumIslandCount = 2;
       const islandCount = clamp(
-        Math.round((width * height) / 320000),
+        Math.round((width * height) / 420000),
         minimumIslandCount,
-        4
+        3
       );
       islands = [];
       for (let islandIndex = 0; islandIndex < islandCount; islandIndex += 1) {
@@ -207,6 +218,7 @@ const {
           x,
           y,
           ...velocity,
+          phase: random() * Math.PI * 2,
           rotation: random() * Math.PI * 2,
           spin: (random() < 0.5 ? -1 : 1) * (0.018 + random() * 0.024),
           outerRadius,
@@ -281,61 +293,120 @@ const {
         bounce(node, 7);
       }
 
+      // Islands wrap around the edges instead of bouncing — constellations
+      // wheel across the sky, they don't rebound off it.
       for (const island of islands) {
         island.x += island.vx * deltaSeconds;
         island.y += island.vy * deltaSeconds;
         island.rotation += island.spin * deltaSeconds;
-        bounce(island, island.outerRadius + 10);
+        const margin = island.outerRadius + 20;
+        if (island.x < -margin) island.x = width + margin;
+        else if (island.x > width + margin) island.x = -margin;
+        if (island.y < -margin) island.y = height + margin;
+        else if (island.y > height + margin) island.y = -margin;
       }
+
+      // Shooting stars: at most one at a time, every ~8–20s, streaking a
+      // shallow diagonal and burning out before the band's edge.
+      for (let index = shootingStars.length - 1; index >= 0; index -= 1) {
+        const star = shootingStars[index];
+        star.x += star.vx * deltaSeconds;
+        star.y += star.vy * deltaSeconds;
+        star.life += deltaSeconds;
+        if (star.life >= star.maxLife) shootingStars.splice(index, 1);
+      }
+
+      shootingTimer -= deltaSeconds;
+      if (shootingTimer <= 0 && shootingStars.length === 0 && width > 480) {
+        const leftward = Math.random() < 0.5;
+        const angle = (28 + Math.random() * 22) * (Math.PI / 180);
+        const speed = 420 + Math.random() * 200;
+        shootingStars.push({
+          x: leftward ? width * (0.55 + Math.random() * 0.4) : width * (0.05 + Math.random() * 0.4),
+          y: height * (0.05 + Math.random() * 0.25),
+          vx: Math.cos(angle) * speed * (leftward ? -1 : 1),
+          vy: Math.sin(angle) * speed,
+          life: 0,
+          maxLife: 0.9 + Math.random() * 0.5
+        });
+        shootingTimer = 8 + Math.random() * 12;
+      }
+
+      const meteorCount = String(shootingStars.length);
+      if (canvas.dataset.meteorCount !== meteorCount) canvas.dataset.meteorCount = meteorCount;
     };
 
-    const islandPointsAt = (island: Island, time: number): Point[] => island.vertices.map((vertex) => {
-      const radius = vertex.radius * (1 + Math.sin(time * 0.00022 + vertex.phase) * 0.045);
-      const angle = vertex.angle + island.rotation;
-      return {
-        x: island.x + Math.cos(angle) * radius,
-        y: island.y + Math.sin(angle) * radius
-      };
-    });
+    const islandPointsAt = (island: Island, time: number): (Point & { phase: number })[] =>
+      island.vertices.map((vertex) => {
+        const radius = vertex.radius * (1 + Math.sin(time * 0.00022 + vertex.phase) * 0.045);
+        const angle = vertex.angle + island.rotation;
+        return {
+          x: island.x + Math.cos(angle) * radius,
+          y: island.y + Math.sin(angle) * radius,
+          phase: vertex.phase
+        };
+      });
 
-    const sparseLinks = () => {
+    // Proximity links with a strength that fades toward the reach limit, so
+    // connections breathe in and out as stars approach and part instead of
+    // popping at a threshold. Island vertices join the pool — a passing star
+    // links onto a constellation, then lets go — but islands never link to
+    // each other, so each keeps its own silhouette.
+    const linkRadiusFor = () => {
       const spacing = Math.sqrt((width * height) / Math.max(1, nodes.length));
-      const linkRadius = clamp(spacing * 1.45, 88, 138);
-      const candidates: Link[] = [];
+      return clamp(spacing * 1.4, 86, 128);
+    };
+
+    type LinkGraph = {
+      links: Link[];
+      starNeighbors: number[][];
+      starLinked: Set<number>;
+      starStrength: Map<number, number>;
+    };
+
+    const buildLinks = (islandPoints: Point[]): LinkGraph => {
+      const linkRadius = linkRadiusFor();
+      const links: Link[] = [];
+      const starNeighbors: number[][] = nodes.map(() => []);
+      const starLinked = new Set<number>();
+      const starStrength = new Map<number, number>();
+      const pairKey = (a: number, b: number) => a * nodes.length + b;
 
       for (let startIndex = 0; startIndex < nodes.length; startIndex += 1) {
         for (let endIndex = startIndex + 1; endIndex < nodes.length; endIndex += 1) {
           const start = nodes[startIndex];
           const end = nodes[endIndex];
           const distance = Math.hypot(end.x - start.x, end.y - start.y);
-          if (distance <= linkRadius) candidates.push({ start, end, distance });
+          if (distance > linkRadius) continue;
+          const strength = 1 - distance / linkRadius;
+          links.push({ start, end, strength });
+          starNeighbors[startIndex].push(endIndex);
+          starLinked.add(pairKey(startIndex, endIndex));
+          starStrength.set(pairKey(startIndex, endIndex), strength);
         }
       }
 
-      candidates.sort((a, b) => a.distance - b.distance);
-      const degree = new Map<Point, number>();
-      const links: Link[] = [];
-      const edgeLimit = Math.round(nodes.length * 0.72);
-
-      for (const candidate of candidates) {
-        if (links.length >= edgeLimit) break;
-        const startDegree = degree.get(candidate.start) || 0;
-        const endDegree = degree.get(candidate.end) || 0;
-        if (startDegree >= 3 || endDegree >= 3) continue;
-        links.push(candidate);
-        degree.set(candidate.start, startDegree + 1);
-        degree.set(candidate.end, endDegree + 1);
+      for (const islandPoint of islandPoints) {
+        for (const star of nodes) {
+          const distance = Math.hypot(islandPoint.x - star.x, islandPoint.y - star.y);
+          if (distance > linkRadius) continue;
+          links.push({ start: islandPoint, end: star, strength: 1 - distance / linkRadius });
+        }
       }
 
-      return links;
+      return { links, starNeighbors, starLinked, starStrength };
     };
 
+    // Stars twinkle: size and brightness ride a slow per-star sine, so the
+    // field shimmers gently even where nothing is drifting past.
     const drawDiamond = (
-      point: Point,
-      palette: NonNullable<ReturnType<typeof readPalette>>
+      point: Point & { phase?: number },
+      palette: NonNullable<ReturnType<typeof readPalette>>,
+      time: number
     ) => {
       const warmth = warmthFor(Math.hypot(pointer.x - point.x, pointer.y - point.y));
-      const size = 1.25 + warmth * 1.15;
+      const twinkle = point.phase === undefined ? 0 : Math.sin(time * 0.0007 + point.phase);
+      const size = 1.25 + twinkle * 0.3 + warmth * 1.15;
       context.beginPath();
       context.moveTo(point.x, point.y - size);
       context.lineTo(point.x + size, point.y);
@@ -343,7 +414,7 @@ const {
       context.lineTo(point.x - size, point.y);
       context.closePath();
       context.fillStyle = cssColor(mix(palette.steel, palette.warm, warmth));
-      context.globalAlpha = palette.dotAlpha + warmth * 0.4;
+      context.globalAlpha = clamp(palette.dotAlpha + twinkle * 0.1 + warmth * 0.4, 0.1, 1);
       context.fill();
     };
 
@@ -354,23 +425,63 @@ const {
 
       context.clearRect(0, 0, width, height);
       const islandPointSets = islands.map((island) => islandPointsAt(island, time));
+      const graph = buildLinks(islandPointSets.flat());
 
-      // Sparse drift keeps only the shortest local links and caps both the
-      // total edge count and each star's degree. The field never becomes a mesh.
-      for (const link of sparseLinks()) {
-        strokeEdge(link.start, link.end, palette);
-      }
-
-      // A few self-contained islands add recognizable local forms without
-      // joining the surrounding stars into continents.
+      // Islands carry a faint interior wash under their outline, so each
+      // constellation reads as a shape, not just a ring of edges.
       islandPointSets.forEach((points, islandIndex) => {
+        const island = islands[islandIndex];
+        const warmth = warmthFor(Math.hypot(pointer.x - island.x, pointer.y - island.y));
+        context.beginPath();
+        context.moveTo(points[0].x, points[0].y);
+        for (let index = 1; index < points.length; index += 1) {
+          context.lineTo(points[index].x, points[index].y);
+        }
+        context.closePath();
+        context.fillStyle = cssColor(mix(palette.steel, palette.warm, warmth));
+        context.globalAlpha = palette.fillAlpha + warmth * 0.08;
+        context.fill();
         for (let index = 0; index < points.length; index += 1) {
           strokeEdge(points[index], points[(index + 1) % points.length], palette, palette.islandAlpha);
         }
-        if (points.length >= 5 && islandIndex % 2 === 0) {
-          strokeEdge(points[0], points[Math.floor(points.length / 2)], palette, palette.lineAlpha * 0.72);
-        }
       });
+
+      // Quad glints: when four linked stars happen to close a loop, the facet
+      // catches a faint wash — the free field's polygon signature, kept rare
+      // by geometry rather than by decree.
+      const quadKey = (a: number, b: number) => a * nodes.length + b;
+      for (let i = 0; i < nodes.length; i += 1) {
+        const near = graph.starNeighbors[i];
+        for (let a = 0; a < near.length; a += 1) {
+          for (let b = a + 1; b < near.length; b += 1) {
+            for (const c of graph.starNeighbors[near[a]]) {
+              if (c <= i || c === near[b]) continue;
+              if (!graph.starLinked.has(quadKey(Math.min(near[b], c), Math.max(near[b], c)))) continue;
+              if (graph.starLinked.has(quadKey(i, c))) continue;
+              const quad = [nodes[i], nodes[near[a]], nodes[c], nodes[near[b]]];
+              const warmth = warmthFor(Math.hypot(
+                pointer.x - (quad[0].x + quad[1].x + quad[2].x + quad[3].x) / 4,
+                pointer.y - (quad[0].y + quad[1].y + quad[2].y + quad[3].y) / 4
+              ));
+              context.beginPath();
+              context.moveTo(quad[0].x, quad[0].y);
+              for (let corner = 1; corner < 4; corner += 1) {
+                context.lineTo(quad[corner].x, quad[corner].y);
+              }
+              context.closePath();
+              context.fillStyle = cssColor(mix(palette.steel, palette.warm, warmth));
+              context.globalAlpha = 0.05 + warmth * 0.09;
+              context.fill();
+            }
+          }
+        }
+      }
+
+      // Links breathe: alpha follows strength, so a connection eases in as
+      // two stars converge and lets go as they part.
+      for (const link of graph.links) {
+        strokeEdge(link.start, link.end, palette, palette.lineAlpha * (0.3 + 0.7 * link.strength));
+      }
 
       const allPoints = [...nodes, ...islandPointSets.flat()];
 
@@ -395,7 +506,34 @@ const {
         }
       }
 
-      for (const point of allPoints) drawDiamond(point, palette);
+      for (const point of allPoints) drawDiamond(point, palette, time);
+
+      // Shooting stars: an amber head with a tail that fades along its own
+      // trajectory; the whole streak eases in and out over its short life.
+      for (const star of shootingStars) {
+        const progress = star.life / star.maxLife;
+        const envelope = Math.sin(Math.PI * Math.min(1, progress));
+        const speed = Math.hypot(star.vx, star.vy) || 1;
+        const tailLength = 60 + envelope * 46;
+        const tailX = star.x - (star.vx / speed) * tailLength;
+        const tailY = star.y - (star.vy / speed) * tailLength;
+        const trail = context.createLinearGradient(star.x, star.y, tailX, tailY);
+        const head = cssColor(palette.warm);
+        trail.addColorStop(0, head);
+        trail.addColorStop(1, 'transparent');
+        context.beginPath();
+        context.moveTo(star.x, star.y);
+        context.lineTo(tailX, tailY);
+        context.strokeStyle = trail;
+        context.globalAlpha = 0.65 * envelope;
+        context.lineWidth = 1.4;
+        context.stroke();
+        context.beginPath();
+        context.arc(star.x, star.y, 1.7, 0, Math.PI * 2);
+        context.fillStyle = head;
+        context.globalAlpha = 0.85 * envelope;
+        context.fill();
+      }
       context.globalAlpha = 1;
     };
 
