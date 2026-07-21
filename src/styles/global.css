@@ -188,6 +188,17 @@ li + li { margin-top: .35rem; }
     repeating-linear-gradient(60deg, var(--poly-line) 0 1px, transparent 1px 64px),
     repeating-linear-gradient(-60deg, var(--poly-line) 0 1px, transparent 1px 64px);
 }
+/* Starfield backdrop — the hero's gradient wash, reused by any section that
+   hosts a <Constellation />. Base is --paper, so it flips with the theme.
+   Declared after the band rules so it wins the shorthand on source order. */
+.hero,
+.starfield {
+  position: relative;
+  background:
+    radial-gradient(115% 85% at 88% 12%, color-mix(in srgb, var(--steel) 20%, transparent) 0%, transparent 58%),
+    radial-gradient(100% 75% at 6% 108%, color-mix(in srgb, var(--amber) 12%, transparent) 0%, transparent 55%),
+    var(--paper);
+}
 .band-dark {
   background: var(--navy-2);
   color: var(--on-dark);
@@ -269,10 +280,6 @@ li + li { margin-top: .35rem; }
   display: grid;
   align-items: center;
   padding: clamp(3.5rem, 2rem + 6vw, 7rem) 0 var(--space-6);
-  background:
-    radial-gradient(115% 85% at 88% 12%, color-mix(in srgb, var(--steel) 20%, transparent) 0%, transparent 58%),
-    radial-gradient(100% 75% at 6% 108%, color-mix(in srgb, var(--amber) 12%, transparent) 0%, transparent 55%),
-    var(--paper);
 }
 .hero-grid {
   position: relative;
@@ -760,6 +767,9 @@ li + li { margin-top: .35rem; }
   text-wrap: balance;
   max-width: 18ch;
 }
+/* Page titles wrap at line-height 1.04, so the default .12em drop reads as
+   belonging to the line below. Pull the bar back onto its own baseline. */
+.page-title .hero-mark { padding-bottom: .02em; }
 .page-lead {
   margin-top: var(--space-4);
   max-width: 58ch;

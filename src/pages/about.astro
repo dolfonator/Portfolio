@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import CTA from '../components/CTA.astro';
+import Constellation from '../components/Constellation.astro';
 import Icon from '../components/Icon.astro';
 
 const principles = [
@@ -72,7 +73,8 @@ const stackGroups = [
     </div>
   </section>
 
-  <section class="section band-paper">
+  <section class="section starfield">
+    <Constellation density={95} islandLimit={2} />
     <div class="container">
       <header class="sec-head-bold" data-reveal>
         <h2 class="is-accent">What I build with:</h2>

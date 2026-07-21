@@ -1,11 +1,13 @@
 ---
 interface Props {
   density?: number;
+  islandLimit?: number;
   class?: string;
 }
 
 const {
   density = 130,
+  islandLimit = 3,
   class: className = ''
 } = Astro.props as Props;
 ---
@@ -14,6 +16,7 @@ const {
   class:list={['constellation', className]}
   data-constellation
   data-density={density}
+  data-island-limit={islandLimit}
   aria-hidden="true"
 ></canvas>
 
@@ -72,6 +75,7 @@ const {
 
     const root = document.documentElement;
     const targetCount = Math.max(60, Math.min(180, Math.round(Number(canvas.dataset.density) || 130)));
+    const islandLimit = Math.max(2, Math.min(6, Math.round(Number(canvas.dataset.islandLimit) || 3)));
     const shouldAnimate = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
       && (navigator as NavigatorWithConnection).connection?.saveData !== true;
     const interactionRadius = 170;
@@ -170,7 +174,9 @@ const {
       const random = createRandom(0x51A7D11 + canvasIndex * 0x9E3779B1);
       const areaScale = clamp(Math.sqrt((width * height) / (1100 * 700)), 0.68, 1.2);
       const minimumCount = Math.min(84, targetCount);
-      const maximumCount = Math.max(minimumCount, Math.min(168, targetCount + 24));
+      // Ceiling sits above the default band's reach so a tall section asking for
+      // a denser field actually gets one; at the default density it never binds.
+      const maximumCount = Math.max(minimumCount, Math.min(200, targetCount + 24));
       const nodeCount = clamp(Math.round(targetCount * areaScale), minimumCount, maximumCount);
       const minimumSpacing = Math.sqrt((width * height) / nodeCount) * 0.43;
 
@@ -197,7 +203,7 @@ const {
       const islandCount = clamp(
         Math.round((width * height) / 420000),
         minimumIslandCount,
-        3
+        islandLimit
       );
       islands = [];
       for (let islandIndex = 0; islandIndex < islandCount; islandIndex += 1) {
@@ -623,7 +629,7 @@ const {
         cleanup();
         return;
       }
-      if (!shouldAnimate && records.some((record) => record.type === 'attributes')) draw(lastTime);
+      if (records.some((record) => record.type === 'attributes')) draw(lastTime);
     });
     documentObserver.observe(root, {
       attributes: true,
