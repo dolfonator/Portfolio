@@ -200,7 +200,7 @@ li + li { margin-top: .35rem; }
     var(--paper);
 }
 .band-dark {
-  background: var(--navy-2);
+  background: var(--band-deep-bg);
   color: var(--on-dark);
   border-color: var(--line-on-dark);
 }
@@ -615,7 +615,7 @@ li + li { margin-top: .35rem; }
 }
 .site-footer {
   padding: var(--space-5) 0;
-  background: var(--navy-2);
+  background: var(--band-deep-bg);
   color: var(--on-dark);
 }
 .footer-inner {
@@ -1191,7 +1191,7 @@ li + li { margin-top: .35rem; }
 .band-dark .button:not(.secondary):hover {
   background: var(--amber-dark);
   border-color: var(--amber-dark);
-  color: var(--on-dark);
+  color: #FFFFFF;
 }
 .band-dark .button.secondary {
   color: var(--on-dark);
