@@ -7,3 +7,33 @@ Personal Projects/
 Commercial/
 Personal/
 .impeccable/live/sessions/
+# >>> repo-hygiene >>>
+# OS / editor cruft
+.DS_Store
+.fuse_hidden*
+Thumbs.db
+.vscode/
+.idea/
+
+# Dependencies and build output
+node_modules/
+dist/
+build/
+*.log
+
+# Secrets — never commit these
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local AI-agent scaffolding (keep on disk, keep off GitHub)
+CLAUDE.md
+master.md
+AGENTS.md
+.claude/
+.impeccable/
+portfolio-progress-after-continue.md
+cleanup-public-repos.sh
+# <<< repo-hygiene <<<
