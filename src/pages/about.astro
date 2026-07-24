@@ -76,11 +76,11 @@ const stackGroups = [
   <section class="section starfield">
     <Constellation density={95} islandLimit={2} />
     <div class="container">
-      <div class="text-scrim">
-        <header class="sec-head-bold" data-reveal>
-          <h2 class="is-accent">What I build with:</h2>
-        </header>
-        <div class="tech-list" data-reveal>
+      <header class="sec-head-bold" data-reveal>
+        <h2 class="is-accent">What I build with:</h2>
+      </header>
+      <div class="text-scrim" data-reveal>
+        <div class="tech-list">
           {stackGroups.map((group) => (
             <div class="tech-row">
               <h3>{group.label}</h3>

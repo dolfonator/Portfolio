@@ -23,6 +23,9 @@
   --ink-soft: #536376;    /* secondary text (AA-tuned for tinted bands) */
   --line: #D5DDE7;
   --line-strong: #AFBDCE;
+  /* Divider tuned to the low-poly lattice (steel, theme-constant) so hairlines
+     over the band grid read as one of its horizontal lines. */
+  --poly-divider: color-mix(in srgb, var(--steel) 16%, transparent);
 
   /* --- Semantic roles (flip per theme) --- */
   --brand: var(--navy);

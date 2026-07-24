@@ -176,17 +176,21 @@ li + li { margin-top: .35rem; }
 .band-paper { background: var(--paper); }
 .band-mist { background: var(--mist); }
 .band-sky { background: var(--sky); }
-/* Quiet low-poly wireframe over the light bands — three hairline directions
-   form a triangular lattice, echoing the constellation on the dark bands.
-   Steel at ~7% via color-mix so it flows from tokens and holds in dark theme. */
+/* Quiet low-poly wireframe over the bands — a triangular lattice echoing the
+   constellation on the dark bands. Steel at ~7% (theme-constant) matches the
+   old gradient colour. Delivered as a single top-left-anchored SVG tile so:
+   (1) each band starts on a horizontal line at its top, and (2) every band
+   shares the same left-anchored phase, so stacked bands align at their seam.
+   The tile's diagonals terminate exactly on its edges, so it tiles seamlessly. */
 .band-paper,
 .band-mist,
 .band-sky {
-  --poly-line: color-mix(in srgb, var(--steel) 7%, transparent);
-  background-image:
-    repeating-linear-gradient(0deg, var(--poly-line) 0 1px, transparent 1px 64px),
-    repeating-linear-gradient(60deg, var(--poly-line) 0 1px, transparent 1px 64px),
-    repeating-linear-gradient(-60deg, var(--poly-line) 0 1px, transparent 1px 64px);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='74' height='64'%3E%3Cpath d='M0 .5H74M0 64L37 0M37 64L74 0M37 64L0 0M74 64L37 0' fill='none' stroke='rgba(74,111,165,0.07)' stroke-width='1'/%3E%3C/svg%3E");
+  background-position: 0 0;
+  background-size: 74px 64px;
+  background-repeat: repeat;
+  /* The section seam becomes one of the lattice's horizontal lines. */
+  border-top-color: var(--poly-divider);
 }
 /* Starfield backdrop — the hero's gradient wash, reused by any section that
    hosts a <Constellation />. Base is --paper, so it flips with the theme.
@@ -1069,21 +1073,21 @@ li + li { margin-top: .35rem; }
   font-weight: 600;
   line-height: 1.35;
 }
-.about-facts { margin: 0; border-top: 1px solid var(--line); }
+.about-facts { margin: 0; border-top: 1px solid var(--poly-divider); }
 .about-facts > div {
   display: grid;
   grid-template-columns: minmax(5rem, .55fr) minmax(0, 1fr);
   gap: var(--space-2);
   padding: .7rem 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--poly-divider);
 }
 .about-facts dt { color: var(--ink-soft); font-size: .82rem; font-weight: 760; }
 .about-facts dd { margin: 0; color: var(--ink); font-size: .88rem; text-align: right; }
 .about-facts a { display: inline-flex; align-items: center; justify-content: flex-end; gap: .35rem; color: var(--link); }
 .about-facts a:hover { color: var(--link-hover); }
 .about-facts svg { width: .95rem; height: .95rem; }
-.tech-list,
-.principles-list { border-top: 1px solid var(--line-strong); }
+.tech-list { border-top: 1px solid var(--line-strong); }
+.principles-list { border-top: 1px solid var(--poly-divider); }
 .tech-row,
 .principle {
   display: grid;
@@ -1092,6 +1096,8 @@ li + li { margin-top: .35rem; }
   padding: var(--space-4) 0;
   border-bottom: 1px solid var(--line);
 }
+/* Over the lattice, the principle dividers read as its horizontal lines. */
+.principle { border-bottom-color: var(--poly-divider); }
 .tech-row { align-items: center; }
 .tech-row h3,
 .principle-head h3 { font-size: clamp(1.2rem, 1.05rem + .6vw, 1.5rem); }
@@ -1136,21 +1142,14 @@ li + li { margin-top: .35rem; }
 }
 .about-cta { margin-top: var(--space-3); }
 
-/* Quiet zone over constellation fields — opaque panel over the star field */
+/* Quiet zone over constellation fields — opaque panel over the star field.
+   Used by the About tech-stack rows; the closers instead fade the field
+   behind their bare text (matching the hero). */
 .text-scrim {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: clamp(1.25rem, 1rem + 1.2vw, 2rem);
-}
-.band-dark .text-scrim { border-color: var(--line-on-dark); }
-/* Closers: the wrapper is a block, so re-establish the even flex rhythm the
-   children had directly on .closer-inner (otherwise they fall back to margins). */
-.closer .text-scrim {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-4);
 }
 
 /* Closing CTA — a committed statement, not a two-column strip */
