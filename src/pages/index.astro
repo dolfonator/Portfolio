@@ -44,7 +44,7 @@ const jsonLd = [
 ---
 <Base jsonLd={jsonLd}>
   <section class="hero">
-    <Constellation />
+    <Constellation class="fade-edge" />
     <div class="container hero-grid">
       <div class="hero-copy">
         <p class="hero-kicker"><span class="hero-dot" aria-hidden="true"></span>Quezon City · software developer</p>
@@ -108,10 +108,12 @@ const jsonLd = [
   <section class="section band-dark closer">
     <Constellation />
     <div class="container closer-inner">
-      <p class="closer-kicker">Ready when you are!</p>
-      <h2 class="closer-title">Tell me what you need for your online <span class="closer-mark"> presence.</span></h2>
-      <CTA label="Email me" showPhone />
-      <p class="closer-note">No forms, no pressure. A plain email describing your business is enough. I reply within a day.</p>
+      <div class="text-scrim">
+        <p class="closer-kicker">Ready when you are!</p>
+        <h2 class="closer-title">Tell me what you need for your online <span class="closer-mark"> presence.</span></h2>
+        <CTA label="Email me" showPhone />
+        <p class="closer-note">No forms, no pressure. A plain email describing your business is enough. I reply within a day.</p>
+      </div>
     </div>
   </section>
 </Base>

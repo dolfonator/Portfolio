@@ -18,7 +18,7 @@ const projectMix = `${commercialCount} commercial ${commercialCount === 1 ? 'sit
 ---
 <Base title="Projects | Tristan" description="Projects by Tristan: commercial websites and personal commissions, all live and clickable." canonical="/projects/">
   <section class="section starfield">
-    <Constellation density={200} islandLimit={4} />
+    <Constellation density={200} islandLimit={4} class="fade-edge" />
     <div class="container">
       <header class="page-head" data-reveal>
         <p class="page-kicker"><span class="hero-dot" aria-hidden="true"></span>{projects.length} builds, open and explorable</p>
@@ -48,9 +48,11 @@ const projectMix = `${commercialCount} commercial ${commercialCount === 1 ? 'sit
   <section class="section band-dark closer">
     <Constellation />
     <div class="container closer-inner">
-      <p class="closer-kicker">Seen enough?</p>
-      <h2 class="closer-title">Tell me which one is <span class="closer-mark">closest</span> to your business.</h2>
-      <CTA label="Email me" showPhone />
+      <div class="text-scrim">
+        <p class="closer-kicker">Seen enough?</p>
+        <h2 class="closer-title">Tell me which one is <span class="closer-mark">closest</span> to your business.</h2>
+        <CTA label="Email me" showPhone />
+      </div>
     </div>
   </section>
 </Base>
