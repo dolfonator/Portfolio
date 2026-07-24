@@ -1136,22 +1136,21 @@ li + li { margin-top: .35rem; }
 }
 .about-cta { margin-top: var(--space-3); }
 
-/* Quiet zone over constellation fields — translucent panel; blur on desktop only */
+/* Quiet zone over constellation fields — opaque panel over the star field */
 .text-scrim {
-  background: color-mix(in srgb, var(--panel) 70%, transparent);
+  background: var(--panel);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: clamp(1.25rem, 1rem + 1.2vw, 2rem);
 }
 .band-dark .text-scrim { border-color: var(--line-on-dark); }
-@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  @media (min-width: 48em) {
-    .text-scrim {
-      background: color-mix(in srgb, var(--panel) 52%, transparent);
-      -webkit-backdrop-filter: blur(8px);
-              backdrop-filter: blur(8px);
-    }
-  }
+/* Closers: the wrapper is a block, so re-establish the even flex rhythm the
+   children had directly on .closer-inner (otherwise they fall back to margins). */
+.closer .text-scrim {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
 }
 
 /* Closing CTA — a committed statement, not a two-column strip */
