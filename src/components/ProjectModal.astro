@@ -35,7 +35,7 @@ const d = project.data;
     </div>
     <div class="pm-actions">
       {d.liveUrl
-        ? <a class="button" href={d.liveUrl} target="_blank" rel="noopener">Visit the site <Icon name="external" /></a>
+        ? <a class="button" href={d.liveUrl} target="_blank" rel="noopener" aria-label={`Visit the ${d.title} site (opens in new tab)`}>Visit the site <Icon name="external" /></a>
         : <p class="pm-note">This one runs behind a PIN-gated login, so there is no public URL to visit.</p>}
     </div>
   </div>

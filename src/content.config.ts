@@ -9,7 +9,6 @@ const projects = defineCollection({
       title: z.string(),
       slug: z.string(),
       kind: z.enum(['commercial', 'personal']),
-      featured: z.boolean(),
       displayOrder: z.number().int().positive(),
       clientType: z.string(),
       stack: z.array(z.string()),
@@ -17,6 +16,7 @@ const projects = defineCollection({
       repoUrl: z.string().optional(),
       year: z.number(),
       summary: z.string(),
+      blurb: z.string().optional(),
       outcome: z.string().optional(),
       coverAlt: z.string().optional(),
       cover: image()

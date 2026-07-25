@@ -79,7 +79,7 @@ const stackGroups = [
       <header class="sec-head-bold" data-reveal>
         <h2 class="is-accent">What I build with:</h2>
       </header>
-      <div class="text-scrim" data-reveal>
+      <div class="text-scrim text-scrim-flush" data-reveal>
         <div class="tech-list">
           {stackGroups.map((group) => (
             <div class="tech-row">
@@ -107,7 +107,7 @@ const stackGroups = [
             </div>
             <div class="principle-detail">
               <p>{principle.body}</p>
-              <a class="principle-evidence" href={principle.evidenceHref} target="_blank" rel="noopener">
+              <a class="principle-evidence" href={principle.evidenceHref} target="_blank" rel="noopener" aria-label={`See it in ${principle.projectName} (opens in new tab)`}>
                 See it in → {principle.projectName}
               </a>
             </div>
