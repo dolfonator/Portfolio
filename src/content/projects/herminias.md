@@ -1,5 +1,5 @@
 ---
-title: Herminia's Food Catering
+title: Herminia's Food
 slug: herminias
 kind: commercial
 featured: true
@@ -10,10 +10,10 @@ stack:
   - CSS
   - JavaScript
   - JSON-LD
-liveUrl: https://herminias-catering.vercel.app/
-repoUrl: https://github.com/dolfonator/Herminias-Catering
+liveUrl: https://herminias-food.vercel.app/
+repoUrl: https://github.com/dolfonator/Herminias-Food
 year: 2026
-summary: A warm, conversion-focused catering site with event packages, sample menus, a gallery, service details, and a direct inquiry route.
+summary: 'A warm, conversion-focused catering site: a Filipino-language hero, per-occasion event pages, per-head packages, a gallery, reviews, and a direct booking and quote route.'
 outcome: Privacy-conscious Business-tier concept demo.
 coverAlt: Catering buffet with trays of spring rolls and assorted dishes
 cover: ../../assets/herminias-hero.jpg

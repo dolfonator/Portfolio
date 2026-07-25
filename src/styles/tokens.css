@@ -23,9 +23,11 @@
   --ink-soft: #536376;    /* secondary text (AA-tuned for tinted bands) */
   --line: #D5DDE7;
   --line-strong: #AFBDCE;
+  --divider: var(--line-strong);                                      /* panels, header, non-lattice contexts */
+  --divider-on-dark: rgba(255, 255, 255, .22);                        /* dark bands + footer */
   /* Divider tuned to the low-poly lattice (steel, theme-constant) so hairlines
      over the band grid read as one of its horizontal lines. */
-  --poly-divider: color-mix(in srgb, var(--steel) 16%, transparent);
+  --poly-divider: color-mix(in srgb, var(--steel) 30%, transparent);  /* over the lattice */
 
   /* --- Semantic roles (flip per theme) --- */
   --brand: var(--navy);
@@ -103,4 +105,5 @@
   --on-dark-soft: #BCCADA;
   --on-dark-gold: #E7C46A;
   --line-on-dark: rgba(255, 255, 255, .12);
+  --poly-divider: color-mix(in srgb, var(--steel) 46%, transparent);
 }

@@ -62,7 +62,7 @@ li + li { margin-top: .35rem; }
   z-index: 40;
   min-height: var(--header-h);
   background: color-mix(in srgb, var(--paper) 93%, transparent);
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--divider);
   backdrop-filter: blur(14px);
 }
 .header-inner {
@@ -171,26 +171,23 @@ li + li { margin-top: .35rem; }
 .section {
   position: relative;
   padding: var(--space-7) 0;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--divider);
 }
 .band-paper { background: var(--paper); }
 .band-mist { background: var(--mist); }
 .band-sky { background: var(--sky); }
-/* Quiet low-poly wireframe over the bands — a triangular lattice echoing the
-   constellation on the dark bands. Steel at ~7% (theme-constant) matches the
-   old gradient colour. Delivered as a single top-left-anchored SVG tile so:
-   (1) each band starts on a horizontal line at its top, and (2) every band
-   shares the same left-anchored phase, so stacked bands align at their seam.
-   The tile's diagonals terminate exactly on its edges, so it tiles seamlessly. */
+/* Quiet low-poly wireframe over the bands — diagonals only, echoing the
+   constellation on the dark bands. Deliberately carries NO horizontal lines:
+   the only horizontals on a band are the real dividers its content declares.
+   Top-left anchored, so every band shares the same phase at their seam. */
 .band-paper,
 .band-mist,
 .band-sky {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='74' height='64'%3E%3Cpath d='M0 .5H74M0 64L37 0M37 64L74 0M37 64L0 0M74 64L37 0' fill='none' stroke='rgba(74,111,165,0.07)' stroke-width='1'/%3E%3C/svg%3E");
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='74' height='64'%3E%3Cpath d='M0 64L37 0M37 64L74 0M37 64L0 0M74 64L37 0' fill='none' stroke='rgba(74,111,165,0.07)' stroke-width='1'/%3E%3C/svg%3E");
   background-position: 0 0;
   background-size: 74px 64px;
   background-repeat: repeat;
-  /* The section seam becomes one of the lattice's horizontal lines. */
-  border-top-color: var(--poly-divider);
 }
 /* Starfield backdrop — the hero's gradient wash, reused by any section that
    hosts a <Constellation />. Base is --paper, so it flips with the theme.
@@ -206,7 +203,7 @@ li + li { margin-top: .35rem; }
 .band-dark {
   background: var(--band-deep-bg);
   color: var(--on-dark);
-  border-color: var(--line-on-dark);
+  border-color: var(--divider-on-dark);
 }
 .band-dark h2, .band-dark h3 { color: var(--on-dark); }
 .section-head {
@@ -355,11 +352,20 @@ li + li { margin-top: .35rem; }
   font-weight: 820;
 }
 .works {
+  position: relative;
   align-self: stretch;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   padding: 0;
+  /* The hero row is auto-sized, so the panel's own content would otherwise
+     drive the row taller with every project added and nothing would scroll.
+     height:0 keeps the panel out of that calculation, so the row is set by
+     .hero-copy alone; min-height:100% then fills it. Result: the panel size
+     is fixed by the copy column and the list scrolls inside it, whatever the
+     project count. Reset at <=860px, where the panel gets its own row. */
+  height: 0;
+  min-height: 100%;
 }
 .works-label {
   padding: 1.15rem 1.25rem .5rem;
@@ -374,6 +380,35 @@ li + li { margin-top: .35rem; }
   padding: 0;
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;            /* REQUIRED — a flex child will not scroll without this */
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+.works-list::-webkit-scrollbar {
+  width: 7px;
+}
+.works-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.works-list::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 999px;
+}
+/* Quiet scroll affordance — soft bottom fade so the list reads as scrollable. */
+.works::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 3.1rem; /* sits just above .works-foot */
+  height: 2.5rem;
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(to top, var(--panel), transparent);
+  opacity: .92;
 }
 .works-list li { margin: 0; }
 .work {
@@ -382,7 +417,15 @@ li + li { margin-top: .35rem; }
   align-items: center;
   gap: .9rem;
   padding: .95rem 1.25rem;
-  border-top: 1px solid var(--line);
+  width: 100%;
+  font: inherit;
+  background: none;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-top: 1px solid var(--divider);
+  text-align: left;
+  cursor: pointer;
   color: inherit;
   text-decoration: none;
   transition: background .2s ease;
@@ -412,9 +455,12 @@ li + li { margin-top: .35rem; }
 .work svg { width: 1rem; height: 1rem; color: var(--steel); transition: transform .2s ease, color .2s ease; }
 .work:hover svg { color: var(--accent-ink); transform: translateX(3px); }
 .works-foot {
+  position: relative;
+  z-index: 2;
   margin-top: auto;
   padding: .9rem 1.25rem;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--divider);
+  background: var(--panel);
   color: var(--ink-soft);
   font-size: .86rem;
 }
@@ -469,7 +515,13 @@ li + li { margin-top: .35rem; }
   transition: transform .35s ease;
 }
 .card-title-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
   color: inherit;
+  text-align: left;
+  cursor: pointer;
   text-decoration: none;
 }
 .card-title-link:hover {
@@ -507,11 +559,6 @@ li + li { margin-top: .35rem; }
   color: var(--ink-soft);
   font-size: .84rem;
   font-weight: 720;
-}
-.card-meta .card-kind {
-  min-height: 1.5rem;
-  padding: .15rem .45rem;
-  font-size: .74rem;
 }
 .pill {
   display: inline-flex;
@@ -559,18 +606,11 @@ li + li { margin-top: .35rem; }
   align-items: center;
   gap: .75rem;
 }
-.card-repo-link {
+/* The card body is covered by .card-title-link::after (z-index 2), which opens
+   the modal. This is the one control that must beat it: it goes to the site. */
+.card-visit {
   position: relative;
   z-index: 3;
-  color: var(--steel);
-  font-size: .8rem;
-  font-weight: 700;
-  text-decoration: none;
-  white-space: nowrap;
-}
-.card-repo-link:hover {
-  color: var(--link-hover);
-  text-decoration: underline;
 }
 
 .split {
@@ -598,7 +638,7 @@ li + li { margin-top: .35rem; }
 }
 .process-list li + li {
   margin-top: 0;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--divider);
 }
 .process-list li::before {
   content: counter(step, decimal-leading-zero);
@@ -635,7 +675,7 @@ li + li { margin-top: .35rem; }
 .footer-primary { padding-bottom: var(--space-4); }
 .footer-secondary {
   padding-top: var(--space-3);
-  border-top: 1px solid var(--line-on-dark);
+  border-top: 1px solid var(--divider-on-dark);
 }
 .footer-signoff {
   font-family: var(--font-display);
@@ -820,8 +860,6 @@ li + li { margin-top: .35rem; }
   text-wrap: pretty;
 }
 
-.home-projects { gap: var(--space-5); }
-
 .scope-process { align-items: stretch; }
 .scope-copy {
   display: flex;
@@ -829,8 +867,8 @@ li + li { margin-top: .35rem; }
   align-items: flex-start;
   gap: var(--space-4);
   padding: clamp(1.5rem, 1rem + 2vw, 2.5rem) 0;
-  border-top: 1px solid var(--line-strong);
-  border-bottom: 1px solid var(--line-strong);
+  border-top: 1px solid var(--poly-divider);
+  border-bottom: 1px solid var(--poly-divider);
 }
 .scope-copy h3 {
   max-width: 17ch;
@@ -916,7 +954,7 @@ li + li { margin-top: .35rem; }
 .about-masthead .page-head { margin-bottom: 0; }
 .about-intro {
   padding-top: var(--space-5);
-  border-top: 1px solid var(--line-strong);
+  border-top: 1px solid var(--poly-divider);
 }
 
 /* Services: flat tier cards with one clearly recommended option */
@@ -1010,7 +1048,7 @@ li + li { margin-top: .35rem; }
   gap: var(--space-3);
   margin-top: var(--space-6);
   padding-top: var(--space-5);
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--poly-divider);
 }
 .svc-includes-label {
   color: var(--ink-soft);
@@ -1086,7 +1124,7 @@ li + li { margin-top: .35rem; }
 .about-facts a { display: inline-flex; align-items: center; justify-content: flex-end; gap: .35rem; color: var(--link); }
 .about-facts a:hover { color: var(--link-hover); }
 .about-facts svg { width: .95rem; height: .95rem; }
-.tech-list { border-top: 1px solid var(--line-strong); }
+.tech-list { border-top: 1px solid var(--divider); }
 .principles-list { border-top: 1px solid var(--poly-divider); }
 .tech-row,
 .principle {
@@ -1094,7 +1132,7 @@ li + li { margin-top: .35rem; }
   grid-template-columns: minmax(10rem, .38fr) minmax(0, 1fr);
   gap: var(--space-4);
   padding: var(--space-4) 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--divider);
 }
 /* Over the lattice, the principle dividers read as its horizontal lines. */
 .principle { border-bottom-color: var(--poly-divider); }
@@ -1198,6 +1236,130 @@ li + li { margin-top: .35rem; }
 .not-found .section-lead { margin-inline: auto; }
 .not-found .button-row { justify-content: center; }
 
+/* Project detail modal — native <dialog>, cover + info + optional live link. */
+dialog.pm {
+  margin: auto;
+  padding: 0;
+  max-width: min(640px, calc(100vw - 2rem));
+  max-height: 85vh;
+  width: 100%;
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+  background: var(--panel);
+  color: var(--ink);
+  box-shadow: var(--shadow-float);
+  overflow: hidden;
+}
+dialog.pm::backdrop {
+  background: color-mix(in srgb, var(--navy-2) 55%, transparent);
+}
+.pm-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+  overflow: hidden;
+}
+.pm-close {
+  position: absolute;
+  top: .65rem;
+  right: .65rem;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 1px solid var(--divider);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  color: var(--ink);
+  cursor: pointer;
+}
+.pm-close:hover {
+  background: var(--mist);
+  color: var(--link-hover);
+}
+.pm-close svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+.pm-media {
+  flex: 0 0 auto;
+  max-height: 38vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--mist), var(--sky));
+}
+.pm-media img {
+  width: 100%;
+  height: 100%;
+  max-height: 38vh;
+  object-fit: contain;
+  object-position: center top;
+}
+.pm-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+}
+.pm-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+  color: var(--ink-soft);
+  font-size: .84rem;
+  font-weight: 720;
+}
+.pm-meta span + span::before {
+  content: '·';
+  margin-right: .45rem;
+  color: var(--divider);
+}
+.pm-body h2 {
+  font-size: var(--step-2);
+  text-wrap: balance;
+}
+.pm-body > p {
+  color: var(--ink-soft);
+  max-width: 52ch;
+  text-wrap: pretty;
+}
+.pm-note {
+  margin: 0;
+  padding: .75rem .9rem;
+  border: 1px solid var(--divider);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--mist) 38%, transparent);
+  color: var(--ink-soft);
+  font-size: .92rem;
+  text-wrap: pretty;
+}
+.pm-body .button {
+  margin-top: var(--space-1);
+}
+@media (prefers-reduced-motion: no-preference) {
+  dialog.pm[open] {
+    animation: pmIn .18s ease-out;
+  }
+  dialog.pm[open]::backdrop {
+    animation: pmBackdropIn .18s ease-out;
+  }
+}
+@keyframes pmIn {
+  from { opacity: 0; transform: translateY(8px) scale(.98); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes pmBackdropIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* CTA pops on dark bands: amber primary, light ghost */
 .band-dark .button:not(.secondary) {
   background: var(--amber);
@@ -1277,6 +1439,10 @@ html.js [data-reveal] { opacity: 1; transform: none; }
   .nav[data-open='true'] { display: grid; }
   .nav a { padding: .85rem .9rem; }
   .hero { min-height: auto; background-position: center; }
+  /* Single column here: the panel is alone in its row, so the desktop
+     height:0 trick would collapse it. Back to content-driven, capped list. */
+  .works { height: auto; min-height: 0; }
+  .works-list { max-height: 60vh; }
   .closer-inner { gap: var(--space-3); }
   .hero-grid,
   .grid.two,

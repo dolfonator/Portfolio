@@ -191,6 +191,21 @@ const navLinks = [
       } else {
         document.querySelectorAll('[data-reveal]').forEach((item) => item.classList.add('is-visible'));
       }
+
+      let lastTrigger: HTMLElement | null = null;
+      document.querySelectorAll<HTMLElement>('[data-project-modal]').forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+          const dialog = document.getElementById(`pm-${trigger.dataset.projectModal}`) as HTMLDialogElement | null;
+          if (!dialog) return;
+          lastTrigger = trigger;
+          dialog.showModal();
+        });
+      });
+      document.querySelectorAll<HTMLDialogElement>('dialog.pm').forEach((dialog) => {
+        dialog.querySelector<HTMLButtonElement>('[data-modal-close]')?.addEventListener('click', () => dialog.close());
+        dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+        dialog.addEventListener('close', () => { lastTrigger?.focus(); lastTrigger = null; });
+      });
     </script>
   </body>
 </html>

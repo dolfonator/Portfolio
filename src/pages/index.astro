@@ -5,16 +5,15 @@ import Base from '../layouts/Base.astro';
 import CTA from '../components/CTA.astro';
 import Constellation from '../components/Constellation.astro';
 import SectionBand from '../components/SectionBand.astro';
-import ProjectCard from '../components/ProjectCard.astro';
 import ProcessSteps from '../components/ProcessSteps.astro';
+import ProjectModal from '../components/ProjectModal.astro';
 import Icon from '../components/Icon.astro';
 
 type Project = CollectionEntry<'projects'>;
 
 const projects: Project[] = await getCollection('projects');
 const projectCount = projects.length;
-const featured = projects
-  .filter((project: Project) => project.data.featured)
+const allWork = projects
   .sort((a: Project, b: Project) => a.data.displayOrder - b.data.displayOrder);
 
 const jsonLd = [
@@ -56,39 +55,28 @@ const jsonLd = [
       <aside class="works panel" aria-label="Selected work">
         <p class="works-label">Selected work</p>
         <ol class="works-list">
-          {featured.map((project, i) => (
+          {allWork.map((project, i) => (
             <li>
-              <a
+              <button
                 class="work"
-                href={project.data.liveUrl ?? project.data.repoUrl}
-                target="_blank"
-                rel="noopener"
-                aria-label={`${project.data.title}: ${project.data.liveUrl ? 'open live site' : 'view source on GitHub'} (opens in new tab)`}
+                type="button"
+                data-project-modal={project.data.slug}
+                aria-label={`${project.data.title} — view details`}
               >
                 <span class="work-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                 <span class="work-text">
                   <strong>{project.data.title}</strong>
                   <span>{project.data.clientType}</span>
                 </span>
-                <Icon name="external" />
-              </a>
+                <Icon name="arrow" />
+              </button>
             </li>
           ))}
         </ol>
-        <p class="works-foot">{featured.length} distinct briefs, each designed around the business or story it serves.</p>
+        <p class="works-foot">{allWork.length} distinct briefs, each designed around the business or story it serves.</p>
       </aside>
     </div>
   </section>
-
-  <SectionBand tone="mist">
-    <header class="sec-head-bold">
-      <h2>Different stories need different visual systems.</h2>
-      <p class="sec-lead">A caterer and a production studio's online presence; a café dashboard system; and personal commissions. Each working product is shaped around its own client and audience.</p>
-    </header>
-    <div class="commercial-supporting home-projects">
-      {featured.map((project) => <ProjectCard project={project} compact />)}
-    </div>
-  </SectionBand>
 
   <SectionBand tone="sky">
     <header class="sec-head-bold">
@@ -114,4 +102,6 @@ const jsonLd = [
       <p class="closer-note">No forms, no pressure. A plain email describing your business is enough. I reply within a day.</p>
     </div>
   </section>
+
+  {allWork.map((project) => <ProjectModal project={project} />)}
 </Base>

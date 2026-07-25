@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+
+interface Props { project: CollectionEntry<'projects'> }
+const { project } = Astro.props;
+const d = project.data;
+---
+<dialog class="pm" id={`pm-${d.slug}`} aria-labelledby={`pm-title-${d.slug}`}>
+  <div class="pm-inner">
+    <button class="pm-close" type="button" data-modal-close aria-label="Close">
+      <Icon name="close" />
+    </button>
+    <div class="pm-media">
+      <Image src={d.cover} alt={d.coverAlt ?? `${d.title} home page`} widths={[520, 900]} sizes="(max-width: 700px) 92vw, 640px" />
+    </div>
+    <div class="pm-body">
+      <p class="pm-meta">
+        <span>{d.kind === 'commercial' ? 'Commercial' : 'Personal'}</span>
+        <span>{d.year}</span>
+        <span>{d.clientType}</span>
+      </p>
+      <h2 id={`pm-title-${d.slug}`}>{d.title}</h2>
+      <p>{d.summary}</p>
+      {d.outcome && (
+        <div class="card-outcome">
+          <span class="card-outcome-label">Outcome</span>
+          <strong class="card-outcome-text">{d.outcome}</strong>
+        </div>
+      )}
+      <div class="stack" aria-label="Stack">
+        {d.stack.map((item: string) => <span class="pill">{item}</span>)}
+      </div>
+      {d.liveUrl
+        ? <a class="button" href={d.liveUrl} target="_blank" rel="noopener">Visit the site <Icon name="external" /></a>
+        : <p class="pm-note">This one runs behind a PIN-gated login, so there is no public URL to visit.</p>}
+    </div>
+  </div>
+</dialog>
