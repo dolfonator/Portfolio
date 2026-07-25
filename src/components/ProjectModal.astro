@@ -32,6 +32,8 @@ const d = project.data;
       <div class="stack" aria-label="Stack">
         {d.stack.map((item: string) => <span class="pill">{item}</span>)}
       </div>
+    </div>
+    <div class="pm-actions">
       {d.liveUrl
         ? <a class="button" href={d.liveUrl} target="_blank" rel="noopener">Visit the site <Icon name="external" /></a>
         : <p class="pm-note">This one runs behind a PIN-gated login, so there is no public URL to visit.</p>}

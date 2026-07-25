@@ -21,6 +21,7 @@ const titleLinkLabel = `${d.title}: view details`;
     'card-lead': featured,
     'card-compact': compact,
     'card-bubu': d.slug === 'bubu-workout',
+    'card-logo': d.slug === 'herminias',
   },
 ]} data-reveal>
   <div class="card-media">
@@ -38,15 +39,6 @@ const titleLinkLabel = `${d.title}: view details`;
       </button>
     </Heading>
     <p>{d.summary}</p>
-    {d.outcome && (
-      <div class="card-outcome">
-        <span class="card-outcome-label">Outcome</span>
-        <strong class="card-outcome-text">{d.outcome}</strong>
-      </div>
-    )}
-    <div class="stack" aria-label="Stack">
-      {d.stack.slice(0, 4).map((item: string) => <span class="pill">{item}</span>)}
-    </div>
     <div class="card-actions">
       {d.liveUrl && (
         <a

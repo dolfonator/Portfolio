@@ -913,11 +913,15 @@ li + li { margin-top: .35rem; }
 .card-compact .card-media {
   min-width: 0;
   min-height: 100%;
-  aspect-ratio: auto;
+  aspect-ratio: 16 / 10;
 }
 .card-compact .card-body {
   padding: clamp(1.25rem, 1rem + 1.2vw, 2rem);
 }
+/* The media column sets the card height, so a short body would otherwise strand
+   .card-actions at the bottom (margin-top: auto). Centre the block instead. */
+.card-compact .card-body { justify-content: center; }
+.card-compact .card-body .card-actions { margin-top: 0; }
 .card-compact.card-bubu {
   grid-template-columns: clamp(10.5rem, 14vw, 14rem) minmax(0, 1fr);
 }
@@ -944,6 +948,10 @@ li + li { margin-top: .35rem; }
   padding: .5rem;
 }
 .card-bubu:hover .card-media img { transform: scale(1.02); }
+.card-logo .card-media img {
+  object-fit: contain;
+  padding: 1rem;
+}
 
 .about-masthead {
   display: grid;
@@ -1340,8 +1348,11 @@ dialog.pm::backdrop {
   font-size: .92rem;
   text-wrap: pretty;
 }
-.pm-body .button {
-  margin-top: var(--space-1);
+.pm-actions {
+  flex: 0 0 auto;
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--divider);
+  background: var(--panel);
 }
 @media (prefers-reduced-motion: no-preference) {
   dialog.pm[open] {
