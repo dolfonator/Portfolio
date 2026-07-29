@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Icon from '../components/Icon.astro';
+import logoHeader from '../assets/logo-header.png';
 
 const {
   title = 'Tristan Dolfo | Software Developer from the Philippines',
@@ -18,6 +19,7 @@ if (!siteUrl) {
 }
 const canonicalUrl = new URL(canonical, siteUrl).toString();
 const ogUrl = new URL(ogImage, siteUrl).toString();
+const resumeHref = '/Tristan_Dolfo_Resume.pdf';
 
 // Active-nav "you are here": a nav item is current when the path matches it.
 const path = Astro.url.pathname;
@@ -36,8 +38,14 @@ const navLinks = [
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#14304E" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
     <link rel="canonical" href={canonicalUrl} />
+
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Tristan Portfolio" />
     <meta property="og:locale" content="en_PH" />
@@ -64,7 +72,14 @@ const navLinks = [
     <header class="site-header">
       <div class="container header-inner">
         <a class="brand" href="/" aria-label="Tristan portfolio home">
-          <span class="brand-mark">T</span>
+          <img
+            class="brand-mark"
+            src={logoHeader.src}
+            width={logoHeader.width}
+            height={logoHeader.height}
+            alt=""
+            decoding="async"
+          />
           <span>Tristan Dolfo<small>Software developer</small></span>
         </a>
         <button class="theme-toggle" type="button" aria-label="Switch to dark theme" data-theme-toggle>
@@ -97,6 +112,7 @@ const navLinks = [
           <div class="footer-actions">
             <a class="footer-contact" href="https://mail.google.com/mail/?view=cm&fs=1&to=tristandolfo@gmail.com&su=Portfolio%20inquiry" target="_blank" rel="noopener">Email me</a>
             <a class="footer-contact" href="tel:+639998827004">0999-882-7004</a>
+            <a class="footer-contact" href={resumeHref} target="_blank" rel="noopener">View Resume</a>
             <a class="footer-social" href="https://github.com/dolfonator" target="_blank" rel="noopener" aria-label="Tristan Dolfo on GitHub">
               <Icon name="github" />
             </a>

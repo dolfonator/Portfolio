@@ -5,6 +5,7 @@ const {
   label = 'Email me',
   subject = 'Portfolio inquiry',
   showPhone = false,
+  showResume = false,
   class: className = ''
 } = Astro.props;
 
@@ -13,6 +14,7 @@ const phone = '0999-882-7004';
 // Gmail compose URL opens a pre-filled draft in the browser — reliable even
 // when the device has no default mail app registered for mailto:.
 const compose = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(subject)}`;
+const resumeHref = '/Tristan_Dolfo_Resume.pdf';
 ---
 <div class:list={['button-row', className]}>
   <a class="button" href={compose} target="_blank" rel="noopener">
@@ -23,6 +25,11 @@ const compose = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${enc
     <a class="button secondary" href="tel:+639998827004">
       <Icon name="phone" />
       Call · {phone}
+    </a>
+  )}
+  {showResume && (
+    <a class="button secondary" href={resumeHref} target="_blank" rel="noopener">
+      View Resume
     </a>
   )}
 </div>

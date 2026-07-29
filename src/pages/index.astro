@@ -16,6 +16,14 @@ const projectCount = projects.length;
 const allWork = projects
   .sort((a: Project, b: Project) => a.data.displayOrder - b.data.displayOrder);
 
+// Fail fast if site origin is missing — structured-data logo/image must be absolute.
+const siteUrl = Astro.site;
+if (!siteUrl) {
+  throw new Error('Astro.site is undefined — set SITE_URL before building.');
+}
+// Stable public Responsive Studio mark (compact identity for schema surfaces).
+const logoUrl = new URL('/logo.png', siteUrl).toString();
+
 const jsonLd = [
   {
     '@context': 'https://schema.org',
@@ -27,7 +35,8 @@ const jsonLd = [
       '@type': 'PostalAddress',
       addressCountry: 'PH'
     },
-    jobTitle: 'Software Developer'
+    jobTitle: 'Software Developer',
+    image: logoUrl
   },
   {
     '@context': 'https://schema.org',
@@ -36,7 +45,9 @@ const jsonLd = [
     areaServed: 'Philippines',
     email: 'mailto:tristandolfo@gmail.com',
     telephone: '+639998827004',
-    serviceType: ['Business websites', 'Restaurant websites', 'Static web development']
+    serviceType: ['Business websites', 'Restaurant websites', 'Static web development'],
+    logo: logoUrl,
+    image: logoUrl
   }
 ];
 ---

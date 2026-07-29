@@ -4,13 +4,13 @@
   <rect width="1200" height="630" fill="#F7F9FC"/>
   <rect x="48" y="48" width="1104" height="534" rx="18" fill="#DCE6F1" stroke="#14304E" stroke-width="3"/>
   <path d="M48 430h1104v152H48z" fill="#14304E"/>
-  <circle cx="988" cy="168" r="80" fill="#D8E8F4" stroke="#14304E" stroke-width="3"/>
-  <rect x="766" y="120" width="158" height="104" rx="8" fill="#FFFFFF" stroke="#14304E" stroke-width="3"/>
-  <rect x="802" y="160" width="224" height="140" rx="8" fill="#FFFFFF" stroke="#14304E" stroke-width="3"/>
-  <path d="M832 200h108M832 230h152M832 260h80" stroke="#D9822B" stroke-width="12" stroke-linecap="round"/>
+  <!-- Night Studio monogram plate (rasterized/composited by scripts/gen-og-image.mjs) -->
+  <rect id="logo-slot" x="868" y="92" width="248" height="248" rx="14" fill="#0B1F35" stroke="#14304E" stroke-width="3"/>
   <text x="104" y="150" fill="#935214" font-family="Arial, sans-serif" font-size="27" font-weight="700" letter-spacing="5">PHILIPPINES SOFTWARE DEVELOPER</text>
   <text x="102" y="268" fill="#16202B" font-family="Georgia, serif" font-size="84" font-weight="700">Tristan Dolfo</text>
-  <text x="104" y="352" fill="#16202B" font-family="Georgia, serif" font-size="50" font-weight="700">Fast websites for local businesses.</text>
+  <!-- Two-line headline: exact words, kept left of logo plate (x=868) and above contact band (y=430) -->
+  <text x="104" y="338" fill="#16202B" font-family="Georgia, serif" font-size="46" font-weight="700">Fast websites for</text>
+  <text x="104" y="394" fill="#16202B" font-family="Georgia, serif" font-size="46" font-weight="700">local businesses.</text>
   <text x="104" y="512" fill="#F7F9FC" font-family="Arial, sans-serif" font-size="34" font-weight="700">tristandolfo@gmail.com</text>
   <text x="104" y="554" fill="#D8E8F4" font-family="Arial, sans-serif" font-size="27">Restaurants · cafés · clinics · small teams</text>
 </svg>

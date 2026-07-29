@@ -1,8 +1,10 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import CTA from '../components/CTA.astro';
 import Constellation from '../components/Constellation.astro';
 import Icon from '../components/Icon.astro';
+import logoNight from '../assets/logo-night-studio.png';
 
 const principles = [
   {
@@ -42,9 +44,15 @@ const stackGroups = [
           <h1 class="page-title">A practical partner for <span class="hero-mark">small-business</span> sites.</h1>
         </header>
         <div class="about-profile" data-reveal>
-          <div class="about-monogram" role="img" aria-label="Tristan monogram">
-            <span aria-hidden="true">T</span>
-            <i aria-hidden="true"></i>
+          <div class="about-monogram">
+            <Image
+              src={logoNight}
+              alt="Tristan Dolfo monogram: silver T.D. with amber swoosh on navy"
+              width={560}
+              height={560}
+              widths={[240, 320, 400, 560]}
+              sizes="(max-width: 700px) min(60vw, 15rem), 15rem"
+            />
           </div>
           <div class="about-profile-notes">
             <blockquote>Make the offer clear, make the site fast, make the next action obvious.</blockquote>
@@ -67,7 +75,7 @@ const stackGroups = [
         <div class="about-bio">
           <p class="about-lede">I’m Tristan, a software developer from the Philippines. I build fast, polished, and reliable websites and systems for various businesses.</p>
           <p>My working style is simple: make the offer clear, make the site or system fast, and make you feel confident in your product. For clients who need more than a brochure, I build small interactive systems with serverless APIs and meticulous frontend behavior.</p>
-          <CTA showPhone subject="Portfolio inquiry" class="about-cta" />
+          <CTA showPhone showResume subject="Portfolio inquiry" class="about-cta" />
         </div>
       </div>
     </div>
