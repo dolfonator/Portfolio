@@ -1102,11 +1102,14 @@ li + li { margin-top: .35rem; }
   background: linear-gradient(145deg, var(--navy), var(--navy-2));
   color: var(--on-dark);
 }
+/* Square Faithful master fills the plate edge-to-edge — cover avoids
+   subpixel letterboxing that made the monogram look soft/off. */
 .about-monogram img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
+  display: block;
 }
 .about-profile-notes { display: grid; gap: var(--space-4); }
 .about-profile blockquote {
