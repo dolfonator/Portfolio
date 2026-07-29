@@ -272,7 +272,35 @@ li + li { margin-top: .35rem; }
   background: var(--mist);
   color: var(--link-hover);
 }
+/* Tertiary: slim résumé control — less weight than Email/Call */
+.button.tertiary {
+  min-height: 2.35rem;
+  padding: .5rem 1rem;
+  background: transparent;
+  border-color: var(--line-strong);
+  color: var(--ink-soft);
+  font-weight: 720;
+}
+.button.tertiary:hover {
+  background: var(--mist);
+  border-color: var(--line-strong);
+  color: var(--link-hover);
+}
 .button svg { width: 1rem; height: 1rem; }
+
+/* H3: content-sized contact group — résumé spans Email + gap + Call only */
+.hero-copy .button-row {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  width: fit-content;
+  max-width: 100%;
+  gap: .75rem;
+  align-items: center;
+}
+.hero-copy .button-row .cta-resume {
+  grid-column: 1 / -1;
+  width: 100%;
+}
 
 .hero {
   position: relative;
@@ -1065,7 +1093,7 @@ li + li { margin-top: .35rem; }
   align-items: start;
 }
 .about-monogram {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1 / 1;
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -1521,6 +1549,11 @@ html.js [data-reveal] { opacity: 1; transform: none; }
   .container { width: min(100% - 1.25rem, var(--maxw)); }
   .brand small { display: none; }
   .button, .hero-actions .button { width: 100%; }
+  /* H3 mobile: stack the contact group full-width */
+  .hero-copy .button-row {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
   .hero-copy p, .section-lead { font-size: 1rem; }
   .about-profile,
   .tech-row,
