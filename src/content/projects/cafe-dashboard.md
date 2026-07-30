@@ -1,8 +1,8 @@
 ---
-title: Cafe Order & CRM Dashboard
+title: Order Management System + CRM Dashboard
 slug: cafe-dashboard
 kind: commercial
-displayOrder: 2
+displayOrder: 1
 clientType: Matcha cafe, Metro Manila
 stack: [React, TypeScript, Supabase, Netlify]
 year: 2026
@@ -10,8 +10,9 @@ summary: A mobile-first full-stack PWA that runs a Metro Manila matcha cafe's da
 blurb: Order and customer dashboard for a matcha cafe.
 outcome: Full-stack PWA order & CRM dashboard, live in production. Public demo runs entirely in the browser.
 liveUrl: https://publicdemo-order-crm.vercel.app/
-demoNote: Demo PIN 123456 · sample data, stored only in your browser
+liveLabel: Visit the public-demo version
+demoNote: The production build runs on the client's live customer data, so this link opens the demo instead — PIN 123456.
 repoUrl: https://github.com/dolfonator/PublicDemo-Order-CRM-Dashboard
-coverAlt: PIN entry screen of the Cafe Order & CRM Dashboard login
+coverAlt: PIN entry screen of the Order Management System + CRM Dashboard login
 cover: ../../assets/cafe-dashboard-pin.png
 ---

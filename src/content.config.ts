@@ -13,6 +13,8 @@ const projects = defineCollection({
       clientType: z.string(),
       stack: z.array(z.string()),
       liveUrl: z.string().optional(),
+      /** Overrides the default live-link button label (e.g. when the link is a demo build). */
+      liveLabel: z.string().optional(),
       /** Short note shown beside the live link — e.g. demo credentials. */
       demoNote: z.string().optional(),
       repoUrl: z.string().optional(),
