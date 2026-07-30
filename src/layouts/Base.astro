@@ -7,7 +7,8 @@ const {
   title = 'Tristan Dolfo | Software Developer from the Philippines',
   description = 'Fast, polished sites and systems for businesses. Built by Tristan Dolfo. Philippines.',
   canonical = Astro.url.pathname,
-  ogImage = '/og-image.png',
+  // Query version forces social crawlers to re-fetch after brand/copy changes.
+  ogImage = '/og-image.png?v=20260730',
   jsonLd
 } = Astro.props;
 
@@ -19,6 +20,7 @@ if (!siteUrl) {
 }
 const canonicalUrl = new URL(canonical, siteUrl).toString();
 const ogUrl = new URL(ogImage, siteUrl).toString();
+const ogImageAlt = 'Tristan Dolfo — Philippines software developer. Sites and systems for local businesses.';
 const resumeHref = '/Tristan_Dolfo_Resume.pdf';
 
 // Active-nav "you are here": a nav item is current when the path matches it.
@@ -56,7 +58,12 @@ const navLinks = [
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
     {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
     <script is:inline>
       // Mark JS as available before first paint. Scroll-reveal hides content

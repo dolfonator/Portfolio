@@ -31,6 +31,7 @@ build/
 # Local AI-agent scaffolding (keep on disk, keep off GitHub)
 CLAUDE.md
 master.md
+CHANGELOG.md
 AGENTS.md
 .claude/
 .impeccable/
