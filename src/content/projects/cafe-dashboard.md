@@ -11,7 +11,7 @@ blurb: Order and customer dashboard for a matcha cafe.
 outcome: Full-stack PWA order & CRM dashboard, live in production. Public demo runs entirely in the browser.
 liveUrl: https://publicdemo-order-crm.vercel.app/
 liveLabel: Visit the public-demo version
-demoNote: The production build runs on the client's live customer data, so this link opens the demo instead — PIN 123456.
+demoNote: Demo only — production holds live customer data. PIN 123456.
 repoUrl: https://github.com/dolfonator/PublicDemo-Order-CRM-Dashboard
 coverAlt: PIN entry screen of the Order Management System + CRM Dashboard login
 cover: ../../assets/cafe-dashboard-pin.png
