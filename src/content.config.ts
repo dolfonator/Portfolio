@@ -13,6 +13,8 @@ const projects = defineCollection({
       clientType: z.string(),
       stack: z.array(z.string()),
       liveUrl: z.string().optional(),
+      /** Short note shown beside the live link — e.g. demo credentials. */
+      demoNote: z.string().optional(),
       repoUrl: z.string().optional(),
       year: z.number(),
       summary: z.string(),

@@ -6,10 +6,12 @@ displayOrder: 2
 clientType: Matcha cafe, Metro Manila
 stack: [React, TypeScript, Supabase, Netlify]
 year: 2026
-summary: A mobile-first full-stack PWA order dashboard for a Metro Manila matcha cafe, with orders, customers, imports, and settings behind a PIN-gated boundary.
+summary: A mobile-first full-stack PWA that runs a Metro Manila matcha cafe's day — a PIN-gated order board from new to paid to delivered, a customer CRM, deterministic catalog pricing, and owner-editable settings. The live link is a public demo with sample data; the production build runs the real business.
 blurb: Order and customer dashboard for a matcha cafe.
-outcome: Full-stack PWA order & CRM dashboard, demo-safe with no live secrets.
-repoUrl: https://github.com/dolfonator/Cafe-Order-CRM-Dashboard-
+outcome: Full-stack PWA order & CRM dashboard, live in production. Public demo runs entirely in the browser.
+liveUrl: https://publicdemo-order-crm.vercel.app/
+demoNote: Demo PIN 123456 · sample data, stored only in your browser
+repoUrl: https://github.com/dolfonator/PublicDemo-Order-CRM-Dashboard
 coverAlt: PIN entry screen of the Cafe Order & CRM Dashboard login
 cover: ../../assets/cafe-dashboard-pin.png
 ---

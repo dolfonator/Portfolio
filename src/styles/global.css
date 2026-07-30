@@ -1377,6 +1377,14 @@ dialog.pm::backdrop {
   border-top: 1px solid var(--divider);
   background: var(--panel);
 }
+/* Secondary line under the visit button — demo credentials, data caveats. */
+.pm-demo-note {
+  margin: .6rem 0 0;
+  color: var(--ink-soft);
+  font-size: .86rem;
+  text-align: center;
+  text-wrap: pretty;
+}
 @media (prefers-reduced-motion: no-preference) {
   dialog.pm[open] {
     animation: pmIn .18s ease-out;
