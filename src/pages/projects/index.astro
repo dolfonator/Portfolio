@@ -15,9 +15,9 @@ const commercialProjects = projects.filter((project) => project.data.kind === 'c
 const personalProjects = projects.filter((project) => project.data.kind === 'personal');
 const commercialCount = commercialProjects.length;
 const personalCount = personalProjects.length;
-const projectMix = `${commercialCount} commercial ${commercialCount === 1 ? 'demo' : 'demos'} and ${personalCount} personal ${personalCount === 1 ? 'commission' : 'commissions'}`;
+const projectMix = `${personalCount} personal ${personalCount === 1 ? 'commission' : 'commissions'} and ${commercialCount} commercial ${commercialCount === 1 ? 'demo' : 'demos'}`;
 ---
-<Base title="Projects | Tristan" description="Projects by Tristan: commercial demos and personal commissions. Open any one for details, then visit the live site." canonical="/projects/">
+<Base title="Projects | Tristan" description="Projects by Tristan: personal commissions and commercial demos. Open any one for details, then visit the live site." canonical="/projects/">
   <section class="section starfield">
     <Constellation density={200} islandLimit={4} class="fade-edge" />
     <div class="container">
@@ -26,9 +26,6 @@ const projectMix = `${commercialCount} commercial ${commercialCount === 1 ? 'dem
         <h1 class="page-title">Sites that look like the <span class="hero-mark">business</span>, not the template.</h1>
         <p class="page-lead">{projectMix}, each art-directed for the audience it serves. Open a project for the full story, then visit the real site.</p>
       </header>
-      <div class="commercial-supporting">
-        {commercialProjects.map((project) => <ProjectCard project={project} compact headingLevel={2} />)}
-      </div>
     </div>
   </section>
 
@@ -46,6 +43,21 @@ const projectMix = `${commercialCount} commercial ${commercialCount === 1 ? 'dem
     </section>
   )}
 
+  {commercialProjects.length > 0 && (
+    <section class="section starfield demos" aria-labelledby="demos-title">
+      <Constellation density={120} islandLimit={2} class="fade-edge" />
+      <div class="container">
+        <header class="commissions-head" data-reveal>
+          <p>Commercial Demos</p>
+          <h2 id="demos-title">Business sites shaped around the offer.</h2>
+        </header>
+        <div class="commercial-supporting">
+          {commercialProjects.map((project) => <ProjectCard project={project} compact headingLevel={3} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
   <section class="section band-dark closer">
     <Constellation class="fade-edge" />
     <div class="container closer-inner">
@@ -55,6 +67,6 @@ const projectMix = `${commercialCount} commercial ${commercialCount === 1 ? 'dem
     </div>
   </section>
 
-  {commercialProjects.map((project) => <ProjectModal project={project} />)}
   {personalProjects.map((project) => <ProjectModal project={project} />)}
+  {commercialProjects.map((project) => <ProjectModal project={project} />)}
 </Base>

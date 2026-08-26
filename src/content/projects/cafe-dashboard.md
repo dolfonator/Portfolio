@@ -1,7 +1,7 @@
 ---
 title: Order Management System + CRM Dashboard
 slug: cafe-dashboard
-kind: commercial
+kind: personal
 displayOrder: 1
 clientType: Matcha cafe, Metro Manila
 stack: [React, TypeScript, Supabase, Netlify]

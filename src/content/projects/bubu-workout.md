@@ -2,7 +2,7 @@
 title: Bubu Workout Website
 slug: bubu-workout
 kind: personal
-displayOrder: 5
+displayOrder: 7
 clientType: Personal training-plan site
 stack:
   - Single-file HTML

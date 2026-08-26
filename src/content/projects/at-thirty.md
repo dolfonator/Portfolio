@@ -2,7 +2,7 @@
 title: The Big Thirty
 slug: at-thirty
 kind: personal
-displayOrder: 4
+displayOrder: 6
 clientType: Privacy-safe birthday monograph
 stack:
   - HTML
