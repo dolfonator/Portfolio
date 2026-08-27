@@ -903,9 +903,11 @@ li + li { margin-top: .35rem; }
   max-width: 18ch;
   font-size: clamp(1.55rem, 1.2rem + 1.35vw, 2.15rem);
 }
+/* Personal list is one-column ledger rows matching commercial; Bubu uses the
+   same media-column tracks, with contain + padding gutters. */
 .commission-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: var(--space-4);
 }
 .card-compact {
@@ -925,29 +927,19 @@ li + li { margin-top: .35rem; }
 .card-compact .card-body { justify-content: center; }
 .card-compact .card-body .card-actions { margin-top: 0; }
 .card-compact.card-bubu {
-  grid-template-columns: clamp(10.5rem, 14vw, 14rem) minmax(0, 1fr);
+  grid-template-columns: minmax(10rem, .4fr) minmax(0, .6fr);
 }
 .card-compact.card-bubu .card-media {
   min-width: 0;
-  min-height: 0;
-  aspect-ratio: auto;
-  background: var(--media-bubu);
-}
-/* Commission cards carry long bodies; a side media column would become a tall
-   sliver crop. Stack them: 16:10 media on top, body below. */
-.commission-list .card-compact,
-.commission-list .card-compact.card-bubu {
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr;
-}
-.commission-list .card-compact .card-media {
-  min-height: 0;
+  min-height: 100%;
   aspect-ratio: 16 / 10;
+  background: var(--media-bubu);
 }
 .card-bubu .card-media img {
   object-fit: contain;
   object-position: center;
-  padding: .5rem;
+  box-sizing: border-box;
+  padding: .85rem 1.15rem;
 }
 .card-bubu:hover .card-media img { transform: scale(1.02); }
 .card-logo .card-media img {
@@ -1537,6 +1529,9 @@ html.js [data-reveal] { opacity: 1; transform: none; }
     min-height: 0;
     aspect-ratio: 16 / 10;
   }
+  .card-bubu .card-media img {
+    padding: .65rem;
+  }
   .commission-list {
     grid-template-columns: 1fr;
   }
@@ -1597,13 +1592,6 @@ html.js [data-reveal] { opacity: 1; transform: none; }
   .card-compact.card-bubu { grid-template-columns: 1fr; }
   .card-compact.card-bubu .card-media {
     min-height: 0;
-    aspect-ratio: 16 / 10;
-  }
-  .commission-list .card-compact,
-  .commission-list .card-compact.card-bubu {
-    grid-template-columns: 1fr;
-  }
-  .commission-list .card-compact .card-media {
     aspect-ratio: 16 / 10;
   }
 }

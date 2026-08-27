@@ -1,8 +1,10 @@
 # Product
 
-## Register
+<!-- impeccable:product-schema 1 -->
 
-brand
+## Platform
+
+web
 
 ## Users
 
@@ -24,7 +26,7 @@ strongest sample of the work. Success is a qualified inquiry landing in the
 inbox; the credibility signal to peers is a supporting outcome. This is a v1 on a
 free Netlify subdomain: static-first, no forms, one contact path.
 
-## Brand Personality
+## Brand Commitments
 
 Bold and modern, but grounded and trustworthy — "this person is sharp, and I can
 rely on them." Voice is plain-spoken and confident with zero jargon, quietly
@@ -33,7 +35,7 @@ by the navy system; personality and warmth come from the amber accent, decisive
 typography, and human copy. The emotional target is a non-technical owner feeling
 reassured enough to hit "Email me."
 
-## Anti-references
+Anti-references that remain binding:
 
 - **Generic AI SaaS**: gradient blobs, identical icon-cards, the hero-metric
   template, tiny tracked uppercase eyebrows above every section.
@@ -44,16 +46,23 @@ reassured enough to hit "Email me."
 The pull to resolve: studio-agency boldness *without* tipping into any of the four
 above. Every confident move must stay instantly legible to a café owner on a phone.
 
-## Design Principles
+## Evidence on Hand
+
+Canonical working projects currently on the site (see `src/content/projects/` and
+`master.md`): Herminia's Food and Justdiz Preproductions as art-directed commercial
+demos; Order Management System + CRM Dashboard, Fundsicles, and Pearl Anniversary as
+public-demo personal commissions; The Big Thirty as a privacy-safe full-stack build
+backed by an isolated Netlify Blobs store; and the Bubu Workout microsite. Visible
+craft of the portfolio itself is also evidence. Do not fabricate testimonials,
+pricing, or live-client claims beyond what these sources support.
+
+## Product Principles
 
 1. **Practice what you preach.** He sells fast, polished, accessible sites, so the
    portfolio must be the best one in his portfolio — performance, a11y, and polish
    are the pitch, not afterthoughts.
-2. **Proof over claims.** Canonical working projects (Herminia's and Justdiz as
-   art-directed business sites, The Big Thirty as a privacy-safe full-stack build
-   backed by an isolated Netlify Blobs store, and the Bubu Workout microsite) and
-   visible craft do the arguing. Each project is designed around its own audience,
-   not a shared template.
+2. **Proof over claims.** The projects above and visible craft do the arguing. Each
+   project is designed around its own audience, not a shared template.
 3. **One obvious next action.** The whole site funnels to a single verb — email or
    call. No forms, no funnels, no dead ends; the contact path is never more than a
    glance away.

@@ -24,7 +24,7 @@ const titleLinkLabel = `${d.title}: view details`;
 ]} data-reveal>
   <div class="card-media">
     <span class="card-media-fallback" aria-hidden="true">{d.title.slice(0, 1)}</span>
-    <Image src={d.cover} alt={d.coverAlt ?? `${d.title} project preview`} widths={[420, 720, 1000]} sizes="(max-width: 860px) 100vw, 50vw" />
+    <Image src={d.cover} alt={d.coverAlt ?? `${d.title} project preview`} widths={[420, 720, 1000]} sizes="(max-width: 860px) 100vw, min(28rem, 40vw)" />
   </div>
   <div class="card-body panel-pad">
     <div class="card-meta">
