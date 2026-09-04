@@ -1,37 +1,24 @@
-%PDF-1.4
+%PDF-1.3
 %‚„œ”
 1 0 obj
 <<
-/Producer (ReportLab PDF Library \055 \050opensource\051)
-/Author (John Tristan R\056 Dolfo)
-/CreationDate (D\07220260904225339\05308\04700\047)
-/Creator (anonymous)
-/Keywords ()
-/ModDate (D\07220260904225339\05308\04700\047)
-/Subject (unspecified)
-/Title (Tristan Dolfo \055 Resume)
-/Trapped (\057False)
+/Type /Catalog
+/Pages 2 0 R
 >>
 endobj
 2 0 obj
 <<
 /Type /Pages
 /Count 2
-/Kids [ 4 0 R 9 0 R ]
+/Kids [ 3 0 R 8 0 R ]
 >>
 endobj
 3 0 obj
 <<
-/Type /Catalog
-/Pages 2 0 R
->>
-endobj
-4 0 obj
-<<
-/Contents 5 0 R
+/Contents 4 0 R
 /MediaBox [ 0 0 612 792 ]
 /Resources <<
-/Font 6 0 R
+/Font 5 0 R
 /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
 >>
 /Rotate 0
@@ -41,7 +28,7 @@ endobj
 /Parent 2 0 R
 >>
 endobj
-5 0 obj
+4 0 obj
 <<
 /Length 7498
 >>
@@ -209,13 +196,13 @@ BT 1 0 0 1 553.6632 26 Tm (1) Tj T* ET
 
 endstream
 endobj
-6 0 obj
+5 0 obj
 <<
-/F1 7 0 R
-/F2 8 0 R
+/F1 6 0 R
+/F2 7 0 R
 >>
 endobj
-7 0 obj
+6 0 obj
 <<
 /BaseFont /Helvetica
 /Encoding /WinAnsiEncoding
@@ -224,7 +211,7 @@ endobj
 /Type /Font
 >>
 endobj
-8 0 obj
+7 0 obj
 <<
 /BaseFont /Helvetica-Bold
 /Encoding /WinAnsiEncoding
@@ -233,12 +220,12 @@ endobj
 /Type /Font
 >>
 endobj
-9 0 obj
+8 0 obj
 <<
-/Contents 10 0 R
+/Contents 9 0 R
 /MediaBox [ 0 0 612 792 ]
 /Resources <<
-/Font 11 0 R
+/Font 10 0 R
 /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
 >>
 /Rotate 0
@@ -248,22 +235,360 @@ endobj
 /Parent 2 0 R
 >>
 endobj
-10 0 obj
+9 0 obj
 <<
-/Filter [ /ASCII85Decode /FlateDecode ]
-/Length 1670
+/Length 4597
 >>
 stream
-Gau0CbBB@G&Dd46C,_1r_Y]H9QEVqG90.YMlP?k'NY0O_N?.-Aj/7.D:@)-)6`b?&Mh\69eb<+0FO9NP\,XnZ^h!T9YB8,#8@G0qWWbrs@<0cP2o'?Li.eBQ?GE7dC-.mM=a7>rh0#CE237(:A_R:<EZdBXT5b^%dj1I"C;%:!<NNuX\Obk@:Z:Xn8A7F]G@OMC9\]'aT',%($`^D`SnGk8qEhUKnY0]6RQ__,[_6jL6TdW`2:ZV"R]88R`0FiB2Q42q><ZA`k5-YoN=P00<e;,5LD@#RQKO2kK6KqAe#1&@"uiF@CBg`'mQ9W:[5HjjXC'eNNp9`\F)kl+L@_Hk*P=QC9m++Tb[V?ufbt?RX>m]s,fc(fBuN]D^k0_!D3#$OVH$60p]7[06BWPQq3J'M\#kh!I#5sHocB<8S<[5>,Y`&/9uaO)3%(bn29R;-!kOK:iRHeJaZX06Y[%9mhpXn?n7<MC6P+e'df[SX(!Z$.As3=`N#-.RK:"dJac&al.50%WNfW#9bJb`q.Eqsi#2sfug+e0.OroLU)$lfhUgK$+>QPLh8tisEiVt(5j(bUAqRrTQJJF.A+lJ7L(X\5Xod=+AZe_nBhXiYf!cs^jN#!%>Yp2=m@9ifqGk&*O:Aj#Dd>Q*^K3'/KqkFP7Z)f#/\.X%lgPZ'7=O'N>n2;7WO\Z]BFs*0JSK:CdhIC<i\nh)5Z&5Ck2OrY`cS_6iVrk;<Q[@NFOZ]PlZ'>B&ZOtC`UQ=Cn.)@`>YDi^HX%m5cdY&$?3&^B?`eJr*4bZP;K4N:XH2J]$5Ih])pmU'/?4iJh3V9D;*tCu#VO%12S)c3=/fS<$]d43MQS&9)3St*iCm1"AUoZL897L.R^`M@m*EN8;FpA28'mh(fE?`Ji_?NeZO5[o<V55=/]a/;k,h_5mK]Ek`FHBFX;L(b,]$*1Vg(*X<gVaT8T[=#Y4E#"XPJ_ABEnt%)]L%Ih6N4HR@5aF/Y0fXG0FQM&c$X[%fO^O)g?8aEDZ01jjgDT,'rc\S->d5mG=+q+Hjar9$c+?uB;K8t^*8gnBQlgpG*lOkL%/sCZ2=/qk@i"Y4OnQoq\b]mX8mri_?B9t]<km+C86!NS`R&3\e0BM)e6pdo%4'dk#dZp?EdBo=R9-U]*]V&3l;$SkV^.J9K>j+0LJi]pf&s6>?KllX^Q,k$Pooe=V=JJ(@u5O62Y^D7IdpQYrr%SR;RGI9TqQE#H+3;(s<p2I\E8*6!8Ye2'o7"\]sl>ImLh@odeJQ571jd=T6C'AF3,sQXiGdD;O<,!jdc4s,OKr\\;!K49)e1i!eurW9(_s=A^V"XKCPXlYBo#'C<6#D53^BAi+GIF8Q$im,\b2Vg4]+.E/a$_=9i5)uV?a6h.\-XDXsIG"?eB6Gg"iIXl--OT$rq)'6u,UdZtU^O/u<]&NJ2'`VuOEt"k4C8la7%).kej?U:8f=]*q5;$Wem73N4Yb>3SI3Cc]8IpV>N)umM5fD:89<^ZR<`tFRR0%.JapkJWeZ9U.o%cA2ju`[l]m.!2bX#e%o:kSp2&TnFc7D`hn'bf1O-<rPZXn6d"=u`UodPbFG]3EjB&Vo,>->a8bI[:Ga0qs.3!g)_NG"R9ia4f>-,0                                                  ~>
+1 0 0 1 0 0 cm
+BT
+/F1 12 Tf
+14.4 TL
+ET
+BT
+/F2 9.4 Tf
+11.28 TL
+ET
+0 0.560784 0.541176 rg
+BT
+1 0 0 1 54 746 Tm
+(SELECTED PROJECTS\054 CONTINUED) Tj
+T*
+ET
+0.835294 0.866667 0.905882 RG
+0.5 w
+n
+54 739 m
+558 739 l
+S
+BT
+/F2 10.9 Tf
+13.08 TL
+ET
+0.086275 0.12549 0.168627 rg
+BT
+1 0 0 1 54 726 Tm
+(Personal Portfolio) Tj
+T*
+ET
+BT
+/F2 9.6 Tf
+11.52 TL
+ET
+0.34902 0.419608 0.509804 rg
+BT
+1 0 0 1 536.6496 726 Tm
+(2026) Tj
+T*
+ET
+BT
+/F1 8.9 Tf
+10.68 TL
+ET
+0.34902 0.419608 0.509804 rg
+BT
+1 0 0 1 54 713 Tm
+(Astro 7\054 TypeScript\054 Netlify\054 Vercel \174 tristandolfo\056netlify\056app) Tj
+T*
+ET
+BT
+/F1 9.1 Tf
+10.92 TL
+ET
+0.086275 0.12549 0.168627 rg
+BT
+1 0 0 1 58 700 Tm
+(\055) Tj
+T*
+ET
+BT
+/F1 9.1 Tf
+10.92 TL
+ET
+0.086275 0.12549 0.168627 rg
+BT
+1 0 0 1 66 700 Tm
+(Built an Astro portfolio with design tokens\054 WCAG AA themes\054 reduced\055motion and Save\055Data controls\054 JSON\055LD\054 and) Tj
+T*
+ET
+BT
+/F1 9.1 Tf
+10.92 TL
+ET
+0.086275 0.12549 0.168627 rg
+BT
+1 0 0 1 66 688.6 Tm
+(automated social and SEO assets\056) Tj
+T*
+ET
+BT
+/F2 10.9 Tf
+13.08 TL
+ET
+0.086275 0.12549 0.168627 rg
+BT
+1 0 0 1 54 670.2 Tm
+(Herminia\047s Food) Tj
+T*
+ET
+BT
+/F2 9.6 Tf
+11.52 TL
+ET
+0.34902 0.419608 0.509804 rg
+BT
+1 0 0 1 536.6496 670.2 Tm
+(2026) Tj
+T*
+ET
+BT
+/F1 8.9 Tf
+10.68 TL
+ET
+0.34902 0.419608 0.509804 rg
+BT
+1 0 0 1 54 657.2 Tm
+(Closed client engagement \174 Astro\054 TypeScript\054 Vercel \174 herminias\055food\056vercel\056app) Tj
+T*
+ET
+BT
+/F1 9.1 Tf
+10.92 TL
+ET
+0.086275 0.12549 0.168627 rg
+BT
+1 0 0 1 58 644.2 Tm
+(\055) Tj
+T*
+ET
+BT
+/F1 9.1 Tf
+10.92 TL
+ET
+0.086275 0.12549 0.168627 rg
+BT
+1 0 0 1 66 644.2 Tm
+(Built a Filipino\055food catering site with package pages\054 direct booking and quote paths\054 gallery content\054 reviews\054 and) Tj
+T*
+ET
+BT
+/F1 9.1 Tf
+10.92 TL
+ET
+0.086275 0.12549 0.168627 rg
+BT
+1 0 0 1 66 632.8 Tm
+(structured data\056) Tj
+T*
+ET
+BT
+/F2 10.9 Tf
+13.08 TL
+ET
+0.086275 0.12549 0.168627 rg
+BT
+1 0 0 1 54 614.4 Tm
+(The Big Thirty) Tj
+T*
+ET
+BT
+/F2 9.6 Tf
+11.52 TL
+ET
+0.34902 0.419608 0.509804 rg
+BT
+1 0 0 1 536.6496 614.4 Tm
+(2026) Tj
+T*
+ET
+BT
+/F1 8.9 Tf
+10.68 TL
+ET
+0.34902 0.419608 0.509804 rg
+BT
+1 0 0 1 54 601.4 Tm
+(Paid personal commission \174 HTML\054 CSS\054 JavaScript\054 Netlify Blobs \174 bday\055public\056netlify\056app) Tj
+T*
+ET
+BT
+/F1 9.1 Tf
+10.92 TL
+ET
+0.086275 0.12549 0.168627 rg
+BT
+1 0 0 1 58 588.4 Tm
+(\055) Tj
+T*
+ET
+BT
+/F1 9.1 Tf
+10.92 TL
+ET
+0.086275 0.12549 0.168627 rg
+BT
+1 0 0 1 66 588.4 Tm
+(Built a privacy\055safe birthday keepsake with editable stories\054 letters\054 gallery uploads\054 reveal controls\054 and isolated Blob) Tj
+T*
+ET
+BT
+/F1 9.1 Tf
+10.92 TL
+ET
+0.086275 0.12549 0.168627 rg
+BT
+1 0 0 1 66 577 Tm
+(storage\056) Tj
+T*
+ET
+BT
+/F2 9.4 Tf
+11.28 TL
+ET
+0 0.560784 0.541176 rg
+BT
+1 0 0 1 54 544.6 Tm
+(LEADERSHIP) Tj
+T*
+ET
+0.835294 0.866667 0.905882 RG
+0.5 w
+n
+54 537.6 m
+558 537.6 l
+S
+BT
+/F2 10.8 Tf
+12.96 TL
+ET
+0.086275 0.12549 0.168627 rg
+BT
+1 0 0 1 54 524.6 Tm
+(Head of Sponsorships and Partnerships\054 SELECOMES) Tj
+T*
+ET
+BT
+/F2 9.5 Tf
+11.4 TL
+ET
+0.34902 0.419608 0.509804 rg
+BT
+1 0 0 1 468.7665 524.6 Tm
+(Apr 2023 \055 Mar 2024) Tj
+T*
+ET
+BT
+/F1 9.2 Tf
+11.04 TL
+ET
+0.34902 0.419608 0.509804 rg
+BT
+1 0 0 1 54 510.6 Tm
+(Society of Electronics Engineering Students \174 Ateneo de Davao University) Tj
+T*
+ET
+BT
+/F2 9.4 Tf
+11.28 TL
+ET
+0 0.560784 0.541176 rg
+BT
+1 0 0 1 54 478.2 Tm
+(TECHNICAL SKILLS) Tj
+T*
+ET
+0.835294 0.866667 0.905882 RG
+0.5 w
+n
+54 471.2 m
+558 471.2 l
+S
+BT
+/F1 9.3 Tf
+11.16 TL
+ET
+0.086275 0.12549 0.168627 rg
+BT
+1 0 0 1 54 458.2 Tm
+(Web\057App\072 React\054 TypeScript\054 Astro\054 Next\056js\054 HTML\054 CSS\054 JavaScript\054 Tailwind CSS\054 Supabase\054 Neon\054 Drizzle ORM) Tj
+T*
+ET
+BT
+/F1 9.3 Tf
+11.16 TL
+ET
+0.086275 0.12549 0.168627 rg
+BT
+1 0 0 1 54 464.4 Tm
+() Tj
+T*
+ET
+BT
+/F1 9.3 Tf
+11.16 TL
+ET
+0.086275 0.12549 0.168627 rg
+BT
+1 0 0 1 54 446 Tm
+(Delivery\072 Git\054 Netlify\054 Vercel\054 WCAG AA accessibility\054 SEO\054 JSON\055LD) Tj
+T*
+ET
+BT
+/F1 9.3 Tf
+11.16 TL
+ET
+0.086275 0.12549 0.168627 rg
+BT
+1 0 0 1 54 433.8 Tm
+(Agentic Tools\072 Claude Code\054 OpenAI Codex\054 Grok Build\054 Grok Bot\054 Hermes Agent\054 Ollama\054 OpenRouter) Tj
+T*
+ET
+BT
+/F1 9.3 Tf
+11.16 TL
+ET
+0.086275 0.12549 0.168627 rg
+BT
+1 0 0 1 54 421.6 Tm
+(Embedded Systems\072 ESP32\054 LoRaWAN\054 Arduino\054 Raspberry Pi\054 C\053\053\054 IoT systems) Tj
+T*
+ET
+0.835294 0.866667 0.905882 RG
+0.5 w
+n
+54 43 m
+558 43 l
+S
+BT
+/F2 7.8 Tf
+9.36 TL
+ET
+0.34902 0.419608 0.509804 rg
+BT
+1 0 0 1 54 26 Tm
+(TRISTAN DOLFO  \174  FULL\055STACK DEVELOPER) Tj
+T*
+ET
+BT
+/F2 7.8 Tf
+9.36 TL
+ET
+0.34902 0.419608 0.509804 rg
+BT
+1 0 0 1 553.6632 26 Tm
+(2) Tj
+T*
+ET
+
 endstream
 endobj
-11 0 obj
+10 0 obj
 <<
-/F1 12 0 R
-/F2 13 0 R
+/F1 11 0 R
+/F2 12 0 R
 >>
 endobj
-12 0 obj
+11 0 obj
 <<
 /BaseFont /Helvetica
 /Encoding /WinAnsiEncoding
@@ -272,7 +597,7 @@ endobj
 /Type /Font
 >>
 endobj
-13 0 obj
+12 0 obj
 <<
 /BaseFont /Helvetica-Bold
 /Encoding /WinAnsiEncoding
@@ -281,28 +606,41 @@ endobj
 /Type /Font
 >>
 endobj
+13 0 obj
+<<
+/Producer (ReportLab PDF Library \055 \050opensource\051)
+/Author (John Tristan R\056 Dolfo)
+/CreationDate (D\07220260904225339\05308\04700\047)
+/Creator (anonymous)
+/Keywords ()
+/ModDate (D\07220260904225339\05308\04700\047)
+/Subject (unspecified)
+/Title (Tristan Dolfo \055 Resume)
+/Trapped (\057False)
+>>
+endobj
 xref
 0 14
 0000000000 65535 f 
 0000000015 00000 n 
-0000000341 00000 n 
-0000000406 00000 n 
-0000000455 00000 n 
-0000000644 00000 n 
-0000008194 00000 n 
-0000008235 00000 n 
-0000008342 00000 n 
-0000008454 00000 n 
-0000008645 00000 n 
-0000010408 00000 n 
-0000010452 00000 n 
-0000010560 00000 n 
+0000000064 00000 n 
+0000000129 00000 n 
+0000000318 00000 n 
+0000007868 00000 n 
+0000007909 00000 n 
+0000008016 00000 n 
+0000008128 00000 n 
+0000008318 00000 n 
+0000012967 00000 n 
+0000013011 00000 n 
+0000013119 00000 n 
+0000013232 00000 n 
 trailer
 <<
 /Size 14
-/Root 3 0 R
-/Info 1 0 R
+/Root 1 0 R
+/Info 13 0 R
 >>
 startxref
-10673
+13559
 %%EOF
